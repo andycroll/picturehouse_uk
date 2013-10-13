@@ -2,6 +2,8 @@
 
 A simple gem to parse the [Picturehouse Cinemas UK website][http://picturehouses.co.uk] and spit out useful formatted info.
 
+[![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk.png)](https://codeclimate.com/github/andycroll/picturehouse_uk)
+
 ## Installation
 
 Add this line to your application's Gemfile:
