@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = PicturehouseUk::VERSION
   spec.authors       = ["Andy Croll"]
   spec.email         = ["andy@goodscary.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{An API to pull movie information from the picturehouse.co.uk website}
+  spec.summary       = %q{It's a scraper, but a nice one}
   spec.homepage      = ""
   spec.license       = "MIT"
 
