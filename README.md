@@ -3,6 +3,7 @@
 A simple gem to parse the [Picturehouse Cinemas UK website][http://picturehouses.co.uk] and spit out useful formatted info.
 
 [![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk.png)](https://codeclimate.com/github/andycroll/picturehouse_uk)
+[![Build Status](https://travis-ci.org/andycroll/picturehouse_uk.png?branch=master)](https://travis-ci.org/andycroll/picturehouse_uk)
 
 ## Installation
 
