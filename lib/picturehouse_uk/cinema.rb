@@ -5,7 +5,7 @@ module PicturehouseUk
 
     # Public: Returns the String brand of the cinema #=> 'Picturehouse'
     attr_reader :brand
-    # Public: Returns the String id of the cinema on the picturehouse website
+    # Public: Returns the String id of the cinema on the Picturehouse website
     attr_reader :id
     # Public: Returns the String name of the cinema
     attr_reader :name
@@ -27,12 +27,12 @@ module PicturehouseUk
       @url   = (url[0] == '/') ? "http://www.picturehouses.co.uk#{url}" : url
     end
 
-    # Public: Return basic cinema information for all Odeon cinemas
+    # Public: Return basic cinema information for all Picturehouse cinemas
     #
     # Examples
     #
-    #   OdeonUk::Cinema.all
-    #   # => [<OdeonUk::Cinema brand="Odeon" name="Odeon Tunbridge Wells" slug="odeon-tunbridge-wells" id=23 url="...">, #=> <OdeonUk::Cinema brand="Odeon" name="Odeon Brighton" slug="odeon-brighton" chain_id="71" url="...">, ...]
+    #   PicturehouseUk::Cinema.all
+    #   # => [<PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">, #=> <PicturehouseUK::Cinema brand="Picturehouse" name="Duke o York's" slug="duke-of-yorks" id="Duke_Of_Yorks" url="...">, ...]
     #
     # Returns an array of hashes of cinema information.
     def self.all
