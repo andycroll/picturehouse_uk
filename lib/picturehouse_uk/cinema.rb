@@ -41,6 +41,20 @@ module PicturehouseUk
       end
     end
 
+    # Public: Return single cinema information for an Odeon cinema
+    #
+    # string - a string representing the cinema id
+    #
+    # Examples
+    #
+    #   PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   # => <PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">
+    #
+    # Returns an PicturehouseUk::Cinema or nil if none was found
+    def self.find(id)
+      all.select { |cinema| cinema.id == id }[0]
+    end
+
     private
 
     def self.cinema_links
