@@ -3,6 +3,7 @@ require 'nokogiri'
 
 require_relative './picturehouse_uk/version'
 require_relative './picturehouse_uk/cinema'
+require_relative './picturehouse_uk/film'
 require_relative './picturehouse_uk/screening'
 
 module PicturehouseUk
