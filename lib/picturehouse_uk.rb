@@ -1,5 +1,6 @@
 require 'httparty'
 require 'nokogiri'
+require 'tzinfo'
 
 require_relative './picturehouse_uk/version'
 
