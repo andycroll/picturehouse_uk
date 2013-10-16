@@ -2,6 +2,28 @@ require_relative '../../../test_helper'
 
 describe PicturehouseUk::Internal::FilmWithScreeningsParser do
 
+  describe '#film_name' do
+    subject { PicturehouseUk::Internal::FilmWithScreeningsParser.new(film_html).film_name }
+
+    describe 'simple name' do
+      let(:film_html) { read_film_html 'blue-jasmine-future'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Blue Jasmine'
+      end
+    end
+
+    describe 'simple name with dimensionality' do
+      let(:film_html) { read_film_html 'planes-with-kids-club'}
+
+      it 'removes version designation' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Planes'
+      end
+    end
+  end
+
   describe '#showings' do
     subject { PicturehouseUk::Internal::FilmWithScreeningsParser.new(film_html).showings }
 

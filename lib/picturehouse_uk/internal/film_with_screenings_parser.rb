@@ -7,6 +7,14 @@ module PicturehouseUk
         @nokogiri_html = Nokogiri::HTML(film_html)
       end
 
+      def film_name
+        name = @nokogiri_html.css('.movielink').children.first.to_s
+
+        # screening types
+        name = name.gsub /\s\[[ACPGU1258]+\]/, '' # remove certificate
+        name = name.gsub /\s+[23][dD]/, '' # remove 2d or 3d from title
+      end
+
       def showings
         tz = TZInfo::Timezone.get('Europe/London')
         out = @nokogiri_html.css('a[epoch]').inject({}) do |result, link|
