@@ -78,7 +78,15 @@ describe PicturehouseUk::Cinema do
     end
 
     it 'returns correct number of films' do
-      subject.count.must_equal 69
+      subject.count.must_equal 37
+    end
+
+    it 'returns uniquely named films' do
+      first_name = subject.first.name
+      first = subject.first
+
+      subject[1..-1].each { |item| item.name.wont_equal first_name }
+      subject[1..-1].each { |item| item.wont_equal first }
     end
 
     it 'returns film objects with correct names' do

@@ -68,7 +68,7 @@ module PicturehouseUk
       film_nodes.map do |node|
         parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
         PicturehouseUk::Film.new parser.film_name
-      end
+      end.uniq
     end
 
     # Public: Returns screenings for a Picturehouse cinema
