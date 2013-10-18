@@ -76,6 +76,15 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
         subject.must_equal 'Met Opera: Rusalka'
       end
     end
+
+    describe 'rsc live with zeroed cert' do
+      let(:film_html) { read_film_html 'rsc-live-the-two-gentlemen-of-verona-zero-cert' }
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Royal Shakespeare Company: The Two Gentlemen of Verona'
+      end
+    end
   end
 
   describe '#showings' do

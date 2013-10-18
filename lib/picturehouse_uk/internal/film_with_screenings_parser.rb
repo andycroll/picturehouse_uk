@@ -13,6 +13,7 @@ module PicturehouseUk
         # screening types
         name = name.gsub /\s\[(AS LIVE: )?[ACPGU1258]+\]/, '' # remove certificate
         name = name.gsub /\s\[NO CERT\]/, '' # remove no certificate
+        name = name.gsub /\s\[\]/, '' # remove no certificate
         name = name.gsub /\s+[23][dD]/, '' # remove 2d or 3d from title
 
         # special screenings
