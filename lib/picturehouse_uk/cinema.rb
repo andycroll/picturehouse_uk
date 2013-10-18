@@ -59,7 +59,7 @@ module PicturehouseUk
     #
     # Examples
     #
-    #   cinema = PicturehouseUk::Cinema.find('71')
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   cinema.screenings
     #   # => [<PicturehouseUk::Screening film_name="Iron Man 3" cinema_name="Duke's At Komedia" when="..." varient="...">, <PicturehouseUk::Screening ...>]
     #
