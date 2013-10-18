@@ -55,6 +55,22 @@ module PicturehouseUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # Public: Returns films for an Picturehouse cinema
+    #
+    # Examples
+    #
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.films
+    #   # => [<PicturehouseUk::Film name="Iron Man 3">, <PicturehouseUk::Film name="Star Trek Into Darkness">]
+    #
+    # Returns an array of PicturehouseUk::Film objects
+    def films
+      film_nodes.map do |node|
+        parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
+        PicturehouseUk::Film.new parser.film_name
+      end
+    end
+
     # Public: Returns screenings for a Picturehouse cinema
     #
     # Examples

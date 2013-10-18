@@ -61,6 +61,32 @@ describe PicturehouseUk::Cinema do
     end
   end
 
+  describe '#films' do
+    let(:cinema) { PicturehouseUk::Cinema.new 'Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/' }
+    subject { cinema.films }
+
+    before do
+      dukes_cinema_body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-cinema.html') )
+      stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/').to_return( status: 200, body: dukes_cinema_body, headers: {} )
+    end
+
+    it 'returns an array of films' do
+      subject.must_be_instance_of(Array)
+      subject.each do |item|
+        item.must_be_instance_of(PicturehouseUk::Film)
+      end
+    end
+
+    it 'returns correct number of films' do
+      subject.count.must_equal 69
+    end
+
+    it 'returns film objects with correct names' do
+      subject.first.name.must_equal 'Blue Jasmine'
+      subject.last.name.must_equal 'Royal Opera House: Manon Lescaut'
+    end
+  end
+
   describe '#screenings' do
     let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
     subject { cinema.screenings }
