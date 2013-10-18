@@ -22,6 +22,60 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
         subject.must_equal 'Planes'
       end
     end
+
+    describe 'royal opera house with no cert' do
+      let(:film_html) { read_film_html 'royal-opera-house-don-quixote'}
+
+      it 'removes live designation, certificate and spells out Royal Opera House' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Royal Opera House: Don Quixote'
+      end
+    end
+
+    describe 'bolshoi with no cert' do
+      let(:film_html) { read_film_html 'bolshoi-spartacus'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Bolshoi: Spartacus'
+      end
+    end
+
+    describe 'nt encore with no cert' do
+      let(:film_html) { read_film_html 'nt-encore-hamlet'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'National Theatre: Hamlet'
+      end
+    end
+
+    describe 'rsc live with no cert' do
+      let(:film_html) { read_film_html 'rsc-live-richard-ii'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Royal Shakespeare Company: Richard II'
+      end
+    end
+
+    describe 'rsc encore with no cert' do
+      let(:film_html) { read_film_html 'rsc-encore-richard-ii'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Royal Shakespeare Company: Richard II'
+      end
+    end
+
+    describe 'met encore as live with no cert' do
+      let(:film_html) { read_film_html 'met-encore-rusalka-as-live'}
+
+      it 'removes certificate' do
+        subject.must_be_instance_of String
+        subject.must_equal 'Met Opera: Rusalka'
+      end
+    end
   end
 
   describe '#showings' do
