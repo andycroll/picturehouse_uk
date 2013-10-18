@@ -55,6 +55,27 @@ module PicturehouseUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # Public: Returns screenings for a Picturehouse cinema
+    #
+    # Examples
+    #
+    #   cinema = PicturehouseUk::Cinema.find('71')
+    #   cinema.screenings
+    #   # => [<PicturehouseUk::Screening film_name="Iron Man 3" cinema_name="Duke's At Komedia" when="..." varient="...">, <PicturehouseUk::Screening ...>]
+    #
+    # Returns an array of Odeon::Screening objects
+    def screenings
+      film_nodes.map do |node|
+        parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
+        parser.showings.map do |screening_type, times|
+          times.map do |time|
+            varient = screening_type == '2d' ? nil : screening_type
+            PicturehouseUk::Screening.new parser.film_name, self.name, time.strftime('%d/%m/%Y'), time.strftime('%H:%M:%S'), varient
+          end
+        end
+      end.flatten
+    end
+
     private
 
     def self.cinema_links
@@ -74,6 +95,18 @@ module PicturehouseUk
 
     def self.parsed_homepage
       Nokogiri::HTML(homepage_response)
+    end
+
+    def cinema_response
+      @cinema_response ||= HTTParty.get(@url)
+    end
+
+    def film_nodes
+      parsed_cinema.css('.box8_content .largelist .item')
+    end
+
+    def parsed_cinema
+      Nokogiri::HTML(cinema_response)
     end
 
   end
