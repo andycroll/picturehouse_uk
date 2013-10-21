@@ -3,3 +3,4 @@
 --charset utf-8
 --markup markdown
 --plugin yard-tomdoc
+'lib/**/*.rb'
