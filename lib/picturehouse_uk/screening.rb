@@ -16,12 +16,11 @@ module PicturehouseUk
     #
     # film_name   - String of the film name
     # cinema_name - String of the cinema name on the Picturehouse website
-    # date        - String/Date representing the date of the screening
-    # time        - String representing the time of the screening (24 hour clock)
+    # time        - DateTime representing the time of the screening, UTC preferred
     # varient     - String representing the type of showing (e.g. 3d/baby/live)
-    def initialize(film_name, cinema_name, date, time, varient=nil)
+    def initialize(film_name, cinema_name, time, varient=nil)
       @cinema_name, @film_name, @varient = cinema_name, film_name, varient
-      @when = Time.parse("#{date} #{time} UTC")
+      @when = time.utc? ? time : TZInfo::Timezone.get('Europe/London').local_to_utc(time)
     end
 
     # Public: The Date of the screening
