@@ -29,7 +29,6 @@ module PicturehouseUk
       end
 
       def showings
-        tz = TZInfo::Timezone.get('Europe/London')
         @nokogiri_html.css('a[epoch]').inject({}) do |result, link|
           key = case link['class']
             when /big_scream/ then 'baby'
@@ -38,6 +37,7 @@ module PicturehouseUk
             when /subtitled_cinema/ then 'subtitled'
             else '2d'
           end
+          # this is a hack because Time.at() only uses local time
           time = Time.utc(1970)+link['epoch'].to_i
 
           result.merge(key => (result[key] || []) << time)
