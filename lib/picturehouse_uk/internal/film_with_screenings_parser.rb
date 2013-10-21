@@ -38,9 +38,9 @@ module PicturehouseUk
             when /subtitled_cinema/ then 'subtitled'
             else '2d'
           end
-          time = Time.at(link['epoch'].to_i)
+          time = Time.utc(1970)+link['epoch'].to_i
 
-          result.merge(key => (result[key] || []) << tz.local_to_utc(time))
+          result.merge(key => (result[key] || []) << time)
         end
       end
     end
