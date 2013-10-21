@@ -86,7 +86,8 @@ module PicturehouseUk
         parser.showings.map do |screening_type, times|
           times.map do |time|
             varient = screening_type == '2d' ? nil : screening_type
-            PicturehouseUk::Screening.new parser.film_name, self.name, time.strftime('%d/%m/%Y'), time.strftime('%H:%M:%S'), varient
+            pp time
+            pp PicturehouseUk::Screening.new parser.film_name, self.name, time.strftime('%d/%m/%Y'), time.strftime('%H:%M:%S'), varient
           end
         end
       end.flatten
