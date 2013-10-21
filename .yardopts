@@ -2,4 +2,4 @@
 --title 'PicturehouseUk gem'
 --charset utf-8
 --markup markdown
---plugin tomdoc
+--plugin yard-tomdoc
