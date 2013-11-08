@@ -12,5 +12,4 @@ require_relative './picturehouse_uk/film'
 require_relative './picturehouse_uk/screening'
 
 module PicturehouseUk
-  # Your code goes here...
 end

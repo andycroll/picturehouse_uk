@@ -1,31 +1,28 @@
 module PicturehouseUk
 
-  # Public: The object representing a screening of a film on the Picturehouse UK website
+  # A single screening of a film on the Picturehouse UK website
   class Screening
 
-    # Public: Returns the String name of the cinema
+    # @return [String] the cinema name
     attr_reader :cinema_name
-    # Public: Returns the String name of the film
+    # @return [String] the film name
     attr_reader :film_name
-    # Public: Returns the Time of the screening
+    # @return [Time] the UTC time of the screening
     attr_reader :when
-    # Public: Returns the Type of screening (3d, baby, kids, live)
+    # @return [String] the type of screening (2D, 3D, IMAX...)
     attr_reader :varient
 
-    # Public: Initialize a screening
-    #
-    # film_name   - String of the film name
-    # cinema_name - String of the cinema name on the Picturehouse website
-    # time        - DateTime representing the time of the screening, UTC preferred
-    # varient     - String representing the type of showing (e.g. 3d/baby/live)
+    # @param [String] film_name the film name
+    # @param [String] cinema_name the cinema name
+    # @param [Time] time datetime of the screening (UTC preferred)
+    # @param [String] varient the type of showing (e.g. 3d/baby/live)
     def initialize(film_name, cinema_name, time, varient=nil)
       @cinema_name, @film_name, @varient = cinema_name, film_name, varient
       @when = time.utc? ? time : TZInfo::Timezone.get('Europe/London').local_to_utc(time)
     end
 
-    # Public: The Date of the screening
-    #
-    # Returns a Date
+    # The date of the screening
+    # @return [Date]
     def date
       @when.to_date
     end

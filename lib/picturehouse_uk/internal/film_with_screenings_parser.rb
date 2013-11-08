@@ -1,12 +1,19 @@
 module PicturehouseUk
+
+  # Internal utility classes: Do not use
+  # @api private
   module Internal
-    # Private: An object to parse a film HTML snippet
+
+    # Parses a chunk of HTML to derive movie showing data
     class FilmWithScreeningsParser
 
+      # @param [String] film_html a chunk of html
       def initialize(film_html)
         @nokogiri_html = Nokogiri::HTML(film_html)
       end
 
+      # The film name
+      # @return [String]
       def film_name
         name = @nokogiri_html.css('.movielink').children.first.to_s
 
@@ -28,6 +35,12 @@ module PicturehouseUk
         name = name.gsub /\s+\z/, '' # remove trailing spaces
       end
 
+      # Showings
+      # @return [Hash]
+      # @example
+      #   {
+      #     "2D" => [Time.utc, Time.utc]
+      #   }
       def showings
         @nokogiri_html.css('a[epoch]').inject({}) do |result, link|
           key = case link['class']
