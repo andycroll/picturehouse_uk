@@ -47,6 +47,35 @@ module PicturehouseUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # Address of the cinema
+    # @return [Hash] of different address parts
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.adr
+    #   #=> { street_address: '44-47 Gardner Street', extended_address: 'North Laine', locality: 'Brighton', postal_code: 'BN1 1UN', country_name: 'United Kingdom' }
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def adr
+      {
+        street_address: street_address,
+        extended_address: extended_address,
+        locality: locality,
+        postal_code: postal_code,
+        country: 'United Kingdom'
+      }
+    end
+    alias_method :address, :adr
+
+    # The second address line of of the cinema
+    # @return [String, nil]
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.extended_address
+    #   #=> 'North Laine'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def extended_address
+      address_strings.length > 3 ? address_strings[1] : nil
+    end
+
     # Films with showings scheduled at this cinema
     # @return [Array<PicturehouseUk::Film>]
     # @example
@@ -58,6 +87,28 @@ module PicturehouseUk
         parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
         PicturehouseUk::Film.new parser.film_name
       end.uniq
+    end
+
+    # The locality (town) of the cinema
+    # @return [String]
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.locality
+    #   #=> 'Brighton'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def locality
+      address_strings[-2]
+    end
+
+    # Post code of the cinema
+    # @return [String]
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.postal_code
+    #   #=> 'BN1 1UN'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def postal_code
+      address_strings[-1]
     end
 
     # All planned screenings
@@ -76,6 +127,17 @@ module PicturehouseUk
           end
         end
       end.flatten
+    end
+
+    # The street adress of the cinema
+    # @return a String
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.street_address
+    #   #=> '44-47 Gardner Street'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def street_address
+      address_strings[0]
     end
 
     private
@@ -99,6 +161,31 @@ module PicturehouseUk
       Nokogiri::HTML(homepage_response)
     end
 
+    def address_parts
+      if pure_address_parts.length > 0 && pure_address_parts[0].match(/\d+\Z/)
+        ["#{pure_address_parts[0]} #{pure_address_parts[1]}"] + pure_address_parts[2..-1]
+      else
+        pure_address_parts
+      end
+    end
+
+    def address_strings
+      if address_parts && address_parts.length > 0
+        address_parts[0..post_code_index]
+      else
+        # this is a horrendous hack for Hackney Picturehouse
+        address_node.css('p').to_s.split('Box Office')[0].split('<br> ')[1..-1]
+      end
+    end
+
+    def address_node
+      parsed_contact_us.css('.box6 .txt6')
+    end
+
+    def contact_us_response
+      @contact_us_response ||= HTTParty.get("#{@url}Hires_Info/Contact_Us/")
+    end
+
     def cinema_response
       @cinema_response ||= HTTParty.get(@url)
     end
@@ -111,5 +198,18 @@ module PicturehouseUk
       Nokogiri::HTML(cinema_response)
     end
 
+    def parsed_contact_us
+      Nokogiri::HTML(contact_us_response)
+    end
+
+    def post_code_index
+      address_parts.index { |e| e.match /[A-Z]{1,2}\d{1,2}[A-Z]?\s\d{1,2}[A-Z]{1,2}/ }
+    end
+
+    def pure_address_parts
+      @pure_address_parts = address_node.css('.cinemaListBox').map do |e|
+        e.children[0].to_s
+      end.select { |e| e != '' }
+    end
   end
 end

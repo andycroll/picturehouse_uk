@@ -61,6 +61,114 @@ describe PicturehouseUk::Cinema do
     end
   end
 
+  describe '#adr' do
+    subject { cinema.adr }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns a Hash' do
+        subject.must_be_instance_of Hash
+      end
+
+      it 'returns address hash' do
+        subject.must_equal({
+          :street_address=>"4 Hatter Street",
+          :extended_address=>nil,
+          :locality=>"Bury St Edmunds",
+          :postal_code=>"IP33 1NE",
+          :country=>"United Kingdom"
+        })
+      end
+    end
+
+    describe '(hackney)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Hackney_Picturehouse', 'Hackney Picturehouse', '/cinema/Hackney_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'hackney-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Hackney_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns address hash' do
+        subject.must_equal({
+          :street_address=>"270 Mare Street",
+          :extended_address=>nil,
+          :locality=>"London",
+          :postal_code=>"E8 1HE",
+          :country=>"United Kingdom"
+        })
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns address hash' do
+        subject.must_equal({
+          :street_address=>"44-47 Gardner Street",
+          :extended_address=>"North Laine",
+          :locality=>"Brighton",
+          :postal_code=>"BN1 1UN",
+          :country=>"United Kingdom"
+        })
+      end
+    end
+  end
+
+  describe '#extended_address' do
+    subject { cinema.extended_address }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns nil when no second line' do
+        subject.must_be_nil
+      end
+    end
+
+    describe '(hackney)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Hackney_Picturehouse', 'Hackney Picturehouse', '/cinema/Hackney_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'hackney-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Hackney_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns nil when no second line' do
+        subject.must_be_nil
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the second line of the address' do
+        subject.must_equal 'North Laine'
+      end
+    end
+  end
+
   describe '#films' do
     let(:cinema) { PicturehouseUk::Cinema.new 'Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/' }
     subject { cinema.films }
@@ -95,6 +203,92 @@ describe PicturehouseUk::Cinema do
     end
   end
 
+  describe '#locality' do
+    subject { cinema.locality }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town' do
+        subject.must_equal 'Bury St Edmunds'
+      end
+    end
+
+    describe '(hackney)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Hackney_Picturehouse', 'Hackney Picturehouse', '/cinema/Hackney_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'hackney-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Hackney_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town' do
+        subject.must_equal 'London'
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town' do
+        subject.must_equal 'Brighton'
+      end
+    end
+  end
+
+  describe '#postal_code' do
+    subject { cinema.postal_code }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the post code' do
+        subject.must_equal 'IP33 1NE'
+      end
+    end
+
+    describe '(hackney)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Hackney_Picturehouse', 'Hackney Picturehouse', '/cinema/Hackney_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'hackney-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Hackney_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the post code' do
+        subject.must_equal 'E8 1HE'
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the post code' do
+        subject.must_equal 'BN1 1UN'
+      end
+    end
+  end
+
   describe '#screenings' do
     let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
     subject { cinema.screenings }
@@ -126,4 +320,46 @@ describe PicturehouseUk::Cinema do
     end
   end
 
+  describe '#street_address' do
+    subject { cinema.street_address }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the street address' do
+        subject.must_equal '4 Hatter Street'
+      end
+    end
+
+    describe '(hackney)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Hackney_Picturehouse', 'Hackney Picturehouse', '/cinema/Hackney_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'hackney-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Hackney_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the street address' do
+        subject.must_equal '270 Mare Street'
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the street address' do
+        subject.must_equal '44-47 Gardner Street'
+      end
+    end
+  end
 end
