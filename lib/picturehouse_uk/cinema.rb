@@ -89,6 +89,16 @@ module PicturehouseUk
       end.uniq
     end
 
+    # The name of the cinema (might include brand)
+    # @return [String]
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.full_name
+    #   #=> "Duke's At Komedia"
+    def full_name
+      name
+    end
+
     # The locality (town) of the cinema
     # @return [String]
     # @example

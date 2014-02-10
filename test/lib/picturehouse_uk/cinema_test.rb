@@ -203,6 +203,36 @@ describe PicturehouseUk::Cinema do
     end
   end
 
+  describe '#full_name' do
+    subject { cinema.full_name }
+
+    describe '(abbeygate)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Abbeygate_Picturehouse', 'Abbeygate Picturehouse', '/cinema/Abbeygate_Picturehouse/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'abbeygate-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Abbeygate_Picturehouse/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the cinema name' do
+        subject.must_equal 'Abbeygate Picturehouse'
+      end
+    end
+
+    describe '(komedia)' do
+      let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-contact-us.html') )
+        stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/Hires_Info/Contact_Us/').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the cinema name' do
+        subject.must_equal "Duke's At Komedia"
+      end
+    end
+  end
+
   describe '#locality' do
     subject { cinema.locality }
 
