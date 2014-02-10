@@ -10,14 +10,14 @@ module PicturehouseUk
     # @return [Time] the UTC time of the screening
     attr_reader :when
     # @return [String] the type of screening (2D, 3D, IMAX...)
-    attr_reader :varient
+    attr_reader :variant
 
     # @param [String] film_name the film name
     # @param [String] cinema_name the cinema name
     # @param [Time] time datetime of the screening (UTC preferred)
-    # @param [String] varient the type of showing (e.g. 3d/baby/live)
-    def initialize(film_name, cinema_name, time, varient=nil)
-      @cinema_name, @film_name, @varient = cinema_name, film_name, varient
+    # @param [String] variant the type of showing (e.g. 3d/baby/live)
+    def initialize(film_name, cinema_name, time, variant=nil)
+      @cinema_name, @film_name, @variant = cinema_name, film_name, variant
       @when = time.utc? ? time : TZInfo::Timezone.get('Europe/London').local_to_utc(time)
     end
 
@@ -25,6 +25,12 @@ module PicturehouseUk
     # @return [Date]
     def date
       @when.to_date
+    end
+
+    # @deprecated Please use {#variant} instead, I can't spell
+    def varient
+      warn "Please use #variant instead, I can't spell"
+      variant
     end
   end
 end
