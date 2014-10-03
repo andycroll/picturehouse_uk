@@ -12,12 +12,13 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :build do
-  system "gem build picturehouse_uk.gemspec"
-end
-
-task :release => :build do
-  system "gem push picturehouse_uk-#{PicturehouseUk::VERSION}"
+# http://erniemiller.org/2014/02/05/7-lines-every-gems-rakefile-should-have/
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  require 'picturehouse_uk'
+  ARGV.clear
+  IRB.start
 end
 
 task default: :test
