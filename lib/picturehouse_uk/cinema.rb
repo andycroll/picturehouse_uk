@@ -1,7 +1,10 @@
 module PicturehouseUk
-
   # The object representing a cinema on the Picturehouse UK website
   class Cinema
+    # address css
+    ADDRESS_CSS = '.box6 .txt6'
+    # cinema link css
+    CINEMA_LINKS_CSS = '#cinemalisthome .cinemas a'
 
     # @return [String] the brand of the cinema
     attr_reader :brand
@@ -14,16 +17,18 @@ module PicturehouseUk
     # @return [String] the url of the cinema on the Picturehouse website
     attr_reader :url
 
-    # @param [String] id cinema id from the site
-    # @param [String] name cinema name
-    # @param [String] url url on Picturehouse website
+    # @param [Hash] options id, name and url of the cinemas
     # @return [PicturehouseUk::Cinema]
-    def initialize(id, name, url)
+    def initialize(options)
       @brand = 'Picturehouse'
-      @id    = id
-      @name  = name
-      @slug  = name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
-      @url   = (url[0] == '/') ? "http://www.picturehouses.co.uk#{url}" : url
+      @id    = options[:id]
+      @name  = options[:name]
+      @slug  = @name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
+      @url   = if options[:url][0] == '/'
+                 "http://www.picturehouses.co.uk#{options[:url]}"
+               else
+                 options[:url]
+               end
     end
 
     # Return basic cinema information for all cinemas
@@ -32,9 +37,7 @@ module PicturehouseUk
     #   PicturehouseUk::Cinema.all
     #   # => [<PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">, #=> <PicturehouseUK::Cinema brand="Picturehouse" name="Duke o York's" slug="duke-of-yorks" id="Duke_Of_Yorks" url="...">, ...]
     def self.all
-      cinema_links.map do |link|
-        new_from_link link
-      end
+      cinema_links.map { |link| new_from_link(link) }
     end
 
     # Find a single cinema
@@ -44,7 +47,7 @@ module PicturehouseUk
     #   PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   # => <PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">
     def self.find(id)
-      all.select { |cinema| cinema.id == id }[0]
+      all.find { |cinema| cinema.id == id }
     end
 
     # Address of the cinema
@@ -55,13 +58,7 @@ module PicturehouseUk
     #   #=> { street_address: '44-47 Gardner Street', extended_address: 'North Laine', locality: 'Brighton', postal_code: 'BN1 1UN', country_name: 'United Kingdom' }
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def adr
-      {
-        street_address: street_address,
-        extended_address: extended_address,
-        locality: locality,
-        postal_code: postal_code,
-        country: 'United Kingdom'
-      }
+      PicturehouseUk::Internal::AddressParser.new(address_node.to_s).address
     end
     alias_method :address, :adr
 
@@ -73,7 +70,7 @@ module PicturehouseUk
     #   #=> 'North Laine'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def extended_address
-      address_strings.length > 3 ? address_strings[1] : nil
+      address[:extended_address]
     end
 
     # Films with showings scheduled at this cinema
@@ -83,10 +80,7 @@ module PicturehouseUk
     #   cinema.films
     #   # => [<PicturehouseUk::Film name="Iron Man 3">, <PicturehouseUk::Film name="Star Trek Into Darkness">]
     def films
-      film_nodes.map do |node|
-        parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
-        PicturehouseUk::Film.new parser.film_name
-      end.uniq
+      PicturehouseUk::Film.at(@id)
     end
 
     # The name of the cinema (might include brand)
@@ -107,7 +101,7 @@ module PicturehouseUk
     #   #=> 'Brighton'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def locality
-      address_strings[-2]
+      address[:locality]
     end
 
     # Post code of the cinema
@@ -118,7 +112,7 @@ module PicturehouseUk
     #   #=> 'BN1 1UN'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def postal_code
-      address_strings[-1]
+      address[:postal_code]
     end
 
     # All planned screenings
@@ -147,79 +141,42 @@ module PicturehouseUk
     #   #=> '44-47 Gardner Street'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def street_address
-      address_strings[0]
+      address[:street_address]
     end
 
     private
 
     def self.cinema_links
-      parsed_homepage.css('#cinemalisthome .cinemas a')
+      home_doc.css(CINEMA_LINKS_CSS)
     end
 
-    def self.homepage_response
-      @homepage_response ||= HTTParty.get('http://www.picturehouses.co.uk/')
+    def self.home_doc
+      @home_doc ||= Nokogiri::HTML(website.home)
+    end
+
+    def self.website
+      @website ||= PicturehouseUk::Internal::Website.new
     end
 
     def self.new_from_link(link)
-      url  = link.get_attribute('href')
-      id   = url.match(/\/cinema\/(.+)\/$/)[1]
-      name = link.css('span:nth-child(2)').text
-      new id, name, url
-    end
-
-    def self.parsed_homepage
-      Nokogiri::HTML(homepage_response)
-    end
-
-    def address_parts
-      if pure_address_parts.length > 0 && pure_address_parts[0].match(/\d+\Z/)
-        ["#{pure_address_parts[0]} #{pure_address_parts[1]}"] + pure_address_parts[2..-1]
-      else
-        pure_address_parts
-      end
-    end
-
-    def address_strings
-      if address_parts && address_parts.length > 0
-        address_parts[0..post_code_index]
-      else
-        # this is a horrendous hack for Hackney Picturehouse
-        address_node.css('p').to_s.split('Box Office')[0].split('<br> ')[1..-1]
-      end
+      url = link.get_attribute('href')
+      new(
+        id: url.match(%r(/cinema/(.+)/$))[1],
+        name: link.css('span:nth-child(2)').text,
+        url:  url
+      )
     end
 
     def address_node
-      parsed_contact_us.css('.box6 .txt6')
+      @address_node ||= contact_us_doc.css(ADDRESS_CSS)
     end
 
-    def contact_us_response
-      @contact_us_response ||= HTTParty.get("#{@url}Hires_Info/Contact_Us/")
-    end
-
-    def cinema_response
-      @cinema_response ||= HTTParty.get(@url)
-    end
-
-    def film_nodes
-      parsed_cinema.css('.box8_content .largelist .item')
-    end
-
-    def parsed_cinema
-      Nokogiri::HTML(cinema_response)
-    end
-
-    def parsed_contact_us
-      Nokogiri::HTML(contact_us_response)
+    def contact_us_doc
+      @contact_us_doc ||= Nokogiri::HTML(self.class.website.contact_us(id))
     end
 
     def post_code_index
-      address_parts.index { |e| e.match /[A-Z]{1,2}\d{1,2}[A-Z]?\s\d{1,2}[A-Z]{1,2}/ }
-    end
-
-    def pure_address_parts
-      @pure_address_parts = address_node.css('.cinemaListBox').map do |e|
-        e.children[0].to_s
-      end.select { |e| e != '' }
+      address_parts.index { |e| e.match(POSTCODE_REGEX) }
     end
   end
 end
