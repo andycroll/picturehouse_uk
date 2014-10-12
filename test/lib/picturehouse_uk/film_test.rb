@@ -31,7 +31,6 @@ describe PicturehouseUk::Film do
     it 'returns a decent number of films' do
       PicturehouseUk::Internal::Website.stub :new, website do
         subject.count.must_be :>, 5
-        puts subject.inspect
       end
     end
 
