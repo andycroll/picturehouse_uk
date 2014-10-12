@@ -15,24 +15,11 @@ module PicturehouseUk
       # The film name
       # @return [String]
       def film_name
-        name = @nokogiri_html.css('.movielink').children.first.to_s
+        TitleSanitizer.new(raw_film_name).sanitized
+      end
 
-        # screening types
-        name = name.gsub /\s\[(AS LIVE: )?[ACPGU1258]+\]/, '' # remove certificate
-        name = name.gsub /\s\[NO CERT\]/, '' # remove no certificate
-        name = name.gsub /\s\[\]/, '' # remove no certificate
-        name = name.gsub /\s+[23][dD]/, '' # remove 2d or 3d from title
 
-        # special screenings
-        name = name.gsub 'ROH. Live:', 'Royal Opera House:' # fill out Royal Opera House
-        name = name.gsub 'Met. Encore:', 'Met Opera:' # fill out Met Opera
-        name = name.gsub 'NT Encore:', 'National Theatre:' # National theatre
-        name = name.gsub 'RSC Live:', 'Royal Shakespeare Company:' # RSC
-        name = name.gsub 'RSC Encore:', 'Royal Shakespeare Company:' # RSC
 
-        name = name.squeeze(' ') # spaces compressed
-        name = name.gsub /\A\s+/, '' # remove leading spaces
-        name = name.gsub /\s+\z/, '' # remove trailing spaces
       end
 
       # Showings

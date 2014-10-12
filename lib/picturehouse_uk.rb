@@ -7,6 +7,7 @@ require_relative './picturehouse_uk/version'
 
 require_relative './picturehouse_uk/internal/address_parser'
 require_relative './picturehouse_uk/internal/film_with_screenings_parser'
+require_relative './picturehouse_uk/internal/title_sanitizer'
 require_relative './picturehouse_uk/internal/website'
 
 require_relative './picturehouse_uk/cinema'
