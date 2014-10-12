@@ -16,11 +16,17 @@ module PicturehouseUk
       @slug = name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
     end
 
+    def self.at(cinema_id)
+      cinema_page(cinema_id).film_html.map do |html|
+        new(Internal::FilmWithScreeningsParser.new(html).film_name)
+      end.uniq
+    end
+
     # Allows sort on objects
     # @param [PicturehouseUk::Film] other another film object
     # @return [Integer] -1, 0 or 1
-    def <=> other
-      self.slug <=> other.slug
+    def <=>(other)
+      slug <=> other.slug
     end
 
     # Check an object is the same as another object.
@@ -28,7 +34,7 @@ module PicturehouseUk
     # @return [Boolean] True if both objects are the same exact object, or if
     #   they are of the same type and share an equal slug
     # @note Guided by http://woss.name/2011/01/20/equality-comparison-and-ordering-in-ruby/
-    def eql? other
+    def eql?(other)
       self.class == other.class && self == other
     end
 
@@ -41,7 +47,13 @@ module PicturehouseUk
     # @return [Integer] hash of slug
     # @note Guided by http://woss.name/2011/01/20/equality-comparison-and-ordering-in-ruby/
     def hash
-      self.slug.hash
+      slug.hash
+    end
+
+    private
+
+    def self.cinema_page(cinema_id)
+      @cinema_page ||= PicturehouseUk::Internal::CinemaPage.new(cinema_id)
     end
   end
 end
