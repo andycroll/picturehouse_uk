@@ -13,10 +13,10 @@ describe PicturehouseUk::Film do
   describe '.at(cinema_id)' do
     let(:website) { Minitest::Mock.new }
 
-    subject { described_class.at('Duke_of_Yorks') }
+    subject { described_class.at('Duke_Of_Yorks') }
 
     before do
-      website.expect(:cinema, cinema_html('Duke_of_Yorks'), ['Duke_of_Yorks'])
+      website.expect(:cinema, cinema_html('Duke_Of_Yorks'), ['Duke_Of_Yorks'])
     end
 
     it 'returns an array of films' do
