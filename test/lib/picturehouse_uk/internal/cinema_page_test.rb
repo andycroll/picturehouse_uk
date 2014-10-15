@@ -10,10 +10,10 @@ describe PicturehouseUk::Internal::CinemaPage do
   end
 
   describe '#film_html' do
-    subject { described_class.new('Duke_of_Yorks').film_html }
+    subject { described_class.new('Duke_Of_Yorks').film_html }
 
     before do
-      website.expect(:cinema, dukes_html, ['Duke_of_Yorks'])
+      website.expect(:cinema, dukes_html, ['Duke_Of_Yorks'])
     end
 
     it 'returns an non-zero array of film screenings html fragments' do
@@ -46,6 +46,6 @@ describe PicturehouseUk::Internal::CinemaPage do
   end
 
   def dukes_html
-    read_file('../../../../fixtures/cinema/Duke_of_Yorks.html')
+    read_file('../../../../fixtures/cinema/Duke_Of_Yorks.html')
   end
 end

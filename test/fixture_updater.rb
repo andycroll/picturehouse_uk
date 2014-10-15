@@ -13,12 +13,12 @@ end
 
 File.open(fixture('cinema/Duke_Of_Yorks'), 'w') do |file|
   puts '* Duke of Yorks'
-  file.write PicturehouseUk::Internal::Website.new.cinema('Duke_of_Yorks')
+  file.write PicturehouseUk::Internal::Website.new.cinema('Duke_Of_Yorks')
 end
 
 File.open(fixture('contact_us/Duke_Of_Yorks'), 'w') do |file|
   puts '* Duke of Yorks Information'
-  file.write PicturehouseUk::Internal::Website.new.contact_us('Duke_of_Yorks')
+  file.write PicturehouseUk::Internal::Website.new.contact_us('Duke_Of_Yorks')
 end
 
 # KOMEDIA
@@ -30,14 +30,14 @@ end
 
 # FILMS
 
-page = PicturehouseUk::Internal::CinemaPage.new('Duke_of_Yorks')
+page = PicturehouseUk::Internal::CinemaPage.new('Duke_Of_Yorks')
 
-File.open(fixture('cinema/Duke_of_Yorks/film_second'), 'w') do |file|
+File.open(fixture('cinema/Duke_Of_Yorks/film_second'), 'w') do |file|
   puts '* Duke of Yorks Second Film'
   file.write page.film_html[1]
 end
 
-File.open(fixture('cinema/Duke_of_Yorks/film_last'), 'w') do |file|
+File.open(fixture('cinema/Duke_Of_Yorks/film_last'), 'w') do |file|
   puts '* Duke of Yorks Last Film'
   file.write page.film_html[-1]
 end
