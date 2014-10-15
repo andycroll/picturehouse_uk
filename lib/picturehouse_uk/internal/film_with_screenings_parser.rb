@@ -22,7 +22,8 @@ module PicturehouseUk
       # Showings hashes
       # @return [Array<Hash>]
       def to_a
-        doc.css(SCREENING_CSS).map do |node|
+        return [] unless screenings?
+        screening_nodes.map do |node|
           {
             film_name: film_name,
             dimension: dimension
@@ -43,6 +44,14 @@ module PicturehouseUk
       def raw_film_name
         @raw_film_name ||= doc.css(FILM_NAME_CSS).children.first.to_s
       end
+
+      def screening_nodes
+        @screening_nodes ||= doc.css(SCREENING_CSS)
+      end
+
+      def screenings?
+        !!screening_nodes
+      end
     end
 
     # parse an individual screening node
@@ -52,7 +61,13 @@ module PicturehouseUk
         @node = node
       end
 
-      # a attributes of a single screening
+      # is the screening bookable?
+      # @return [Boolean]
+      def bookable?
+        !!booking_url
+      end
+
+      # the attributes of a single screening
       # @return [Hash]
       # @example
       #   Cineworld::Internal::ScreeningParser.new(html).to_hash
@@ -62,9 +77,8 @@ module PicturehouseUk
       #        variant:     ['imax']
       #      }
       def to_hash
-        return unless bookable?
         {
-          booking_url: booking_url,
+          booking_url: "http://www.picturehouses.co.uk#{booking_url}",
           time:        time,
           variant:     variant
         }
@@ -83,12 +97,12 @@ module PicturehouseUk
       def variant
         @variant ||= begin
           case @node['class']
-          when /big_scream/ then 'baby'
-          when /kids_club|toddler_time/ then 'kids'
-          when /silver_screen/ then 'silver'
-          when /subtitled_cinema/ then 'subtitled'
+          when /big_scream/ then ['baby']
+          when /kids_club|toddler_time/ then ['kids']
+          when /silver_screen/ then ['silver']
+          when /subtitled_cinema/ then ['subtitled']
           else
-            ''
+            []
           end
         end
       end
