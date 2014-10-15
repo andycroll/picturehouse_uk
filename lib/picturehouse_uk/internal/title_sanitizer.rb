@@ -10,7 +10,8 @@ module PicturehouseUk
         /\s+[23][dD]/,                    # 2d or 3d from title
         /\s\[NO CERT\]/,                  # no certificate
         /\s\[\]/,                         # blank certificate
-        /\s\(Re\)/,                       # Re-release
+        /ourscreen\: /,                   # ourscreen
+        /\s\(Re(\: \d{0,4})?\)/i,         # Re-release
         /\s\[CERT TBC\]/,                 # certificate TBC
       ]
 

@@ -96,6 +96,30 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'ourscreen' do
+      let(:title) { 'ourscreen: Northern Soul [15]' }
+
+      it 'removes prefix' do
+        subject.must_equal('Northern Soul')
+      end
+    end
+
+    describe 're release' do
+      let(:title) { 'To Kill A Mockingbird (Re) [PG]' }
+
+      it 'removes rerelease notice' do
+        subject.must_equal('To Kill A Mockingbird')
+      end
+    end
+
+    describe 're release with year' do
+      let(:title) { 'Withnail & I (re: 2014) [15]' }
+
+      it 'removes rerelease notice' do
+        subject.must_equal('Withnail & I')
+      end
+    end
+
     describe 'Royal Opera House screening' do
       let(:title) { 'Royal Shakespeare Company: Richard II [NO CERT]' }
 
