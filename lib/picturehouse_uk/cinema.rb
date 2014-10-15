@@ -122,15 +122,7 @@ module PicturehouseUk
     #   cinema.screenings
     #   # => [<PicturehouseUk::Screening film_name="Iron Man 3" cinema_name="Duke's At Komedia" when="..." variant="...">, <PicturehouseUk::Screening ...>]
     def screenings
-      film_nodes.map do |node|
-        parser = PicturehouseUk::Internal::FilmWithScreeningsParser.new node.to_s
-        parser.showings.map do |screening_type, times|
-          times.map do |time|
-            variant = screening_type == '2d' ? nil : screening_type
-            PicturehouseUk::Screening.new parser.film_name, self.name, time, variant
-          end
-        end
-      end.flatten
+      PicturehouseUk::Screening.at(@id)
     end
 
     # The street adress of the cinema
@@ -173,10 +165,6 @@ module PicturehouseUk
 
     def contact_us_doc
       @contact_us_doc ||= Nokogiri::HTML(self.class.website.contact_us(id))
-    end
-
-    def post_code_index
-      address_parts.index { |e| e.match(POSTCODE_REGEX) }
     end
   end
 end

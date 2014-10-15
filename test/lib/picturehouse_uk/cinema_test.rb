@@ -150,7 +150,7 @@ describe PicturehouseUk::Cinema do
 
     subject { described_class.new(options).films }
 
-    it 'calls out to Screening object' do
+    it 'calls out to Film object' do
       PicturehouseUk::Film.stub :at, [:film] do
         subject.must_equal([:film])
       end
@@ -173,36 +173,23 @@ describe PicturehouseUk::Cinema do
     end
   end
 
-  # describe '#screenings' do
-  #   let(:cinema) { PicturehouseUk::Cinema.new('Dukes_At_Komedia', "Duke's At Komedia", '/cinema/Dukes_At_Komedia/') }
-  #   subject { cinema.screenings }
-  #
-  #   before do
-  #     dukes_cinema_body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'dukes-at-komedia-cinema.html') )
-  #     stub_request(:get, 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/').to_return( status: 200, body: dukes_cinema_body, headers: {} )
-  #   end
-  #
-  #   it 'returns an array of screenings' do
-  #     subject.must_be_instance_of(Array)
-  #     subject.each do |item|
-  #       item.must_be_instance_of(PicturehouseUk::Screening)
-  #     end
-  #   end
-  #
-  #   it 'returns screening objects with correct film names' do
-  #     subject.first.film_name.must_equal 'Blue Jasmine'
-  #     subject.last.film_name.must_equal 'Royal Opera House: Manon Lescaut'
-  #   end
-  #
-  #   it 'returns screening objects with correct cinema name' do
-  #     subject.each { |s| s.cinema_name.must_equal "Duke's At Komedia" }
-  #   end
-  #
-  #   it 'returns screening objects with correct UTC times' do
-  #     subject.first.when.must_equal Time.utc(2013, 10, 14, 20, 0, 0)
-  #     subject.last.when.must_equal Time.utc(2014, 6, 24, 17, 45, 0)
-  #   end
-  # end
+  describe '#screenings' do
+    let(:options) do
+      {
+        id:   'Dukes_At_Komedia',
+        name: "Duke's At Komedia",
+        url:  '/cinema/Dukes_At_Komedia/'
+      }
+    end
+
+    subject { described_class.new(options).screenings }
+
+    it 'calls out to Screening object' do
+      PicturehouseUk::Screening.stub :at, [:screening] do
+        subject.must_equal([:screening])
+      end
+    end
+  end
 
   private
 
