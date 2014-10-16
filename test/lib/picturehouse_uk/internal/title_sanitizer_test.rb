@@ -62,6 +62,22 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with KIDS CLUB in title' do
+      let(:title) { 'KIDS CLUB Escape from Planet Earth' }
+
+      it 'removes KIDS CLUB' do
+        subject.must_equal('Escape from Planet Earth')
+      end
+    end
+
+    describe 'with DISCOVER TUE in title' do
+      let(:title) { 'DISCOVER TUE All this Mayhem' }
+
+      it 'remove rogue screening type' do
+        subject.must_equal('All this Mayhem')
+      end
+    end
+
     describe 'with (Re) in title' do
       let(:title) { 'Beauty and the Beast 2D (Re) [U]' }
 

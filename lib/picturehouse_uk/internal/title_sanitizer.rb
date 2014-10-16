@@ -14,6 +14,8 @@ module PicturehouseUk
         /\s\[CERT TBC\]/,                   # certificate TBC
         /\s?\-\s?autism.*ing\s?/i,          # austim screening
         /\s?\+\s?Q\&A\.?/i,                 # +Q&A
+        /KIDS CLUB\s*/i,                    # kids club
+        /DISCOVER TUE\s*/i,                 # discover tue
       ]
 
       # regexes and their replacements
