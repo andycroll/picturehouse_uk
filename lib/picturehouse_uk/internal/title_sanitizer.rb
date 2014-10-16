@@ -12,6 +12,7 @@ module PicturehouseUk
         /ourscreen\: /,                   # ourscreen
         /\s\(Re(\: \d{0,4})?\)/i,         # Re-release
         /\s\[CERT TBC\]/,                 # certificate TBC
+        /\s?\-\s?autism.*ing\s?/i,          # austim screening
       ]
 
       # regexes and their replacements

@@ -30,6 +30,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'autism friendly' do
+      let(:title) { 'Tarzan - Autism-Friendly Screening' }
+
+      it 'removes screening type' do
+        subject.must_equal('Tarzan')
+      end
+    end
+
     describe 'with NO CERT in title' do
       let(:title) { 'Iron Man 3 [NO CERT]' }
 

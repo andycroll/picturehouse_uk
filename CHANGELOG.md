@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Better parsing of ampersands in film titles
+- Better parsing of autism screening film titles
 
 
 ## 2.0.0 - 2014-10-16
