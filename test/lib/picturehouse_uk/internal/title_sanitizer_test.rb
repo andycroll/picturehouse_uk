@@ -6,6 +6,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
   describe '#sanitized' do
     subject { described_class.new(title).sanitized }
 
+    describe 'with HTML &amp; in title' do
+      let(:title) { 'Withnail &amp; I' }
+
+      it 'removes dimension' do
+        subject.must_equal('Withnail & I')
+      end
+    end
+
     describe 'with 2d in title' do
       let(:title) { 'Iron Man 3 2D' }
 

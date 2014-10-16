@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+- Better parsing of ampersands in film titles
+
+
 ## 2.0.0 - 2014-10-16
 
 ### Added

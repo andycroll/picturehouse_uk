@@ -34,7 +34,7 @@ module PicturehouseUk
       # @return [String] title
       def sanitized
         @sanitzed ||= begin
-          sanitized = @title
+          sanitized = @title.gsub('&amp;', '&')
           REMOVE.each do |pattern|
             sanitized.gsub! pattern, ''
           end
