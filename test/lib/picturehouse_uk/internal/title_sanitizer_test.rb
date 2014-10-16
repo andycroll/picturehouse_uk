@@ -104,6 +104,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'Met Opera screening v3' do
+      let(:title) { 'Met Opera:Le Nozze di Figaro [AS LIVE:12A]' }
+
+      it 'removes prefix' do
+        subject.must_equal('Met Opera: Le Nozze di Figaro')
+      end
+    end
+
     describe 'NT Live screening' do
       let(:title) { 'National Theatre: Hamlet [PG]' }
 

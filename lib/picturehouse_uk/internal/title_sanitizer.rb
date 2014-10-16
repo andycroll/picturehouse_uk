@@ -5,25 +5,25 @@ module PicturehouseUk
     class TitleSanitizer
       # strings and regex to be removed
       REMOVE = [
-        /\s\[(AS LIVE: )?[ACPGU1258]+\]/, # regular certificate
-        /\s+[23][dD]/,                    # 2d or 3d from title
-        /\s\[NO CERT\]/,                  # no certificate
-        /\s\[\]/,                         # blank certificate
-        /ourscreen\: /,                   # ourscreen
-        /\s\(Re(\: \d{0,4})?\)/i,         # Re-release
-        /\s\[CERT TBC\]/,                 # certificate TBC
+        /\s\[(AS LIVE:\s*)?[ACPGU1258]+\]/, # regular certificate
+        /\s+[23][dD]/,                      # 2d or 3d from title
+        /\s\[NO CERT\]/,                    # no certificate
+        /\s\[\]/,                           # blank certificate
+        /ourscreen\: /,                     # ourscreen
+        /\s\(Re(\: \d{0,4})?\)/i,           # Re-release
+        /\s\[CERT TBC\]/,                   # certificate TBC
         /\s?\-\s?autism.*ing\s?/i,          # austim screening
       ]
 
       # regexes and their replacements
       REPLACE = {
-        /Met\.? Encore: (.*)/ => 'Met Opera:',
-        /Met\.? Opera: (.*)/  => 'Met Opera: ',
-        /NT Encore: (.*)/     => 'National Theatre:',
-        /NT Live: (.*)/       => 'National Theatre:',
-        /ROH\.? Live: (.*)/   => 'Royal Opera House:',
-        /RSC\.? Live: (.*)/   => 'Royal Shakespeare Company:',
-        /RSC\.? Encore: (.*)/ => 'Royal Shakespeare Company:'
+        /Met\.? Encore:\s*(.*)/ => 'Met Opera:',
+        /Met\.? Opera:\s*(.*)/  => 'Met Opera: ',
+        /NT Encore:\s*(.*)/     => 'National Theatre:',
+        /NT Live:\s*(.*)/       => 'National Theatre:',
+        /ROH\.? Live:\s*(.*)/   => 'Royal Opera House:',
+        /RSC\.? Live:\s*(.*)/   => 'Royal Shakespeare Company:',
+        /RSC\.? Encore:\s*(.*)/ => 'Royal Shakespeare Company:'
       }
 
       # @param [String] title a film title
