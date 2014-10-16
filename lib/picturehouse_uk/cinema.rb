@@ -35,7 +35,7 @@ module PicturehouseUk
     # @return [Array<PicturehouseUk::Cinema>]
     # @example
     #   PicturehouseUk::Cinema.all
-    #   # => [<PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">, #=> <PicturehouseUK::Cinema brand="Picturehouse" name="Duke o York's" slug="duke-of-yorks" id="Duke_Of_Yorks" url="...">, ...]
+    #   # => [<PicturehouseUK::Cinema ...>, <PicturehouseUK::Cinema ...>, ...]
     def self.all
       cinema_links.map { |link| new_from_link(link) }
     end
@@ -45,7 +45,7 @@ module PicturehouseUk
     # @return [PicturehouseUk::Cinema, nil]
     # @example
     #   PicturehouseUk::Cinema.find('Dukes_At_Komedia')
-    #   # => <PicturehouseUK::Cinema brand="Picturehouse" name="Duke's At Komedia" slug="dukes-at-komedia" id="Dukes_At_Komedia" url="...">
+    #   # => <PicturehouseUK::Cinema ...>
     def self.find(id)
       all.find { |cinema| cinema.id == id }
     end
@@ -55,8 +55,14 @@ module PicturehouseUk
     # @example
     #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   cinema.adr
-    #   #=> { street_address: '44-47 Gardner Street', extended_address: 'North Laine', locality: 'Brighton', postal_code: 'BN1 1UN', country_name: 'United Kingdom' }
-    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    #   #=> {
+    #         street_address:   '44-47 Gardner Street',
+    #         extended_address: 'North Laine',
+    #         locality:         'Brighton',
+    #         postal_code:      'BN1 1UN',
+    #         country_name: 'United Kingdom'
+    #       }
+    # @note Uses method naming as at http://microformats.org/wiki/adr
     def adr
       PicturehouseUk::Internal::AddressParser.new(address_node.to_s).address
     end
@@ -68,7 +74,7 @@ module PicturehouseUk
     #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   cinema.extended_address
     #   #=> 'North Laine'
-    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    # @note Uses method naming as at http://microformats.org/wiki/adr
     def extended_address
       address[:extended_address]
     end
@@ -78,7 +84,7 @@ module PicturehouseUk
     # @example
     #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   cinema.films
-    #   # => [<PicturehouseUk::Film name="Iron Man 3">, <PicturehouseUk::Film name="Star Trek Into Darkness">]
+    #   # => [<PicturehouseUk::Film ...>, <PicturehouseUk::Film ...>, ...]
     def films
       PicturehouseUk::Film.at(@id)
     end
@@ -120,7 +126,7 @@ module PicturehouseUk
     # @example
     #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
     #   cinema.screenings
-    #   # => [<PicturehouseUk::Screening film_name="Iron Man 3" cinema_name="Duke's At Komedia" when="..." variant="...">, <PicturehouseUk::Screening ...>]
+    #   # => [<PicturehouseUk::Screening ...>, <PicturehouseUk::Screening ...>]
     def screenings
       PicturehouseUk::Screening.at(@id)
     end
@@ -153,7 +159,7 @@ module PicturehouseUk
     def self.new_from_link(link)
       url = link.get_attribute('href')
       new(
-        id: url.match(%r(/cinema/(.+)/$))[1],
+        id: url.match(%r{/cinema/(.+)/$})[1],
         name: link.css('span:nth-child(2)').text,
         url:  url
       )

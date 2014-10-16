@@ -1,5 +1,4 @@
 module PicturehouseUk
-
   # A film on the Picturehouse UK website
   class Film
     include Comparable
@@ -13,9 +12,12 @@ module PicturehouseUk
     # @return [PicturehouseUk::Film]
     def initialize(name)
       @name = name
-      @slug = name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
+      @slug = name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
     end
 
+    # Films at a single cinema
+    # @param [String] cinema_id the id of the cinema
+    # @return [Array<PicturehouseUk::Film>]
     def self.at(cinema_id)
       cinema_page(cinema_id).film_html.map do |html|
         new(Internal::FilmWithScreeningsParser.new(html).film_name)
@@ -41,8 +43,8 @@ module PicturehouseUk
     # Generates hash of slug in order to allow two records of the same type and
     # id to work with something like:
     #
-    #   [ Film.new('ABC'), Film.new('DEF') ] & [ Film.new('DEF'), Film.new('GHI') ]
-    #   #=> [ Film.new('DEF') ]
+    #   [ Film.new('AB'), Film.new('EF') ] & [ Film.new('EF'), Film.new('GH') ]
+    #   #=> [ Film.new('EF') ]
     #
     # @return [Integer] hash of slug
     # @note Guided by http://woss.name/2011/01/20/equality-comparison-and-ordering-in-ruby/

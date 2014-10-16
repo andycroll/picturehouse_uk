@@ -3,6 +3,7 @@ module PicturehouseUk
   module Internal
     # Parses a chunk of HTML to derive movie showing data
     class CinemaPage
+      # css for a film + screenings
       FILM_CSS = '#events .largelist .item'
 
       # @param [Integer] cinema_id cineworld cinema id

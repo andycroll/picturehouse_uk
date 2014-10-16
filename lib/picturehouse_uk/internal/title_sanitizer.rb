@@ -1,5 +1,4 @@
 module PicturehouseUk
-  # Internal utility classes: Do not use
   # @api private
   module Internal
     # Sanitize and standardize film titles

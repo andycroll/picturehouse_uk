@@ -1,8 +1,6 @@
-# encoding: UTF-8
 require 'open-uri'
 
 module PicturehouseUk
-  # Internal utility classes: Do not use
   # @api private
   module Internal
     # fetches pages from the picturehouse.co.uk website

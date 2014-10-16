@@ -21,6 +21,9 @@ module PicturehouseUk
       @variant     = options.fetch(:variant, [])
     end
 
+    # Screenings at a single cinema
+    # @param [String] cinema_id the id of the cinema
+    # @return [Array<PicturehouseUk::Screening>]
     def self.at(cinema_id)
       cinema_page(cinema_id).film_html.map do |html|
         create_for_single_film(html, cinema_id)
