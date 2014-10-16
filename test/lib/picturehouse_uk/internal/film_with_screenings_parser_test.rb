@@ -11,7 +11,7 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
 
       it 'returns the film name' do
         subject.must_be_instance_of(String)
-        subject.must_equal('20,000 Days on Earth')
+        subject.must_equal('Gone Girl')
       end
     end
 
@@ -20,7 +20,7 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
 
       it 'returns the film name' do
         subject.must_be_instance_of(String)
-        subject.must_equal('Human Capital')
+        subject.must_equal('The Judge')
       end
     end
   end
@@ -30,7 +30,7 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
 
     describe 'passed film html from top of page' do
       let(:film_html)       { read_film_html('Duke_Of_Yorks/film_second') }
-      let(:permitted_types) { %w(baby hfr kids) }
+      let(:permitted_types) { %w(baby hfr kids silver) }
 
       it 'returns a non-zero array of hashes' do
         subject.must_be_instance_of(Array)
