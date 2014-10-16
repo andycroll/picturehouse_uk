@@ -70,6 +70,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with Q&A' do
+      let(:title) { 'Hidden Colors 3: The Rules of Racism + Q&amp;A' }
+
+      it 'removes suffix' do
+        subject.must_equal('Hidden Colors 3: The Rules of Racism')
+      end
+    end
+
     describe 'Bolshoi screening' do
       let(:title) { 'Bolshoi: Spartacus [NO CERT]' }
 
