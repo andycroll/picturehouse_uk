@@ -16,6 +16,7 @@ module PicturehouseUk
       # The film name
       # @return [String]
       def film_name
+        return if city_screen_basement_event?
         TitleSanitizer.new(raw_film_name).sanitized
       end
 
@@ -32,6 +33,10 @@ module PicturehouseUk
       end
 
       private
+
+      def city_screen_basement_event?
+        raw_film_name.match(/\Abasement/)
+      end
 
       def dimension
         raw_film_name.match(/3d/i) ? '3d' : '2d'
@@ -50,7 +55,7 @@ module PicturehouseUk
       end
 
       def screenings?
-        !!screening_nodes
+        !!screening_nodes && !city_screen_basement_event?
       end
     end
 

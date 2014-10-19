@@ -23,6 +23,14 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
         subject.must_equal('The Judge')
       end
     end
+
+    describe 'passed basement from Cityscreen Picturehouse York' do
+      let(:film_html) { read_film_html('York_Picturehouse/basement') }
+
+      it 'returns nil' do
+        subject.must_equal(nil)
+      end
+    end
   end
 
   describe '#to_a' do
@@ -54,7 +62,7 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
       end
     end
 
-    describe 'passed film html from top of dbox cinema page' do
+    describe 'passed film html from bottom of cinema page' do
       let(:film_html)       { read_film_html('Duke_Of_Yorks/film_last') }
       let(:permitted_types) { %w(baby dbox hfr kids silver) }
 
@@ -65,6 +73,15 @@ describe PicturehouseUk::Internal::FilmWithScreeningsParser do
             permitted_types.must_include(type)
           end
         end
+      end
+    end
+
+    describe 'passed basement from Cityscreen Picturehouse York' do
+      let(:film_html) { read_film_html('York_Picturehouse/basement') }
+
+      it 'returns an empty array' do
+        subject.must_be_instance_of(Array)
+        subject.must_be :empty?
       end
     end
   end

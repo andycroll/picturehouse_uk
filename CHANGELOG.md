@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+- No screenings in York for 'basement events'
+
 ## v.2.0.1 -2014-10-19
 
 ### Added
