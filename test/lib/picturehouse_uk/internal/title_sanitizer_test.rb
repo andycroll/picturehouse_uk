@@ -22,6 +22,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with (2d) in title' do
+      let(:title) { 'ParaNorman (2D)' }
+
+      it 'removes dimension' do
+        subject.must_equal('ParaNorman')
+      end
+    end
+
     describe 'with 3d in title' do
       let(:title) { 'Iron Man 3 3d' }
 

@@ -6,7 +6,7 @@ module PicturehouseUk
       # strings and regex to be removed
       REMOVE = [
         /\s\[(AS LIVE:\s*)?[ACPGU1258]+\]/, # regular certificate
-        /\s+[23][dD]/,                      # 2d or 3d from title
+        /\s+\(?[23][dD]\)?/,                # 2d or 3d from title
         /\s\[NO CERT\]/,                    # no certificate
         /\s\[\]/,                           # blank certificate
         /ourscreen\: /,                     # ourscreen
