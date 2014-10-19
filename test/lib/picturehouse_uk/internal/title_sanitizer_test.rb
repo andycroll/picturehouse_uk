@@ -78,6 +78,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with free screening' do
+      let(:title) { 'FREE Screening - Withnail &amp; I' }
+
+      it 'remove rogue screening type' do
+        subject.must_equal('Withnail & I')
+      end
+    end
+
     describe 'with (Re) in title' do
       let(:title) { 'Beauty and the Beast 2D (Re) [U]' }
 

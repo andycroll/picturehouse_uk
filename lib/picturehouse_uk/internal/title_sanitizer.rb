@@ -16,6 +16,7 @@ module PicturehouseUk
         /\s?\+\s?Q\&A\.?/i,                 # +Q&A
         /KIDS CLUB\s*/i,                    # kids club
         /DISCOVER TUE\s*/i,                 # discover tue
+        /FREE Screening\s*-\s*/i            # free screening
       ]
 
       # regexes and their replacements

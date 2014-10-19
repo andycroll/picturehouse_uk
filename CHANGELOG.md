@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Better parsing of bad spacing in film titles
 - Better parsing of Q&A events
 - Better parsing of rogue screening types
+- Better parsing of free screening types
 
 ## 2.0.0 - 2014-10-16
 
