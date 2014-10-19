@@ -223,5 +223,13 @@ describe PicturehouseUk::Internal::TitleSanitizer do
         subject.must_equal('Royal Shakespeare Company: Richard II')
       end
     end
+
+    describe 'Royal Opera House encore screening' do
+      let(:title) { 'ROH Encore: Swan Lake' }
+
+      it 'removes prefix' do
+        subject.must_equal('Royal Opera House: Swan Lake')
+      end
+    end
   end
 end

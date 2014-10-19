@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 - No screenings in York for 'basement events'
 - more flexible 2d removal
 - better title sanitizations
+- deal with ROH Encore
+- better spacing on 'event' titles
 
 ## v.2.0.1 -2014-10-19
 
