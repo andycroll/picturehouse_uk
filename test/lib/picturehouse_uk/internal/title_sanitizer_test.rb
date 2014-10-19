@@ -110,6 +110,21 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with large Q+A' do
+      let(:title) { 'Luna Plus Q&A with Director and Artist Dave McKean' }
+
+      it 'removes suffix' do
+        subject.must_equal('Luna')
+      end
+    end
+
+    describe 'with panel discussion' do
+      let(:title) { 'A Dangerous Game + Panel Discussion' }
+
+      it 'removes suffix' do
+        subject.must_equal('A Dangerous Game')
+    end
+
     describe 'with HOH Subtitled in the title' do
       let(:title) { "'71 *HOH Subtitled*" }
 

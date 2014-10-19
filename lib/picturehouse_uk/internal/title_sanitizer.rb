@@ -21,6 +21,8 @@ module PicturehouseUk
         /\*?HOH Subtitled\*?/i,             # subtitled
         /\s*\-?\s*Reminiscence/i,           # reminiscence
         /\s*-?\s*Kids\'? Club\s*-?\s*/,     # kids club
+        /\s*plus Q\&A.*/i,                  # extended Q&A
+        /\s*\+ panel.*/i,                   # panel
       ]
 
       # regexes and their replacements

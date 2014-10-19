@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+- Better Q&A/panel removal from titles
+
 ## v.2.0.2 -2014-10-19
 
 ### Added
