@@ -23,6 +23,7 @@ module PicturehouseUk
         /\s*-?\s*Kids\'? Club\s*-?\s*/,     # kids club
         /\s*plus Q\&A.*/i,                  # extended Q&A
         /\s*\+ panel.*/i,                   # panel
+        /\(.*\d{4}\)/,                      # year or captured year
       ]
 
       # regexes and their replacements

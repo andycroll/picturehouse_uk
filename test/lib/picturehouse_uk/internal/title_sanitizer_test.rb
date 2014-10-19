@@ -30,6 +30,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with film release year' do
+      let(:title) { 'Miracle on 34th Street (1947)' }
+
+      it 'removes year' do
+        subject.must_equal('Miracle on 34th Street')
+      end
+    end
+
     describe 'with 3d in title' do
       let(:title) { 'Iron Man 3 3d' }
 
@@ -162,6 +170,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
 
       it 'removes prefix' do
         subject.must_equal('Bolshoi: Spartacus')
+      end
+    end
+
+    describe 'Bolshoi with captured' do
+      let(:title) { 'Bolshoi: La Bayadere (Captured Live in 2012)' }
+
+      it 'removes suffix' do
+        subject.must_equal('Bolshoi: La Bayadere')
       end
     end
 
