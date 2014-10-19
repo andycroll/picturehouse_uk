@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Better Q&A/panel removal from titles
+- deal with various title edge cases
 - remove years from titles
 
 ## v.2.0.2 -2014-10-19

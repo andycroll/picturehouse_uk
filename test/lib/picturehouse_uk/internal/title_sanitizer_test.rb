@@ -131,6 +131,31 @@ describe PicturehouseUk::Internal::TitleSanitizer do
 
       it 'removes suffix' do
         subject.must_equal('A Dangerous Game')
+      end
+    end
+
+    describe 'cinemania film festival' do
+      let(:title) { 'Cinemania: The Imposter' }
+
+      it 'removes prefix' do
+        subject.must_equal('The Imposter')
+      end
+    end
+
+    describe '@ Komedia at the Little Thetre cinema' do
+      let(:title) { 'Gone Girl @ Komedia [18]' }
+
+      it 'removes suffix' do
+        subject.must_equal('Gone Girl')
+      end
+    end
+
+    describe 're-issue' do
+      let(:title) { 'Metropolis (Re-issue)' }
+
+      it 'removes suffix' do
+        subject.must_equal('Metropolis')
+      end
     end
 
     describe 'with HOH Subtitled in the title' do

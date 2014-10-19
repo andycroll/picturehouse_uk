@@ -20,8 +20,11 @@ module PicturehouseUk
         /\s*-?\s*Big Scream\s*-?\s*/i,      # big scream
         /\*?HOH Subtitled\*?/i,             # subtitled
         /\s*\-?\s*Reminiscence/i,           # reminiscence
+        /\s*\-?\s*\(?Re\-issue\)?/i,        # reissue
         /\s*-?\s*Kids\'? Club\s*-?\s*/,     # kids club
         /\s*plus Q\&A.*/i,                  # extended Q&A
+        /Cinemania\s*[\:\-]/i,              # cinemania
+        /\@ komedia/i,                      # @ komedia
         /\s*\+ panel.*/i,                   # panel
         /\(.*\d{4}\)/,                      # year or captured year
       ]
