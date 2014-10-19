@@ -110,6 +110,38 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with HOH Subtitled in the title' do
+      let(:title) { "'71 *HOH Subtitled*" }
+
+      it 'removes extra info' do
+        subject.must_equal("'71")
+      end
+    end
+
+    describe 'with Big Scream in the title' do
+      let(:title) { 'Big Scream - Effie Gray' }
+
+      it 'removes extra info' do
+        subject.must_equal('Effie Gray')
+      end
+    end
+
+    describe 'with kids club in the title' do
+      let(:title) { "ParaNorman (2D) - Kids' Club" }
+
+      it 'removes extra info' do
+        subject.must_equal('ParaNorman')
+      end
+    end
+
+    describe 'with reminiscence in the title' do
+      let(:title) { "Rosemary's Baby - Reminiscence" }
+
+      it 'removes extra info' do
+        subject.must_equal("Rosemary's Baby")
+      end
+    end
+
     describe 'Bolshoi screening' do
       let(:title) { 'Bolshoi: Spartacus [NO CERT]' }
 
