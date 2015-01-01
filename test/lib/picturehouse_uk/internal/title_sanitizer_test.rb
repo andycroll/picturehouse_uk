@@ -94,6 +94,22 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with Discover Tuesday in title' do
+      let(:title) { 'Discover Tuesday: Manakamana [U]' }
+
+      it 'remove rogue screening type' do
+        subject.must_equal('Manakamana')
+      end
+    end
+
+    describe 'with Singalong' do
+      let(:title) { 'Frozen Singalong [PG]' }
+
+      it 'remove rogue screening type' do
+        subject.must_equal('Frozen')
+      end
+    end
+
     describe 'with free screening' do
       let(:title) { 'FREE Screening - Withnail &amp; I' }
 
@@ -147,6 +163,22 @@ describe PicturehouseUk::Internal::TitleSanitizer do
 
       it 'removes suffix' do
         subject.must_equal('Gone Girl')
+      end
+    end
+
+    describe '@ Komedia at the Little Thetre cinema' do
+      let(:title) { 'Paddington@Komedia' }
+
+      it 'removes suffix' do
+        subject.must_equal('Paddington')
+      end
+    end
+
+    describe 'imax' do
+      let(:title) { 'Dinosaurs Alive! IMAX' }
+
+      it 'removes suffix' do
+        subject.must_equal('Dinosaurs Alive!')
       end
     end
 
@@ -269,6 +301,14 @@ describe PicturehouseUk::Internal::TitleSanitizer do
 
       it 'removes rerelease notice' do
         subject.must_equal('Withnail & I')
+      end
+    end
+
+    describe 'toddler time' do
+      let(:title) { 'TODDLER TIME: Timmy Time Programme 15' }
+
+      it 'removes rerelease notice' do
+        subject.must_equal('Timmy Time Programme 15')
       end
     end
 

@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## HEAD
+
+### Added
+- remove imax from film title
+- remove 'Discover Tuesday' from film title
+- remove 'toddler time' from film title
+- remove 'singalong' from film title
+
 ## v.2.0.3 -2014-10-19
 
 ### Added

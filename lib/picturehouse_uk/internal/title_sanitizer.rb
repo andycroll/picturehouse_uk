@@ -7,6 +7,7 @@ module PicturehouseUk
       REMOVE = [
         /\s\[(AS LIVE:\s*)?[ACPGU1258]+\]/, # regular certificate
         /\s+\(?[23][dD]\)?/,                # 2d or 3d from title
+        /\bIMAX\b/i,                        # imax from title
         /\s\[NO CERT\]/,                    # no certificate
         /\s\[\]/,                           # blank certificate
         /ourscreen\: /,                     # ourscreen
@@ -15,7 +16,7 @@ module PicturehouseUk
         /\s?\-\s?autism.*ing\s?/i,          # austim screening
         /\s?\+\s?Q\&A\.?/i,                 # +Q&A
         /KIDS CLUB\s*/i,                    # kids club
-        /DISCOVER TUE\s*/i,                 # discover tue
+        /DISCOVER TUE(sday\:)*\s*/i,        # discover tue
         /FREE Screening\s*-\s*/i,           # free screening
         /\s*-?\s*Big Scream\s*-?\s*/i,      # big scream
         /\*?HOH Subtitled\*?/i,             # subtitled
@@ -24,9 +25,11 @@ module PicturehouseUk
         /\s*-?\s*Kids\'? Club\s*-?\s*/,     # kids club
         /\s*plus Q\&A.*/i,                  # extended Q&A
         /Cinemania\s*[\:\-]/i,              # cinemania
-        /\@ komedia/i,                      # @ komedia
+        /\@\s*komedia/i,                    # @ komedia
         /\s*\+ panel.*/i,                   # panel
+        /toddler time\s*\:*\-*/i,           # toddler time
         /\(.*\d{4}\)/,                      # year or captured year
+        /\bsingalong\b/i,                   # singalong
       ]
 
       # regexes and their replacements
