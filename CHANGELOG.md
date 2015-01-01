@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## HEAD
+## v.2.0.4 -2015-01-01
 
 ### Added
 - remove imax from film title
