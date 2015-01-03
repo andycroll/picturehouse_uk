@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## HEAD
+## v.2.0.5 -2015-01-03
 
 ### Added
 - parents and babies screening title
