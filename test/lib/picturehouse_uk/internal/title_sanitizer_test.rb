@@ -327,5 +327,21 @@ describe PicturehouseUk::Internal::TitleSanitizer do
         subject.must_equal('Royal Opera House: Swan Lake')
       end
     end
+
+    describe 'parent and babies screening' do
+      let(:title) { 'Paddington - Parents & Babies' }
+
+      it 'removes suffix' do
+        subject.must_equal('Paddington')
+      end
+    end
+
+    describe 'subtitled screening' do
+      let(:title) { 'Subtitled: The Hobbit: The Battle of the Five Armies' }
+
+      it 'removes prefix' do
+        subject.must_equal('The Hobbit: The Battle of the Five Armies')
+      end
+    end
   end
 end

@@ -30,6 +30,8 @@ module PicturehouseUk
         /toddler time\s*\:*\-*/i,           # toddler time
         /\(.*\d{4}\)/,                      # year or captured year
         /\bsingalong\b/i,                   # singalong
+        /\s+\-?\s*Parents \& Babies/i,      # parents and babies
+        /Subtitled\:*\s*/i,                 # subtitled
       ]
 
       # regexes and their replacements
