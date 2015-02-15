@@ -25,9 +25,9 @@ module PicturehouseUk
     # @param [String] cinema_id the id of the cinema
     # @return [Array<PicturehouseUk::Screening>]
     def self.at(cinema_id)
-      cinema_page(cinema_id).film_html.map do |html|
-        create_for_single_film(html, cinema_id)
-      end.flatten
+      screenings(cinema_id).map do |attributes|
+        new cinema_hash(cinema_id).merge(attributes)
+      end.uniq
     end
 
     # The UTC time of the screening
@@ -63,18 +63,8 @@ module PicturehouseUk
       }
     end
 
-    def self.cinema_page(cinema_id)
-      PicturehouseUk::Internal::CinemaPage.new(cinema_id)
-    end
-
-    def self.create_for_single_film(html, cinema_id)
-      screenings_parser(html).to_a.map do |attributes|
-        new cinema_hash(cinema_id).merge(attributes)
-      end
-    end
-
-    def self.screenings_parser(html)
-      PicturehouseUk::Internal::FilmWithScreeningsParser.new(html)
+    def self.screenings(cinema_id)
+      PicturehouseUk::Internal::Parser::Screenings.new(cinema_id).to_a
     end
   end
 end

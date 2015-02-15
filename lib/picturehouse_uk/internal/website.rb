@@ -8,13 +8,13 @@ module PicturehouseUk
       # get the cinema page with showings for passed id
       # @return [String]
       def cinema(id)
-        get("cinema/#{id}/")
+        get("cinema/#{id}")
       end
 
       # get the cinema contact information page for passed id
       # @return [String]
-      def contact_us(id)
-        get("cinema/#{id}/Hires_Info/Contact_Us/")
+      def info(id)
+        get("cinema/info/#{id}")
       end
 
       # get the home page
@@ -23,16 +23,10 @@ module PicturehouseUk
         get(nil)
       end
 
-      # get the cinema page containing all upcoming films and screenings
-      # @return [String]
-      def whatson(id)
-        get("whatson?cinema=#{id}")
-      end
-
       private
 
       def get(path)
-        open("http://www.picturehouses.co.uk/#{path}").read
+        open("http://www.picturehouses.com/#{path}").read
       end
     end
   end

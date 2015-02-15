@@ -6,19 +6,19 @@ describe PicturehouseUk::Internal::Website do
   describe '#cinema(id)' do
     subject { described_class.new.cinema('Duke_Of_Yorks') }
 
-    before { stub_get('cinema/Duke_Of_Yorks/', duke_of_yorks_html) }
+    before { stub_get('cinema/Duke_Of_Yorks', duke_of_yorks_html) }
 
     it 'returns a string' do
       subject.class.must_equal String
     end
   end
 
-  describe '#contact_us(id)' do
-    subject { described_class.new.contact_us('Duke_Of_Yorks') }
+  describe '#info(id)' do
+    subject { described_class.new.info('Duke_Of_Yorks') }
 
     before do
       stub_get(
-        'cinema/Duke_Of_Yorks/Hires_Info/Contact_Us/',
+        'cinema/info/Duke_Of_Yorks',
         duke_of_yorks_contact_us_html
       )
     end
@@ -45,7 +45,7 @@ describe PicturehouseUk::Internal::Website do
   end
 
   def duke_of_yorks_contact_us_html
-    read_file('../../../../fixtures/contact_us/Duke_Of_Yorks.html')
+    read_file('../../../../fixtures/info/Duke_Of_Yorks.html')
   end
 
   def home_html
@@ -57,7 +57,7 @@ describe PicturehouseUk::Internal::Website do
   end
 
   def stub_get(site_path, response_body)
-    url      = "http://www.picturehouses.co.uk/#{site_path}"
+    url      = "http://www.picturehouses.com/#{site_path}"
     response = { status: 200, body: response_body, headers: {} }
     stub_request(:get, url).to_return(response)
   end

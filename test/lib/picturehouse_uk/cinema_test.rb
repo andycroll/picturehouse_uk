@@ -22,13 +22,13 @@ describe PicturehouseUk::Cinema do
 
     it 'returns the correctly sized array' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.size.must_equal 22
+        subject.size.must_equal 12
       end
     end
 
     it 'returns the right cinemas' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.first.name.must_equal 'Clapham Picturehouse'
+        subject.first.name.must_equal "Duke of York's Picturehouse"
         subject.last.name.must_equal 'City Screen Picturehouse'
       end
     end
@@ -47,7 +47,7 @@ describe PicturehouseUk::Cinema do
         subject.brand.must_equal 'Picturehouse'
         subject.name.must_equal "Duke of York's Picturehouse"
         subject.slug.must_equal 'duke-of-yorks-picturehouse'
-        subject.url.must_equal "http://www.picturehouses.co.uk/cinema/#{id}/"
+        subject.url.must_equal "http://www.picturehouses.com/cinema/#{id}"
       end
     end
   end
@@ -57,7 +57,7 @@ describe PicturehouseUk::Cinema do
       {
         id:   'Dukes_At_Komedia',
         name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia/'
+        url:  '/cinema/Dukes_At_Komedia'
       }
     end
 
@@ -68,16 +68,16 @@ describe PicturehouseUk::Cinema do
       subject.brand.must_equal 'Picturehouse'
       subject.name.must_equal "Duke's At Komedia"
       subject.slug.must_equal 'dukes-at-komedia'
-      subject.url.must_equal 'http://www.picturehouses.co.uk/cinema/Dukes_At_Komedia/'
+      subject.url.must_equal 'http://www.picturehouses.com/cinema/Dukes_At_Komedia'
     end
   end
 
-  describe 'integration-y address tests' do
+  describe '#adr' do
     let(:options) do
       {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia/'
+        id:   'Phoenix_Picturehouse',
+        name: "Pheonix Picturehouse",
+        url:  '/cinema/Phoenix_Picturehouse'
       }
     end
 
@@ -87,9 +87,37 @@ describe PicturehouseUk::Cinema do
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
           subject.must_equal(
-            street_address:   '44-47 Gardner Street',
-            extended_address: 'North Laine',
+            street_address:   '57 Walton Street',
+            extended_address: nil,
+            locality:         'Oxford',
+            region:           nil,
+            postal_code:      'OX2 6AE',
+            country:          'United Kingdom'
+          )
+        end
+      end
+    end
+  end
+
+  describe 'integration-y address tests' do
+    let(:options) do
+      {
+        id:   'Dukes_At_Komedia',
+        name: "Duke's At Komedia",
+        url:  '/cinema/Dukes_At_Komedia'
+      }
+    end
+
+    describe '#adr' do
+      subject { described_class.new(options).adr }
+
+      it 'returns address hash' do
+        PicturehouseUk::Internal::Website.stub :new, website do
+          subject.must_equal(
+            street_address:   '44–47 Gardner Street',
+            extended_address: nil,
             locality:         'Brighton',
+            region:           'East Sussex',
             postal_code:      'BN1 1UN',
             country:          'United Kingdom'
           )
@@ -102,7 +130,7 @@ describe PicturehouseUk::Cinema do
 
       it 'returns first line of address' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('44-47 Gardner Street')
+          subject.must_equal('44–47 Gardner Street')
         end
       end
     end
@@ -112,7 +140,7 @@ describe PicturehouseUk::Cinema do
 
       it 'returns second line of address' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('North Laine')
+          subject.must_equal(nil)
         end
       end
     end
@@ -127,6 +155,16 @@ describe PicturehouseUk::Cinema do
       end
     end
 
+    describe '#region' do
+      subject { described_class.new(options).region }
+
+      it 'returns second line of address' do
+        PicturehouseUk::Internal::Website.stub :new, website do
+          subject.must_equal('East Sussex')
+        end
+      end
+    end
+
     describe '#postal_code' do
       subject { described_class.new(options).postal_code }
 
@@ -136,7 +174,6 @@ describe PicturehouseUk::Cinema do
         end
       end
     end
-
   end
 
   describe '#films' do
@@ -144,7 +181,7 @@ describe PicturehouseUk::Cinema do
       {
         id:   'Dukes_At_Komedia',
         name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia/'
+        url:  '/cinema/Dukes_At_Komedia'
       }
     end
 
@@ -162,7 +199,7 @@ describe PicturehouseUk::Cinema do
       {
         id:   'Dukes_At_Komedia',
         name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia/'
+        url:  '/cinema/Dukes_At_Komedia'
       }
     end
 
@@ -178,7 +215,7 @@ describe PicturehouseUk::Cinema do
       {
         id:   'Dukes_At_Komedia',
         name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia/'
+        url:  '/cinema/Dukes_At_Komedia'
       }
     end
 
@@ -202,8 +239,8 @@ describe PicturehouseUk::Cinema do
       read_file("../../../fixtures/cinema/#{filename}.html")
     end
 
-    def contact_us(filename)
-      read_file("../../../fixtures/contact_us/#{filename}.html")
+    def info(filename)
+      read_file("../../../fixtures/info/#{filename}.html")
     end
 
     private

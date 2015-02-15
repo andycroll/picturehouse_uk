@@ -343,5 +343,21 @@ describe PicturehouseUk::Internal::TitleSanitizer do
         subject.must_equal('The Hobbit: The Battle of the Five Armies')
       end
     end
+
+    describe 'live' do
+      let(:title) { 'English National Opera: Carmen (Live)' }
+
+      it 'removes live suffix' do
+        subject.must_equal('English National Opera: Carmen')
+      end
+    end
+
+    describe 'remove [TBC] certificate' do
+      let(:title) { 'The Living Room with Gavin Clark [TBC]' }
+
+      it 'removes tbc cert' do
+        subject.must_equal('The Living Room with Gavin Clark')
+      end
+    end
   end
 end

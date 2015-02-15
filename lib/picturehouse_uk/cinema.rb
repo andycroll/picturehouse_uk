@@ -2,9 +2,9 @@ module PicturehouseUk
   # The object representing a cinema on the Picturehouse UK website
   class Cinema
     # address css
-    ADDRESS_CSS = '.box6 .txt6'
+    ADDRESS_CSS = '.static-content #contact-us + p:first'
     # cinema link css
-    CINEMA_LINKS_CSS = '#cinemalisthome .cinemas a'
+    CINEMA_LINKS_CSS = '.footer .col-sm-3 option + option'
 
     # @return [String] the brand of the cinema
     attr_reader :brand
@@ -25,7 +25,7 @@ module PicturehouseUk
       @name  = options[:name]
       @slug  = @name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
       @url   = if options[:url][0] == '/'
-                 "http://www.picturehouses.co.uk#{options[:url]}"
+                 "http://www.picturehouses.com#{options[:url]}"
                else
                  options[:url]
                end
@@ -59,6 +59,7 @@ module PicturehouseUk
     #         street_address:   '44-47 Gardner Street',
     #         extended_address: 'North Laine',
     #         locality:         'Brighton',
+    #         region:           'East Sussex',
     #         postal_code:      'BN1 1UN',
     #         country_name: 'United Kingdom'
     #       }
@@ -121,6 +122,17 @@ module PicturehouseUk
       address[:postal_code]
     end
 
+    # The region (county) of the cinema
+    # @return [String]
+    # @example
+    #   cinema = PicturehouseUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.region
+    #   #=> 'East Sussex'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def region
+      address[:region]
+    end
+
     # All planned screenings
     # @return [Array<PicturehouseUk::Screening>]
     # @example
@@ -157,20 +169,20 @@ module PicturehouseUk
     end
 
     def self.new_from_link(link)
-      url = link.get_attribute('href')
-      new(
-        id: url.match(%r{/cinema/(.+)/$})[1],
-        name: link.css('span:nth-child(2)').text,
-        url:  url
-      )
+      url =  link.get_attribute('data-href')
+      name = link.children.first.to_s.split(' — ')[1]
+
+      new(id:   url.match(%r{/cinema/(.+)$})[1],
+          name: name,
+          url:  url)
     end
 
     def address_node
-      @address_node ||= contact_us_doc.css(ADDRESS_CSS)
+      @address_node ||= info_doc.css(ADDRESS_CSS)
     end
 
-    def contact_us_doc
-      @contact_us_doc ||= Nokogiri::HTML(self.class.website.contact_us(id))
+    def info_doc
+      @info_doc ||= Nokogiri::HTML(self.class.website.info(id))
     end
   end
 end

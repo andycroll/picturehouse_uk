@@ -9,6 +9,7 @@ module PicturehouseUk
         /\s+\(?[23][dD]\)?/,                # 2d or 3d from title
         /\bIMAX\b/i,                        # imax from title
         /\s\[NO CERT\]/,                    # no certificate
+        /\s\[TBC\]/,                        # tbc
         /\s\[\]/,                           # blank certificate
         /ourscreen\: /,                     # ourscreen
         /\s\(Re(\: \d{0,4})?\)/i,           # Re-release
@@ -32,6 +33,7 @@ module PicturehouseUk
         /\bsingalong\b/i,                   # singalong
         /\s+\-?\s*Parents \& Babies/i,      # parents and babies
         /Subtitled\:*\s*/i,                 # subtitled
+        /\(?live\)?\z/i,                    # live
       ]
 
       # regexes and their replacements

@@ -4,9 +4,8 @@ require 'tzinfo/data'
 
 require_relative './picturehouse_uk/version'
 
-require_relative './picturehouse_uk/internal/address_parser'
-require_relative './picturehouse_uk/internal/cinema_page'
-require_relative './picturehouse_uk/internal/film_with_screenings_parser'
+require_relative './picturehouse_uk/internal/parser/address'
+require_relative './picturehouse_uk/internal/parser/screenings'
 require_relative './picturehouse_uk/internal/title_sanitizer'
 require_relative './picturehouse_uk/internal/website'
 

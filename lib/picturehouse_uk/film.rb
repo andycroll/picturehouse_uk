@@ -19,9 +19,7 @@ module PicturehouseUk
     # @param [String] cinema_id the id of the cinema
     # @return [Array<PicturehouseUk::Film>]
     def self.at(cinema_id)
-      cinema_page(cinema_id).film_html.map do |html|
-        new(Internal::FilmWithScreeningsParser.new(html).film_name)
-      end.uniq
+      screenings(cinema_id).map { |hash| new hash[:film_name] }.uniq
     end
 
     # Allows sort on objects
@@ -54,8 +52,8 @@ module PicturehouseUk
 
     private
 
-    def self.cinema_page(cinema_id)
-      @cinema_page ||= PicturehouseUk::Internal::CinemaPage.new(cinema_id)
+    def self.screenings(cinema_id)
+      PicturehouseUk::Internal::Parser::Screenings.new(cinema_id).to_a
     end
   end
 end

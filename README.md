@@ -1,6 +1,6 @@
 # PicturehouseUk
 
-A simple gem to parse the [Picturehouse Cinemas UK website](http://picturehouses.co.uk) and spit out useful formatted info.
+A simple gem to parse the [Picturehouse Cinemas UK website](http://picturehouses.com) and spit out useful formatted info.
 
 [![Gem Version](https://badge.fury.io/rb/picturehouse_uk.png)](http://badge.fury.io/rb/picturehouse_uk)
 [![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk.png)](https://codeclimate.com/github/andycroll/picturehouse_uk)
@@ -51,6 +51,14 @@ cinema.films
 cinema.screenings
 #=> [<PicturehouseUK::Screening film="About Time" when="2013-09-09 11:00 UTC" varient="3d">, <PicturehouseUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" varient="kids">, <PicturehouseUK::Screening ..>, <PicturehouseUK::Screening ...>]
 
+```
+
+## Running Tests
+
+To redownload the test URLs run
+
+```
+ruby test/fixture_updater.rb
 ```
 
 ## Contributing

@@ -19,7 +19,15 @@ describe PicturehouseUk::Screening do
 
     it 'returns correct number of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.count.must_equal 33
+        subject.count.must_equal 59
+      end
+    end
+
+    it 'has valid screenings' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.map(&:showing_at).each do |time|
+          time.wont_equal Time.utc(1970, 1, 1, 0, 0)
+        end
       end
     end
   end
