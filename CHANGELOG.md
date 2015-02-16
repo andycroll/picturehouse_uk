@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2015-02-16
+
+### Fixed
+- bug in parsing variants
+
 ## [3.0.0] - 2015-02-15
 
 ### Fixed

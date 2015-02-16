@@ -82,7 +82,7 @@ module PicturehouseUk
       private
 
       def variant
-        @variant ||= nil
+        @variant ||= []
       end
     end
 
