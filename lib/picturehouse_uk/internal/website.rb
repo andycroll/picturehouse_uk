@@ -26,7 +26,7 @@ module PicturehouseUk
       private
 
       def get(path)
-        open("http://www.picturehouses.com/#{path}").read
+        open("https://www.picturehouses.com/#{path}").read
       end
     end
   end
