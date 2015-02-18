@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.3] - 2015-02-17
+
+### Fixed
+- Actually require OpenSSL
+
 ## [3.0.2] - 2015-02-17
 
 ### Fixed
