@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.5] - 2015-03-19
+
+### Fixed
+- tests for website class
+- updated fixtures
+- loosened parsers to allow for sold out performances
+
 ## [3.0.4] - 2015-02-17
 
 ### Fixed
