@@ -57,7 +57,7 @@ describe PicturehouseUk::Internal::Website do
   end
 
   def stub_get(site_path, response_body)
-    url      = "http://www.picturehouses.com/#{site_path}"
+    url      = "https://www.picturehouses.com/#{site_path}"
     response = { status: 200, body: response_body, headers: {} }
     stub_request(:get, url).to_return(response)
   end
