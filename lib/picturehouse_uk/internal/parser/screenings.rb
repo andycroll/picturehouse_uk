@@ -9,7 +9,7 @@ module PicturehouseUk
         LISTINGS = '#this-week .listings > li, #further-ahead .listings > li'
 
         # parse the cinema page into an array of screenings attributes
-        # @return [Array<Hash>] 
+        # @return [Array<Hash>]
         def to_a
           date = nil
           doc.css(LISTINGS).each_with_object([]) do |node, result|
@@ -69,9 +69,10 @@ module PicturehouseUk
       end
     end
 
+    # variants can have multiple screenings
     class Variant < Struct.new(:node, :date)
-      SHOWTIMES = 'a'
-      VARIENT   = '.film-type-desc'
+      SHOWTIMES = '.btn'
+      VARIANT   = '.film-type-desc'
 
       def to_a
         node.css(SHOWTIMES).map do |node|
