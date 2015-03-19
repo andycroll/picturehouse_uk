@@ -19,7 +19,7 @@ describe PicturehouseUk::Screening do
 
     it 'returns correct number of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.count.must_equal 59
+        subject.count.must_equal 78
       end
     end
 

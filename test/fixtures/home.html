@@ -45,14 +45,18 @@
   <body class="body cinema-global">
     <script>document.getElementsByTagName("body")[0].className += " js-enabled";</script>
     <a href="#main" class="sr-only">Skip to main content</a>
+
     <div class="interim-banner container-fluid">
-      <div class="container alert-dismissible">
-        <button type="button" class="pull-right close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        You will notice that our ticket booking system has a new look and a new procedure. This is an interim measure that will be in place until we roll out our new website later this year; our old website is now switched off. If you require any assistance with your online booking please try our Customer Service Centre on <strong>020 7733 2229</strong>
+      <div class="container">
+        <form method="post" action="/dismiss/cookies">
+          <button type="submit" class="pull-right close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </form>
+        We are using cookies to remember if you are logged in to this website and if you have dismissed this message. Cookies are files stored in your browser and by continuing to use our website without changing the settings on your computer you are agreeing to our use of cookies.
       </div>
     </div>
+
     <div class="component header">
       <div class="container navbar-global-offset hidden-xs">
         <div class="row">
@@ -62,19 +66,28 @@
               <li><a href="#" data-icon="W" class="icon"><span class="sr-only">Bookmark page</span></a></li>
               <li><a href="#" data-icon="}" class="icon"><span class="sr-only">Email us</span></a></li>
             </ul>-->
-              
-            <ul class="list-inline list-icons pull-left hidden-sm">
-                <li><a href="https://www.facebook.com/picturehouses" data-icon="@" class="icon" target="_blank"><span class="sr-only">Picturehouse on Facebook</span></a></li>  
+
+            <ul class="spaced-list pull-left hide">
+              <li><button class="btn btn-link" data-toggle="modal" data-target="#sign-in-modal">Sign in</a></li>
+              <li><button class="btn btn-link" >Register</button></li>
+            </ul>
+
+            <ul class="list-inline list-icons pull-left hidden-sm left-mg">
+                <li><a href="https://www.facebook.com/picturehouses" data-icon="@" class="icon" target="_blank"><span class="sr-only">Picturehouse on Facebook</span></a></li>
 
                 <li><a href="https://twitter.com/picturehouses" data-icon=":" class="icon" target="_blank"><span class="sr-only">Picturehouse on Twitter</span></a></li>
             </ul>
           </nav>
 
-          
           <nav class="pull-left">
             <ul class="spaced-list">
               <li><a href="/">Home</a></li>
-              <li class="invisible"><a href="/cinemas/">Cinemas</a></li>
+              <li><a href="/cinemas/">Cinemas</a></li>
+              <li><a href="/Picturehouse_Recommends">Recommends</a></li>
+              <li><a href="/Picturehouse_Membership">Membership</a></li>
+              <li><a href="http://picturehouseblog.co.uk/" target="_blank">Picturehouse Blog</a></li>
+              <li><a href="http://corporate.picturehouses.co.uk/" target="_blank">Corporate</a></li>
+              <li><a href="http://www.picturehouseentertainment.co.uk/" target="_blank">Picturehouse Entertainment</a></li>
             </ul>
           </nav>
         </div>
@@ -142,15 +155,16 @@
     	    	data-cycle-pager-template=""
     	    	data-slides="> div"
     		    >
+    		    
     			<div>
-    				<a class="text-center" href="/film/rsc-live-loves-labours-won">
-    					<img src="/assets/feature/banners/Loves-Labours.jpg" alt="" class="img-responsive" />
+    				<a class="text-center" href="/film/Tale-of-the-Princess-Kaguya-The">
+    					<img src="/assets/feature/banners/princess-kaguya.jpg" alt="" class="img-responsive" />
     					<div class="slide-content">
-    						<h2>RSC Live: Love&#x27;s Labour&#x27;s Won</h2>
+    						<h2>The Tale Of The Princess Kaguya</h2>
     						<div class="hidden-xs">
-    							<p class="feature-area-date">Wed 4 Mar, 7.00</p>
+    							<p class="feature-area-date">From Fri 20 Mar</p>
     							<div class="visible-lg">
-    							<p>Love’s Labour’s Won (usually known as Much Ado About Nothing) live from the Royal Shakespeare Theatre</p>
+    							<p>A visionary tour-de-force</p><p>- Variety</p>
     							</div>
     							<span class="btn btn-md btn-primary hidden-xs">Book now <span data-icon=">" class="icon"></span></span>
     						</div>
@@ -158,14 +172,14 @@
     				</a>
     			</div>
     			<div>
-    				<a class="text-center" href="/film/the-sound-of-music">
-    					<img src="/assets/feature/banners/sound-of-music.jpg" alt="" class="img-responsive" />
+    				<a class="text-center" href="http://picturehouseblog.co.uk/2015/03/11/human-rights-watch-film-festival-2015/">
+    					<img src="/assets/feature/banners/human-rights-watch-festival.jpg" alt="" class="img-responsive" />
     					<div class="slide-content">
-    						<h2>Vintage Sundays: The Sound of Music</h2>
+    						<h2>Human Rights Watch Film Festival</h2>
     						<div class="hidden-xs">
-    							<p class="feature-area-date">Sun 15 Mar</p>
+    							<p class="feature-area-date">20 - 27 Mar</p>
     							<div class="visible-lg">
-    							<p>Celebrating the 50th birthday of the beloved Rodgers and Hammerstein musical</p>
+    							<p>At The Ritzy Cinema in Brixton</p>
     							</div>
     							<span class="btn btn-md btn-primary hidden-xs">Book now <span data-icon=">" class="icon"></span></span>
     						</div>
@@ -173,14 +187,14 @@
     				</a>
     			</div>
     			<div>
-    				<a class="text-center" href="/film/true-romance">
-    					<img src="/assets/feature/banners/true-romance.jpg" alt="" class="img-responsive" />
+    				<a class="text-center" href="/film/school-of-babel">
+    					<img src="/assets/feature/banners/school-of-babel.jpg" alt="" class="img-responsive" />
     					<div class="slide-content">
-    						<h2>Culture Shock: True Romance</h2>
+    						<h2>Discover Tuesdays: School of Babel</h2>
     						<div class="hidden-xs">
-    							<p class="feature-area-date">Wed 25 Feb</p>
+    							<p class="feature-area-date">Tue 24 Mar</p>
     							<div class="visible-lg">
-    							<p>Now on digital print for the very first time, TRUE ROMANCE looks bigger, brasher, badder and more stylish than ever</p>
+    							<p>An absorbing anatomy of a multi-ethnic classroom</p><p>- The Guardian</p>
     							</div>
     							<span class="btn btn-md btn-primary hidden-xs">Book now <span data-icon=">" class="icon"></span></span>
     						</div>
@@ -188,14 +202,14 @@
     				</a>
     			</div>
     			<div>
-    				<a class="text-center" href="/film/maxine-peake-as-hamlet">
-    					<img src="/assets/feature/banners/maxine-peake-as-hamlet.jpg" alt="" class="img-responsive" />
+    				<a class="text-center" href="/film/While-Were-Young">
+    					<img src="/assets/feature/banners/while-were-young.jpg" alt="" class="img-responsive" />
     					<div class="slide-content">
-    						<h2>Maxine Peake as Hamlet</h2>
+    						<h2>While We&#x27;re Young preview</h2>
     						<div class="hidden-xs">
-    							<p class="feature-area-date">Mon 23 Mar</p>
+    							<p class="feature-area-date">Sun 29 Mar</p>
     							<div class="visible-lg">
-    							<p>From its sell-out run at Manchester's Royal Exchange Theatre comes this critically acclaimed production of Shakespeare's tragedy</p>
+    							<p>Be the first to see Noah Baumbach's acclaimed new film While We're Young</p>
     							</div>
     							<span class="btn btn-md btn-primary hidden-xs">Book now <span data-icon=">" class="icon"></span></span>
     						</div>
@@ -203,16 +217,16 @@
     				</a>
     			</div>
     			<div>
-    				<a class="text-center" href="/Picturehouse_Membership">
-    					<img src="/assets/feature/banners/Membership.jpg" alt="" class="img-responsive" />
+    				<a class="text-center" href="/film/nt-live-hamlet">
+    					<img src="/assets/feature/banners/nt-hamlet.jpg" alt="" class="img-responsive" />
     					<div class="slide-content">
-    						<h2>Picturehouse Membership</h2>
+    						<h2>NT Live: Hamlet</h2>
     						<div class="hidden-xs">
-    							
+    							<p class="feature-area-date">Thu 15 Oct</p>
     							<div class="visible-lg">
-    							<p>Join us and enjoy discounts, priority booking, exclusive previews and more</p>
+    							<p>Starring Benedict Cumberbatch. Members' priority booking is now open. General sale from Mon 23 Mar, 9.30am</p>
     							</div>
-    							<span class="btn btn-md btn-primary hidden-xs">Find out more <span data-icon=">" class="icon"></span></span>
+    							<span class="btn btn-md btn-primary hidden-xs">Book now <span data-icon=">" class="icon"></span></span>
     						</div>
     					</div>
     				</a>
@@ -223,14 +237,15 @@
     	</div>
     	<div class="hidden-xs">
     		<ul id="no-template-pager" class="nav-justified cycle-pager pager-list external list-inline clearfix no-mg">
-    			<li><img src="/assets/feature/thumbnails/Loves-Labours.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />RSC Live: Love&#x27;s Labour&#x27;s Won</li>
-    			<li><img src="/assets/feature/thumbnails/sound-of-music.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Vintage Sundays: The Sound of Music</li>
-    			<li><img src="/assets/feature/thumbnails/true-romance.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Culture Shock: True Romance</li>
-    			<li><img src="/assets/feature/thumbnails/maxine-peake-as-hamlet.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Maxine Peake as Hamlet</li>
-    			<li><img src="/assets/feature/thumbnails/Membership.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Picturehouse Membership</li>
+    			<li><img src="/assets/feature/thumbnails/princess-kaguya.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />The Tale Of The Princess Kaguya</li>
+    			<li><img src="/assets/feature/thumbnails/human-rights-watch-festival.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Human Rights Watch Film Festival</li>
+    			<li><img src="/assets/feature/thumbnails/school-of-babel.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />Discover Tuesdays: School of Babel</li>
+    			<li><img src="/assets/feature/thumbnails/while-were-young.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />While We&#x27;re Young preview</li>
+    			<li><img src="/assets/feature/thumbnails/nt-hamlet.jpg" alt="" class="hidden-xs hidden-sm" width="66" height="50" />NT Live: Hamlet</li>
     		</ul>
     	</div>
-    </div>  </div>
+    </div>
+  </div>
 </div>
 
 <!-- Main content -->
@@ -253,6 +268,14 @@
       		    data-slides="> a"
       		    data-carousel-hops="5"
       		    >
+      		    <a class="hover-link" href="/cinema/Clapham_Picturehouse"><img class="img-responsive" src="/images/icons/square/Clapham_Picturehouse.gif" alt="Clapham Picturehouse landing page" /></a>
+      		    <a class="hover-link" href="/cinema/Gate_Picturehouse"><img class="img-responsive" src="/images/icons/square/Gate_Picturehouse.gif" alt="Gate Picturehouse landing page" /></a>
+      		    <a class="hover-link" href="/cinema/Greenwich_Picturehouse"><img class="img-responsive" src="/images/icons/square/Greenwich_Picturehouse.gif" alt="Greenwich Picturehouse landing page" /></a>
+      		    <a class="hover-link" href="/cinema/Hackney_Picturehouse"><img class="img-responsive" src="/images/icons/square/Hackney_Picturehouse.gif" alt="Hackney Picturehouse landing page" /></a>
+      		    <a class="hover-link" href="/cinema/Ritzy_Picturehouse"><img class="img-responsive" src="/images/icons/square/Ritzy_Picturehouse.gif" alt="The Ritzy landing page" /></a>
+      		    <a class="hover-link" href="/cinema/Stratford_London"><img class="img-responsive" src="/images/icons/square/Stratford_London.gif" alt="Stratford Picturehouse landing page" /></a>
+      		    <a class="hover-link" href="/cinema/The_Little"><img class="img-responsive" src="/images/icons/square/The_Little.gif" alt="Little Theatre Cinema landing page" /></a>
+      		    <a class="hover-link" href="/cinema/National_Media_Museum"><img class="img-responsive" src="/images/icons/square/National_Media_Museum.gif" alt="Bradford at National Media Museum landing page" /></a>
       		    <a class="hover-link" href="/cinema/Duke_Of_Yorks"><img class="img-responsive" src="/images/icons/square/Duke_Of_Yorks.gif" alt="Duke of York&#x27;s Picturehouse landing page" /></a>
       		    <a class="hover-link" href="/cinema/Dukes_At_Komedia"><img class="img-responsive" src="/images/icons/square/Dukes_At_Komedia.gif" alt="Duke&#x27;s at Komedia landing page" /></a>
       		    <a class="hover-link" href="/cinema/Arts_Picturehouse_Cambridge"><img class="img-responsive" src="/images/icons/square/Arts_Picturehouse_Cambridge.gif" alt="Arts Picturehouse Cambridge landing page" /></a>
@@ -299,21 +322,17 @@
     <div class="col-xs-12 col-sm-3 col-sm-pull-9">
       <div class="row">
           <div class="col-xs-6 col-sm-12">
-              <div class="component embed-responsive embed-responsive-ad btm-mg" onmousedown="javascript:location.href='/film/inherent-vice'">
-              	<object type="application/x-shockwave-flash" data="/assets/mpu/sts_300x250_picturehouse_4.swf" width="100%" height="250" class="ad">
-              	  <param name="movie" value="/assets/mpu/sts_300x250_picturehouse_4.swf" />
-              	  <param value="high" name="quality">
-              	  <param value="#FFFFFF" name="bgcolor">
-              	  <param value="always" name="allowScriptAccess">
-              	  <param value="clickTAG=http://www.google.com/" name="FlashVars">
-              	  <param value="transparent" name="wmode">
-              	  <p><img class="img-responsive" src="/assets/mpu/IV_UK_Main_ss_Picturehouse_300x250.jpg" alt="" /></p>
-              	</object>
-              </div>          </div>
-          <div class="col-xs-6 col-sm-12">
               <div class="component">
-              	<p><a href="/Picturehouse_Membership"><img src="/assets/mpu/ad-membership.gif" class="img-responsive" alt="" /></a></p>
+              	<p><a href="/film/maxine-peake-as-hamlet"><img src="/assets/mpu/MP-hamlet-MPU-V3.gif" class="img-responsive" alt="" /></a></p>
               </div>          </div>
+        <div class="col-xs-6 col-sm-12">
+          <div class="embed-responsive embed-responsive-ad">
+          <div id='div-gpt-ad-996397954946313344-1'>
+            <script type='text/javascript'>
+              googletag.display('div-gpt-ad-996397954946313344-1');
+            </script>
+          </div>
+          </div>        </div>
       </div>
     </div>
   </div>
@@ -384,8 +403,16 @@
     							</ul>
     						</div>
     						<div class="col-xs-12 col-sm-3 pull-right">
-    						  	<select name="select-cinema" title="Select cinema" id="select-cinema" class="form-control btm-mg" data-auto-link="true">
+    							<select name="select-cinema" title="Select cinema" id="select-cinema" class="form-control btm-mg" data-auto-link="true">
     								<option value="">Select a cinema</option>
+    									<option data-href="/cinema/Clapham_Picturehouse">London — Clapham Picturehouse</option>
+    									<option data-href="/cinema/Gate_Picturehouse">London — Gate Picturehouse</option>
+    									<option data-href="/cinema/Greenwich_Picturehouse">London — Greenwich Picturehouse</option>
+    									<option data-href="/cinema/Hackney_Picturehouse">London — Hackney Picturehouse</option>
+    									<option data-href="/cinema/Ritzy_Picturehouse">London — The Ritzy</option>
+    									<option data-href="/cinema/Stratford_London">London — Stratford Picturehouse</option>
+    									<option data-href="/cinema/The_Little">Bath — Little Theatre Cinema</option>
+    									<option data-href="/cinema/National_Media_Museum">Bradford — Bradford at National Media Museum</option>
     									<option data-href="/cinema/Duke_Of_Yorks">Brighton — Duke of York&#x27;s Picturehouse</option>
     									<option data-href="/cinema/Dukes_At_Komedia">Brighton — Duke&#x27;s at Komedia</option>
     									<option data-href="/cinema/Arts_Picturehouse_Cambridge">Cambridge — Arts Picturehouse Cambridge</option>
@@ -399,15 +426,13 @@
     									<option data-href="/cinema/Stratford_Upon_Avon">Stratford Upon Avon — Stratford Upon Avon</option>
     									<option data-href="/cinema/York_Picturehouse">York — City Screen Picturehouse</option>
     							</select>
+    							
     						</div>
-    					</div>
-    					<div class="row">
     						<div class="col-xs-12 col-sm-9">
     							<p>Picturehouse Cinemas Limited is a limited company registered in England as company number 2310403 and its registered office is Power Road Studios, 114 Power Road, Chiswick, London, W4 5PY.</p>
-    						</div>
-    						<footer class="col-xs-12 col-sm-3 pull-right">
     							<p>&copy; 2015 Picturehouse Cinemas Ltd.</p>
-    						</footer>
+    						</div>
+    						
     					</div>
     				</div>
     			</div>
@@ -458,6 +483,14 @@
     				if ($( "#cinema-search" ).length) {
     					// TODO: Will this be dynamically pulled from db?
     					var availableTags = [
+    	    					{ id: "Clapham_Picturehouse", label: "London - Clapham Picturehouse" },
+    	    					{ id: "Gate_Picturehouse", label: "London - Gate Picturehouse" },
+    	    					{ id: "Greenwich_Picturehouse", label: "London - Greenwich Picturehouse" },
+    	    					{ id: "Hackney_Picturehouse", label: "London - Hackney Picturehouse" },
+    	    					{ id: "Ritzy_Picturehouse", label: "London - The Ritzy" },
+    	    					{ id: "Stratford_London", label: "London - Stratford Picturehouse" },
+    	    					{ id: "The_Little", label: "Bath - Little Theatre Cinema" },
+    	    					{ id: "National_Media_Museum", label: "Bradford - Bradford at National Media Museum" },
     	    					{ id: "Duke_Of_Yorks", label: "Brighton - Duke of York&#x27;s Picturehouse" },
     	    					{ id: "Dukes_At_Komedia", label: "Brighton - Duke&#x27;s at Komedia" },
     	    					{ id: "Arts_Picturehouse_Cambridge", label: "Cambridge - Arts Picturehouse Cambridge" },
@@ -499,7 +532,40 @@
     
       			})( jQuery );
       		</script>
-    		
     
+    		<div class="modal fade in" id="sign-in-modal" aria-hidden="false">
+    		    <div class="modal-dialog">
+    		        <div class="modal-content">
+    		            <div class="modal-header">
+    		              <p class="h2 display-inline">Sign in to your Picturehouse account</p>
+    		                <a href="#" data-icon="V" class="icon pull-right" data-dismiss="modal"><span class="sr-only">Close</span></a>
+    		            </div>
+      					            <div class="modal-body">
+      					                <form method="post" action="/sign-in">
+      					                  <div class="form-group">
+      					                    <label for="account-email">Card number:</label>
+      					                    <input type="number" name="membership-number" id="membership-number" class="form-control" placeholder="Enter your membership card number..." required />
+      					                  </div>
+      					                  <div class="form-group">
+      					                    <label for="account-password">Password:</label>
+      					                    <input type="password" name="membership-password" id="membership-password" class="form-control" placeholder="Enter your password..." required />
+      					                  </div>
+      					                  <!-- <a href="#" class="small">Forgot your password?</a>
+      					                  <div class="form-group">
+      					                    <div class="checkbox">
+      					                        <label for="account-remember">
+      					                          <input type="checkbox" name="account-remember" id="account-remember"> Remember me
+      					                        </label>
+      					                    </div>
+      					                  </div> -->
+      					                  <hr />
+      					                  <div class="clearfix">
+      					                    <button type="submit" class="btn btn-primary pull-right">Sign in</button>
+      					                  </div>
+      					                </form>
+      					            </div>  				</div>
+      			</div>
+      		</div>
+      		
     	</body>
     </html>
