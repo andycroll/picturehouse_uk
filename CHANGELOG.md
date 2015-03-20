@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.6] - 2015-03-20
+
+### Added
+- title sanitization for R18, N/A and (Theatre)
+
 ## [3.0.5] - 2015-03-19
 
 ### Fixed
