@@ -6,10 +6,13 @@ module PicturehouseUk
       # strings and regex to be removed
       REMOVE = [
         /\s\[(AS LIVE:\s*)?[ACPGU1258]+\]/, # regular certificate
+        /\s\[R18\]/,                        # R18
         /\s+\(?[23][dD]\)?/,                # 2d or 3d from title
         /\bIMAX\b/i,                        # imax from title
         /\s\[NO CERT\]/,                    # no certificate
         /\s\[TBC\]/,                        # tbc
+        /\s\[N\/A\]/i,                      # n/a
+        /\s\(Theatre\)/i,                   # (theatre)
         /\s\[\]/,                           # blank certificate
         /ourscreen\: /,                     # ourscreen
         /\s\(Re(\: \d{0,4})?\)/i,           # Re-release

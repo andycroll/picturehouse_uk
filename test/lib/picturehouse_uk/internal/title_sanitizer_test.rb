@@ -359,5 +359,29 @@ describe PicturehouseUk::Internal::TitleSanitizer do
         subject.must_equal('The Living Room with Gavin Clark')
       end
     end
+
+    describe 'remove [N/A] certificate' do
+      let(:title) { 'Woman In Gold [N/A]' }
+
+      it 'removes tbc cert' do
+        subject.must_equal('Woman In Gold')
+      end
+    end
+
+    describe 'remove (Theatre) designation' do
+      let(:title) { 'Maxine Peake As Hamlet (Theatre)' }
+
+      it 'removes tbc cert' do
+        subject.must_equal('Maxine Peake As Hamlet')
+      end
+    end
+
+    describe 'remove [R18] certificate' do
+      let(:title) { "Dr Sketchy's Anti-Art School [R18]" }
+
+      it 'removes tbc cert' do
+        subject.must_equal("Dr Sketchy's Anti-Art School")
+      end
+    end
   end
 end
