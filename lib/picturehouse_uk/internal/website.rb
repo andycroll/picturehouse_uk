@@ -16,6 +16,8 @@ module PicturehouseUk
       # @return [String]
       def info(id)
         get("cinema/info/#{id}")
+      rescue OpenURI::HTTPError
+        ''
       end
 
       # get the home page

@@ -7,7 +7,8 @@ Rake::TestTask.new do |t|
   t.libs << 'lib/picturehouse_uk'
   t.test_files = FileList[
     'test/lib/picturehouse_uk/*_test.rb',
-    'test/lib/picturehouse_uk/internal/*_test.rb'
+    'test/lib/picturehouse_uk/internal/*_test.rb',
+    'test/lib/picturehouse_uk/internal/parser/*_test.rb'
   ]
   t.verbose = true
 end

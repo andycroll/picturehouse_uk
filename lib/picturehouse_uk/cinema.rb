@@ -65,7 +65,7 @@ module PicturehouseUk
     #       }
     # @note Uses method naming as at http://microformats.org/wiki/adr
     def adr
-      PicturehouseUk::Internal::AddressParser.new(address_node.to_s).address
+      PicturehouseUk::Internal::Parser::Address.new(address_node.to_s).address
     end
     alias_method :address, :adr
 
