@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.7] - 2015-04-05
+
+### Added
+- Defensive behaviour for 'upcoming' cinemas with no address
+
 ## [3.0.6] - 2015-03-20
 
 ### Added
