@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.8] - 2015-04-07
+
+### Fixed
+- Screening parsing broken by HTML change
+
 ## [3.0.7] - 2015-04-05
 
 ### Added
