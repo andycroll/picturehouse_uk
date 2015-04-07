@@ -68,8 +68,6 @@
             </ul>-->
 
             <ul class="spaced-list pull-left hide">
-              <li><button class="btn btn-link" data-toggle="modal" data-target="#sign-in-modal">Sign in</a></li>
-              <li><button class="btn btn-link" >Register</button></li>
             </ul>
 
             <ul class="list-inline list-icons pull-left hidden-sm left-mg">
@@ -111,12 +109,6 @@
             </div>
             <nav id="burger-menu" class="collapse clear">
               <ul class="nav nav-pills nav-stacked">
-                <li class="nav-darker"><a href="/cinema/Phoenix_Picturehouse">Cinema home</a></li>
-                <li class="nav-darker"><a href="/cinema/Phoenix_Picturehouse/Whats_On">Full listings</a></li>
-                <li class="nav-darker"><a href="/cinema/info/Phoenix_Picturehouse#membership">Membership</a></li>
-                <li class="nav-darker"><a href="/cinema/info/Phoenix_Picturehouse#ticket-prices">Ticket prices</a></li>
-                <li class="nav-darker"><a href="/cinema/info/Phoenix_Picturehouse#access">Access</a></li>
-                <li class="nav-darker"><a href="/cinema/info/Phoenix_Picturehouse">Cinema information</a></li>
                 <li class="nav-dark">
                   <div class="navbar-inverse">
                     <form class="form-inline text-right" role="form">
@@ -128,11 +120,17 @@
                     </form>
                   </div>
                 </li>
-                <li><a href="/">Home</a></li>
-                <li><a href="/cinemas">Cinemas</a></li>
-                <li><a href="/Picturehouse_Membership">Membership</a></li>
-                <li><a href="http://corporate.picturehouses.co.uk/">Picturehouse Corporate</a></li>
-                <li><a href="http://www.picturehouseentertainment.co.uk/">Picturehouse Entertainment</a></li>
+                <li><a href="/cinema/Phoenix_Picturehouse">Cinema home</a></li>
+                <li><a href="/cinema/Phoenix_Picturehouse/Whats_On">Full listings</a></li>
+                  <li><a href="/cinema/info/Phoenix_Picturehouse#membership">Membership</a></li>
+                <li><a href="/cinema/info/Phoenix_Picturehouse#ticket-prices">Ticket prices</a></li>
+                <li><a href="/cinema/info/Phoenix_Picturehouse#access">Access</a></li>
+                <li><a href="/cinema/info/Phoenix_Picturehouse">Cinema information</a></li>
+                <li class="nav-darker"><a href="/">Home</a></li>
+                <li class="nav-darker"><a href="/cinemas">Cinemas</a></li>
+                <li class="nav-darker"><a href="/Picturehouse_Membership">Membership</a></li>
+                <li class="nav-darker"><a href="http://corporate.picturehouses.co.uk/">Picturehouse Corporate</a></li>
+                <li class="nav-darker"><a href="http://www.picturehouseentertainment.co.uk/">Picturehouse Entertainment</a></li>
               </ul>
             </nav>
           </div>
@@ -145,11 +143,11 @@
               <nav class="pull-left">
                 <ul class="spaced-list spaced-list-inverse">
                   <li><a href="/cinema/Phoenix_Picturehouse">Cinema home</a></li>
-                  <li><a href="/cinema/Phoenix_Picturehouse/Whats_On">Full listings</a></li>
-                  <li><a href="/cinema/info/Phoenix_Picturehouse#membership">Membership</a></li>
-                  <li><a href="/cinema/info/Phoenix_Picturehouse#ticket-prices">Ticket prices</a></li>
-                  <li><a href="/cinema/info/Phoenix_Picturehouse#disabled-access">Access</a></li>
-                  <li><a href="/cinema/info/Phoenix_Picturehouse">Cinema information</a></li>
+                    <li><a href="/cinema/Phoenix_Picturehouse/Whats_On">Full listings</a></li>
+                      <li><a href="/cinema/info/Phoenix_Picturehouse#membership">Membership</a></li>
+                    <li><a href="/cinema/info/Phoenix_Picturehouse#ticket-prices">Ticket prices</a></li>
+                    <li><a href="/cinema/info/Phoenix_Picturehouse#disabled-access">Access</a></li>
+                    <li><a href="/cinema/info/Phoenix_Picturehouse">Cinema information</a></li>
                 </ul>
               </nav>
             </div>
@@ -369,9 +367,11 @@ Please note that if you want the Gift Card to be enabled for use online, you nee
     							<select name="select-cinema" title="Select cinema" id="select-cinema" class="form-control btm-mg" data-auto-link="true">
     								<option value="">Select a cinema</option>
     									<option data-href="/cinema/Clapham_Picturehouse">London — Clapham Picturehouse</option>
+    									<option data-href="/cinema/East_Dulwich_Picturehouse">London — East Dulwich</option>
     									<option data-href="/cinema/Gate_Picturehouse">London — Gate Picturehouse</option>
     									<option data-href="/cinema/Greenwich_Picturehouse">London — Greenwich Picturehouse</option>
     									<option data-href="/cinema/Hackney_Picturehouse">London — Hackney Picturehouse</option>
+    									<option data-href="/cinema/Picturehouse_Central">London — Picturehouse Central</option>
     									<option data-href="/cinema/Ritzy_Picturehouse">London — The Ritzy</option>
     									<option data-href="/cinema/Stratford_London">London — Stratford Picturehouse</option>
     									<option data-href="/cinema/The_Little">Bath — Little Theatre Cinema</option>
@@ -411,6 +411,8 @@ Please note that if you want the Gift Card to be enabled for use online, you nee
     		<script src="/js/vendor/jquery.cycle2.carousel.min.js"></script>
     		<script>$.fn.cycle.defaults.autoSelector = '.slideshow';</script>
     
+    		<script src="/js/viewmodels/basket.js"></script>
+    
     		<script type="text/javascript">
     			// Create closure.
     			(function( $ ) {
@@ -447,9 +449,11 @@ Please note that if you want the Gift Card to be enabled for use online, you nee
     					// TODO: Will this be dynamically pulled from db?
     					var availableTags = [
     	    					{ id: "Clapham_Picturehouse", label: "London - Clapham Picturehouse" },
+    	    					{ id: "East_Dulwich_Picturehouse", label: "London - East Dulwich" },
     	    					{ id: "Gate_Picturehouse", label: "London - Gate Picturehouse" },
     	    					{ id: "Greenwich_Picturehouse", label: "London - Greenwich Picturehouse" },
     	    					{ id: "Hackney_Picturehouse", label: "London - Hackney Picturehouse" },
+    	    					{ id: "Picturehouse_Central", label: "London - Picturehouse Central" },
     	    					{ id: "Ritzy_Picturehouse", label: "London - The Ritzy" },
     	    					{ id: "Stratford_London", label: "London - Stratford Picturehouse" },
     	    					{ id: "The_Little", label: "Bath - Little Theatre Cinema" },
@@ -506,8 +510,8 @@ Please note that if you want the Gift Card to be enabled for use online, you nee
       					            <div class="modal-body">
       					                <form method="post" action="/sign-in">
       					                  <div class="form-group">
-      					                    <label for="account-email">Card number:</label>
-      					                    <input type="number" name="membership-number" id="membership-number" class="form-control" placeholder="Enter your membership card number..." required />
+      					                    <label for="account-email">Membership number:</label>
+      					                    <input type="text" name="membership-number" id="membership-number" class="form-control" placeholder="Enter your membership card number..." required />
       					                  </div>
       					                  <div class="form-group">
       					                    <label for="account-password">Password:</label>
@@ -521,8 +525,8 @@ Please note that if you want the Gift Card to be enabled for use online, you nee
       					                        </label>
       					                    </div>
       					                  </div> -->
-      					                  <hr />
-      					                  <div class="clearfix">
+      					                  
+      					                  <div class="clearfix top-mg-lg">
       					                    <button type="submit" class="btn btn-primary pull-right">Sign in</button>
       					                  </div>
       					                </form>

@@ -22,7 +22,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns the correctly sized array' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.size.must_equal 20
+        subject.size.must_equal 22
       end
     end
 
