@@ -13,8 +13,8 @@ module PicturehouseUk
         def to_a
           date = nil
           doc.css(LISTINGS).each_with_object([]) do |node, result|
-            if node.attribute('title') != nil
-              date = Date.parse(node.attribute('title').value)
+            if date_parse(node.text)
+              date = date_parse(node.text)
             else
               result << FilmWithShowtimes.new(node, date).to_a
             end
@@ -22,6 +22,12 @@ module PicturehouseUk
         end
 
         private
+
+        def date_parse(text)
+          Date.parse(text)
+        rescue ArgumentError
+          nil
+        end
 
         def doc
           @doc ||= Nokogiri::HTML(page)
