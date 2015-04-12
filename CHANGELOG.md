@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.10] - 2015-04-12
+
+### Changed
+- Use 'NT Live'
+
 ## [3.0.9] - 2015-04-12
 
 ### Fixed
