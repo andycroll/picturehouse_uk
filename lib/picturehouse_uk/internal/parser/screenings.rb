@@ -4,7 +4,7 @@ module PicturehouseUk
     # @api private
     module Parser
       # Parses screenings page into an array of hashes for an individual cinema
-      class Screenings < Struct.new(:cinema_id)
+      Screenings = Struct.new(:cinema_id) do
         # css for a day of films & screenings
         LISTINGS = '#today .listings > li, #this-week .listings > li, #further-ahead .listings > li'
 
@@ -39,7 +39,7 @@ module PicturehouseUk
       end
     end
 
-    class FilmWithShowtimes < Struct.new(:node, :date)
+    FilmWithShowtimes = Struct.new(:node, :date) do
       # film name css
       NAME = '.top-mg-sm a'
       # variants css
@@ -76,7 +76,7 @@ module PicturehouseUk
     end
 
     # variants can have multiple screenings
-    class Variant < Struct.new(:node, :date)
+    Variant = Struct.new(:node, :date) do
       SHOWTIMES = '.btn'
       VARIANT   = '.film-type-desc'
 
@@ -94,7 +94,7 @@ module PicturehouseUk
     end
 
     # parse an individual screening node
-    class Showtime < Struct.new(:node, :date)
+    Showtime = Struct.new(:node, :date) do
       # the attributes of a single screening
       # @return [Hash]
       # @example
