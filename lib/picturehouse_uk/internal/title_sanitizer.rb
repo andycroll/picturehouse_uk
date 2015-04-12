@@ -41,14 +41,15 @@ module PicturehouseUk
 
       # regexes and their replacements
       REPLACE = {
-        /Met\.? Encore:\s*(.*)/ => 'Met Opera: ',
-        /Met\.? Opera:\s*(.*)/  => 'Met Opera: ',
-        /NT Encore:\s*(.*)/     => 'National Theatre: ',
-        /NT Live:\s*(.*)/       => 'National Theatre: ',
-        /ROH\.? Live:\s*(.*)/   => 'Royal Opera House: ',
-        /ROH\.? Encore:\s*(.*)/ => 'Royal Opera House: ',
-        /RSC\.? Live:\s*(.*)/   => 'Royal Shakespeare Company: ',
-        /RSC\.? Encore:\s*(.*)/ => 'Royal Shakespeare Company: '
+        /Met\.? Encore:\s*(.*)/    => 'Met Opera: ',
+        /Met\.? Opera:\s*(.*)/     => 'Met Opera: ',
+        /National Theatre:\s*(.*)/ => 'NT Live: ',
+        /NT Encore:\s*(.*)/        => 'NT Live: ',
+        /NT Live:\s*(.*)/          => 'NT Live: ',
+        /ROH\.? Live:\s*(.*)/      => 'Royal Opera House: ',
+        /ROH\.? Encore:\s*(.*)/    => 'Royal Opera House: ',
+        /RSC\.? Live:\s*(.*)/      => 'Royal Shakespeare Company: ',
+        /RSC\.? Encore:\s*(.*)/    => 'Royal Shakespeare Company: '
       }
 
       # @param [String] title a film title

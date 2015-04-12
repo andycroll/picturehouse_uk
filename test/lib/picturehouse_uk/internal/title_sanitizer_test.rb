@@ -276,7 +276,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'National Theatre: Hamlet [PG]' }
 
       it 'removes prefix' do
-        subject.must_equal('National Theatre: Hamlet')
+        subject.must_equal('NT Live: Hamlet')
       end
     end
 
@@ -382,6 +382,9 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       it 'removes tbc cert' do
         subject.must_equal("Dr Sketchy's Anti-Art School")
       end
+    end
+
+    describe 'SF Opera' do
     end
   end
 end
