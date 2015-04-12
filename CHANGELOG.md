@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.9] - 2015-04-12
+
+### Fixed
+- Date parsing was busted, it's not anymore
+
+### Changed
+- Better use of Struct
+
 ## [3.0.8] - 2015-04-07
 
 ### Fixed
