@@ -6,12 +6,12 @@ module PicturehouseUk
       # Parses screenings page into an array of hashes for an individual cinema
       class Screenings < Struct.new(:cinema_id)
         # css for a day of films & screenings
-        LISTINGS = '#this-week .listings > li, #further-ahead .listings > li'
+        LISTINGS = '#today .listings > li, #this-week .listings > li, #further-ahead .listings > li'
 
         # parse the cinema page into an array of screenings attributes
         # @return [Array<Hash>]
         def to_a
-          date = nil
+          date = Date.today
           doc.css(LISTINGS).each_with_object([]) do |node, result|
             if date_parse(node.text)
               date = date_parse(node.text)
