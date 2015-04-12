@@ -13,7 +13,7 @@ module PicturehouseUk
         def to_a
           date = Date.today
           doc.css(LISTINGS).each_with_object([]) do |node, result|
-            if date_parse(node.text)
+            if date?(node.text)
               date = date_parse(node.text)
             else
               result << FilmWithShowtimes.new(node, date).to_a
@@ -31,6 +31,10 @@ module PicturehouseUk
 
         def doc
           @doc ||= Nokogiri::HTML(page)
+        end
+
+        def date?(text)
+          !!text.match(/(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day \d{1,2}(st|nd|th) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/)
         end
 
         def page
