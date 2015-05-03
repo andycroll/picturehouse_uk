@@ -44,3 +44,10 @@ File.open(fixture('info/Phoenix_Picturehouse'), 'w') do |file|
   puts '* Pheonix Oxford Information'
   file.write PicturehouseUk::Internal::Website.new.info('Phoenix_Picturehouse')
 end
+
+# NATIONAL MEDIA MUSEUM (IMAX)
+
+File.open(fixture('cinema/National_Media_Museum'), 'w') do |file|
+  puts '* National Media Museum'
+  file.write PicturehouseUk::Internal::Website.new.cinema('National_Media_Museum')
+end
