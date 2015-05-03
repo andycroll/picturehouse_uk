@@ -10,7 +10,7 @@ describe PicturehouseUk::Internal::Parser::Screenings do
   end
 
   %w(Duke_Of_Yorks Dukes_At_Komedia Phoenix_Picturehouse).each do |cinema|
-    describe '#to_a' do
+    describe "#{cinema}: #to_a" do
       subject { described_class.new(cinema).to_a }
 
       before { website.expect(:cinema, html(cinema), [cinema]) }
@@ -25,7 +25,11 @@ describe PicturehouseUk::Internal::Parser::Screenings do
             element.keys.must_equal([:film_name, :dimension, :variant, :booking_url, :time])
             element[:film_name].must_be_kind_of(String)
             element[:dimension].must_match(/\A[23]d\z/)
-            # element[:booking_url].must_match(/\Ahttps?\:\/\//)
+            if element[:booking_url]
+              element[:booking_url].must_match(/\Ahttps?\:\/\//)
+              element[:booking_url].must_match(/ticketing/)
+              element[:booking_url].must_match(/visSelectTickets\.aspx\?cinemacode=\d+\&txtSessionId=\d+/)
+            end
             element[:time].must_be_kind_of(Time)
           end
         end
