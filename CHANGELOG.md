@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.11] - 2015-05-03
+
+### Added
+- Variants work. 'arts', 'baby', 'kids', 'imax', 'senior'
+- Test for screening booking urls
+- Test for screenings at National Museum IMAX picturehouse
+
 ## [3.0.10] - 2015-04-12
 
 ### Changed
