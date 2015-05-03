@@ -103,7 +103,9 @@ module PicturehouseUk
       private
 
       def variant
-        @variant ||= TRANSLATOR.select { |k, _| variant_text.include?(k) }.values
+        @variant ||= TRANSLATOR.select do |k, _|
+          variant_text.include?(k)
+        end.values.uniq
       end
 
       def variant_text
