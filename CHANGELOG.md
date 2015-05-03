@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.11] - 2015-05-03
 
+### Fixed
+- no duplicate 'arts' for NT Live
+
+## [3.0.11] - 2015-05-03
+
 ### Added
 - Variants work. 'arts', 'baby', 'kids', 'imax', 'senior'
 - Test for screening booking urls
