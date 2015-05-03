@@ -32,6 +32,29 @@ describe PicturehouseUk::Internal::Parser::Screenings do
             end
             element[:time].must_be_kind_of(Time)
           end
+
+          variants = subject.flat_map { |e| e[:variant] }.uniq
+          %w(arts baby senior).each do |expected| # also kids
+            variants.must_include(expected)
+          end
+        end
+      end
+    end
+  end
+
+  %w(National_Media_Museum).each do |cinema|
+    describe "#{cinema}: #to_a" do
+      subject { described_class.new(cinema).to_a }
+
+      before { website.expect(:cinema, html(cinema), [cinema]) }
+
+      it 'returns an non-zero array of hashes with imax variants' do
+        PicturehouseUk::Internal::Website.stub :new, website do
+          subject.must_be_instance_of(Array)
+          subject.size.must_be :>, 0
+
+          variants = subject.flat_map { |e| e[:variant] }.uniq
+          variants.must_include('imax')
         end
       end
     end

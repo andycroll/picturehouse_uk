@@ -81,9 +81,19 @@ module PicturehouseUk
 
     # variants can have multiple screenings
     Variant = Struct.new(:node, :date) do
-      SHOWTIMES = '.btn'
-      VARIANT   = '.film-type-desc'
+      SHOWTIMES  = '.btn'
+      VARIANT    = '.film-type-desc'
+      TRANSLATOR = {
+        'Big Scream'    => 'baby',
+        'IMAX'          => 'imax',
+        "Kids' Club"    => 'kids',
+        'NT Live'       => 'arts',
+        'Screen Arts'   => 'arts',
+        'Silver Screen' => 'senior'
+      }
 
+      # Variant arrays
+      # @return [Array<Hash>]
       def to_a
         node.css(SHOWTIMES).map do |node|
           { variant: variant }.merge(Showtime.new(node, date).to_hash)
@@ -93,21 +103,16 @@ module PicturehouseUk
       private
 
       def variant
-        @variant ||= []
+        @variant ||= TRANSLATOR.select { |k, _| variant_text.include?(k) }.values
+      end
+
+      def variant_text
+        @variant_text ||= node.css(VARIANT).to_s
       end
     end
 
     # parse an individual screening node
     Showtime = Struct.new(:node, :date) do
-      # the attributes of a single screening
-      # @return [Hash]
-      # @example
-      #   PicturehouseUk::Internal::ScreeningParser.new(html).to_hash
-      #   => {
-      #        booking_url: 'http://...',
-      #        time:        <Time>,
-      #        variant:     ['imax']
-      #      }
       def to_hash
         {
           booking_url: node['href'],
