@@ -384,7 +384,12 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'SF Opera' do
+    describe 'Bolshoi' do
+      let(:title) { 'Spartacus (Bolshoi Ballet)' }
+
+      it 'reorders the title' do
+        subject.must_equal('Bolshoi Ballet: Spartacus')
+      end
     end
   end
 end

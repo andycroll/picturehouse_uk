@@ -49,7 +49,8 @@ module PicturehouseUk
         /ROH\.? Live:\s*(.*)/      => 'Royal Opera House: ',
         /ROH\.? Encore:\s*(.*)/    => 'Royal Opera House: ',
         /RSC\.? Live:\s*(.*)/      => 'Royal Shakespeare Company: ',
-        /RSC\.? Encore:\s*(.*)/    => 'Royal Shakespeare Company: '
+        /RSC\.? Encore:\s*(.*)/    => 'Royal Shakespeare Company: ',
+        /(.*) \(Bolshoi Ballet\)/  => 'Bolshoi Ballet: '
       }
 
       # @param [String] title a film title
