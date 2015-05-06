@@ -1,7 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [3.0.11] - 2015-05-03
+## [3.0.13] - 2015-05-06
+
+### Added
+- title sanitizer for Bolshoi Ballet
+
+## [3.0.12] - 2015-05-03
 
 ### Fixed
 - no duplicate 'arts' for NT Live

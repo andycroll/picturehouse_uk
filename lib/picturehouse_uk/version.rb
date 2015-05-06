@@ -1,6 +1,6 @@
 # Ruby interface for http://www.picturehouses.co.uk
-# @version 3.0.12
+# @version 3.0.13
 module PicturehouseUk
   # Gem version
-  VERSION = '3.0.12'
+  VERSION = '3.0.13'
 end
