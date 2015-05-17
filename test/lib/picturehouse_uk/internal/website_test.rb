@@ -13,6 +13,16 @@ describe PicturehouseUk::Internal::Website do
     end
   end
 
+  describe '#home' do
+    subject { described_class.new.home }
+
+    before { stub_get('', home_html) }
+
+    it 'returns a string' do
+      subject.class.must_equal String
+    end
+  end
+
   describe '#info(id)' do
     subject { described_class.new.info('Duke_Of_Yorks') }
 
@@ -28,10 +38,15 @@ describe PicturehouseUk::Internal::Website do
     end
   end
 
-  describe '#home' do
-    subject { described_class.new.home }
+  describe '#whats_on(id)' do
+    subject { described_class.new.whats_on('Duke_Of_Yorks') }
 
-    before { stub_get('', home_html) }
+    before do
+      stub_get(
+        'cinema/Duke_Of_Yorks/Whats_On',
+        duke_of_yorks_whats_on_html
+      )
+    end
 
     it 'returns a string' do
       subject.class.must_equal String
@@ -46,6 +61,10 @@ describe PicturehouseUk::Internal::Website do
 
   def duke_of_yorks_contact_us_html
     read_file('../../../../fixtures/info/Duke_Of_Yorks.html')
+  end
+
+  def duke_of_yorks_whats_on_html
+    read_file('../../../../fixtures/whats_on/Duke_Of_Yorks.html')
   end
 
   def home_html

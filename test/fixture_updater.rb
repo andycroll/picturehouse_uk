@@ -21,6 +21,11 @@ File.open(fixture('info/Duke_Of_Yorks'), 'w') do |file|
   file.write PicturehouseUk::Internal::Website.new.info('Duke_Of_Yorks')
 end
 
+File.open(fixture('whats_on/Duke_Of_Yorks'), 'w') do |file|
+  puts '* Duke of Yorks Whats On'
+  file.write PicturehouseUk::Internal::Website.new.whats_on('Duke_Of_Yorks')
+end
+
 # KOMEDIA
 
 File.open(fixture('cinema/Dukes_At_Komedia'), 'w') do |file|
@@ -31,6 +36,11 @@ end
 File.open(fixture('info/Dukes_At_Komedia'), 'w') do |file|
   puts '* Dukes at Komedia Information'
   file.write PicturehouseUk::Internal::Website.new.info('Dukes_At_Komedia')
+end
+
+File.open(fixture('whats_on/Dukes_At_Komedia'), 'w') do |file|
+  puts '* Dukes at Komedia Whats On'
+  file.write PicturehouseUk::Internal::Website.new.whats_on('Dukes_At_Komedia')
 end
 
 # PHEONIX OXFORD
@@ -45,9 +55,19 @@ File.open(fixture('info/Phoenix_Picturehouse'), 'w') do |file|
   file.write PicturehouseUk::Internal::Website.new.info('Phoenix_Picturehouse')
 end
 
+File.open(fixture('whats_on/Phoenix_Picturehouse'), 'w') do |file|
+  puts '* Pheonix Oxford Whats On'
+  file.write PicturehouseUk::Internal::Website.new.whats_on('Phoenix_Picturehouse')
+end
+
 # NATIONAL MEDIA MUSEUM (IMAX)
 
 File.open(fixture('cinema/National_Media_Museum'), 'w') do |file|
   puts '* National Media Museum'
   file.write PicturehouseUk::Internal::Website.new.cinema('National_Media_Museum')
+end
+
+File.open(fixture('whats_on/National_Media_Museum'), 'w') do |file|
+  puts '* National Media Museum Whats On'
+  file.write PicturehouseUk::Internal::Website.new.whats_on('National_Media_Museum')
 end
