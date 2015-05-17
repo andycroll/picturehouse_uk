@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.14] - 2015-05-17
+
+### Fixed
+- Films for the following year incorrectly dated
+
+### Changed
+- Internal date calculation method changed for screenings
+
 ## [3.0.13] - 2015-05-06
 
 ### Added
