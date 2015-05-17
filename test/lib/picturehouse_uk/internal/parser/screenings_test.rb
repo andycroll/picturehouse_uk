@@ -13,7 +13,7 @@ describe PicturehouseUk::Internal::Parser::Screenings do
     describe "#{cinema}: #to_a" do
       subject { described_class.new(cinema).to_a }
 
-      before { website.expect(:cinema, html(cinema), [cinema]) }
+      before { website.expect(:whats_on, html(cinema), [cinema]) }
 
       it 'returns an non-zero array of hashes' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -46,7 +46,7 @@ describe PicturehouseUk::Internal::Parser::Screenings do
     describe "#{cinema}: #to_a" do
       subject { described_class.new(cinema).to_a }
 
-      before { website.expect(:cinema, html(cinema), [cinema]) }
+      before { website.expect(:whats_on, html(cinema), [cinema]) }
 
       it 'returns an non-zero array of hashes with imax variants' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -67,6 +67,6 @@ describe PicturehouseUk::Internal::Parser::Screenings do
   end
 
   def html(cinema)
-    read_file("../../../../../fixtures/cinema/#{cinema}.html")
+    read_file("../../../../../fixtures/whats_on/#{cinema}.html")
   end
 end

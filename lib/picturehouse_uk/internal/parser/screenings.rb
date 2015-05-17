@@ -6,39 +6,35 @@ module PicturehouseUk
       # Parses screenings page into an array of hashes for an individual cinema
       Screenings = Struct.new(:cinema_id) do
         # css for a day of films & screenings
-        LISTINGS = '#today .listings > li, #this-week .listings > li, #further-ahead .listings > li'
+        LISTINGS = '.listings li:not(.dark)'
+        DATE = '.nav-collapse.collapse'
 
         # parse the cinema page into an array of screenings attributes
         # @return [Array<Hash>]
         def to_a
-          date = Date.today
-          doc.css(LISTINGS).each_with_object([]) do |node, result|
-            if date?(node.text)
-              date = date_parse(node.text)
-            else
-              result << FilmWithShowtimes.new(node, date).to_a
-            end
-          end.flatten
+          doc.css(LISTINGS).flat_map do |node|
+            FilmWithShowtimes.new(node, date_from_html(node.css(DATE).to_s)).to_a
+          end
         end
 
         private
 
-        def date_parse(text)
-          Date.parse(text)
-        rescue ArgumentError
-          nil
+        def date_from_html(html)
+          if !!html.match(/listings-further-ahead-today/)
+            Date.now
+          else
+            html.match(/listings-further-ahead-(\d{4})(\d{2})(\d{2})/) do |m|
+              Date.new(m[1].to_i, m[2].to_i, m[3].to_i)
+            end
+          end
         end
 
         def doc
           @doc ||= Nokogiri::HTML(page)
         end
 
-        def date?(text)
-          !!text.match(/(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day \d{1,2}(st|nd|th) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/)
-        end
-
         def page
-          @page ||= PicturehouseUk::Internal::Website.new.cinema(cinema_id)
+          @page ||= PicturehouseUk::Internal::Website.new.whats_on(cinema_id)
         end
       end
     end

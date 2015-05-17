@@ -16,7 +16,7 @@ describe PicturehouseUk::Film do
     subject { described_class.at('Duke_Of_Yorks') }
 
     before do
-      website.expect(:cinema, cinema_html('Duke_Of_Yorks'), ['Duke_Of_Yorks'])
+      website.expect(:whats_on, whats_on_html('Duke_Of_Yorks'), ['Duke_Of_Yorks'])
     end
 
     it 'returns an array of films' do
@@ -131,8 +131,8 @@ describe PicturehouseUk::Film do
 
   private
 
-  def cinema_html(filename)
-    read_file("../../../fixtures/cinema/#{filename}.html")
+  def whats_on_html(filename)
+    read_file("../../../fixtures/whats_on/#{filename}.html")
   end
 
   def read_file(filepath)
