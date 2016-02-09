@@ -130,15 +130,24 @@ module PicturehouseUk
         "https://picturehouses.com#{href}"
       end
 
+      def hour
+        split[0]
+      end
+
       def href
         @href ||= node['href']
       end
 
+      def min
+        split[1]
+      end
+
+      def split
+        @split ||= node.text.split('.').map(&:to_i)
+      end
+
       def starting_at
-        @starting_at ||= begin
-          hour, min = node.text.split('.').map(&:to_i)
-          date.to_time + (hour * 60 + min) * 60
-        end
+        @starting_at ||= date.to_time + (hour * 60 + min) * 60
       end
     end
   end
