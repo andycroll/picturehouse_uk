@@ -1,0 +1,2 @@
+excludes:
+  - *_test.rb
