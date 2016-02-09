@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The cinebase standardisation release.
 
+### Added
+- cinebase
+
 ### Removed
 - Remove film concept
 

@@ -1,6 +1,5 @@
+require 'cinebase'
 require 'nokogiri'
-require 'tzinfo'
-require 'tzinfo/data'
 
 require_relative './picturehouse_uk/version'
 
