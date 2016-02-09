@@ -166,9 +166,15 @@ module PicturehouseUk
         Nokogiri::HTML(PicturehouseUk::Internal::Website.new.info(id))
     end
 
-    ListParser = Struct.new(:nodes) do
+    # @api private
+    # Utility class to parse the links spat out from the options
+    class ListParser
+      def initialize(nodes)
+        @nodes = nodes
+      end
+
       def to_hash
-        nodes.each_with_object({}) do |node, result|
+        @nodes.each_with_object({}) do |node, result|
           result[id(node)] = { name: name(node), url: url(node) }
         end
       end

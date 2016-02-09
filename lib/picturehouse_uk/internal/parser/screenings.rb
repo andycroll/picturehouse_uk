@@ -4,10 +4,14 @@ module PicturehouseUk
     # @api private
     module Parser
       # Parses screenings page into an array of hashes for an individual cinema
-      Screenings = Struct.new(:cinema_id) do
+      class Screenings
         # css for a day of films & screenings
         LISTINGS = '.listings li:not(.dark)'.freeze
         DATE = '.nav-collapse.collapse'.freeze
+
+        def initialize(cinema_id)
+          @cinema_id = cinema_id
+        end
 
         # parse the cinema page into an array of screenings attributes
         # @return [Array<Hash>]
@@ -35,7 +39,7 @@ module PicturehouseUk
         end
 
         def page
-          @page ||= PicturehouseUk::Internal::Website.new.whats_on(cinema_id)
+          @page ||= PicturehouseUk::Internal::Website.new.whats_on(@cinema_id)
         end
       end
     end
