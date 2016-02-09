@@ -12,6 +12,9 @@ The cinebase standardisation release.
 ### Removed
 - Remove film concept
 
+### Changes
+- TitleSanitizer uses `cinebase`
+
 ## [3.0.14] - 2015-05-17
 
 ### Fixed
