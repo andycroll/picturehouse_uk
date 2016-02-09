@@ -10,7 +10,6 @@ require_relative './picturehouse_uk/internal/title_sanitizer'
 require_relative './picturehouse_uk/internal/website'
 
 require_relative './picturehouse_uk/cinema'
-require_relative './picturehouse_uk/film'
 require_relative './picturehouse_uk/screening'
 
 module PicturehouseUk

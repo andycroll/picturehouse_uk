@@ -176,24 +176,6 @@ describe PicturehouseUk::Cinema do
     end
   end
 
-  describe '#films' do
-    let(:options) do
-      {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia'
-      }
-    end
-
-    subject { described_class.new(options).films }
-
-    it 'calls out to Film object' do
-      PicturehouseUk::Film.stub :at, [:film] do
-        subject.must_equal([:film])
-      end
-    end
-  end
-
   describe '#full_name' do
     let(:options) do
       {

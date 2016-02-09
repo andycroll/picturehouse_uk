@@ -1,5 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+
+The cinebase standardisation release.
+
+### Removed
+- Remove film concept
 
 ## [3.0.14] - 2015-05-17
 
