@@ -31,16 +31,16 @@ describe PicturehouseUk::Cinema do
   end
 end
 
-describe PicturehouseUk::Screening do
-  let(:described_class) { PicturehouseUk::Screening }
+describe PicturehouseUk::Performance do
+  let(:described_class) { PicturehouseUk::Performance }
 
   describe '.at(cinema_id)' do
     subject { described_class.at('Duke_Of_Yorks') }
 
     it 'returns an array of screenings' do
       subject.must_be_instance_of(Array)
-      subject.each do |screening|
-        screening.must_be_instance_of(PicturehouseUk::Screening)
+      subject.each do |performance|
+        performance.must_be_instance_of(PicturehouseUk::Performance)
       end
     end
 
