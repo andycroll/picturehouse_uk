@@ -19,7 +19,7 @@ describe PicturehouseUk::Screening do
 
     it 'returns correct number of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.count.must_equal 58
+        subject.count.must_be :>, 40
       end
     end
 
@@ -160,16 +160,16 @@ describe PicturehouseUk::Screening do
       read_file('../../../fixtures/home.html')
     end
 
-    def cinema(filename)
-      read_file("../../../fixtures/cinema/#{filename}.html")
+    def cinema(cinema_id)
+      read_file("../../../fixtures/#{cinema_id}/cinema.html")
     end
 
-    def contact_us(filename)
-      read_file("../../../fixtures/contact_us/#{filename}.html")
+    def contact_us(cinema_id)
+      read_file("../../../fixtures/#{cinema_id}/contact_us.html")
     end
 
-    def whats_on(filename)
-      read_file("../../../fixtures/whats_on/#{filename}.html")
+    def whats_on(cinema_id)
+      read_file("../../../fixtures/#{cinema_id}/whats_on.html")
     end
 
     private

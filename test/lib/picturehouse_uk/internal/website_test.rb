@@ -56,15 +56,15 @@ describe PicturehouseUk::Internal::Website do
   private
 
   def duke_of_yorks_html
-    read_file('../../../../fixtures/cinema/Duke_Of_Yorks.html')
+    read_file('../../../../fixtures/Duke_Of_Yorks/cinema.html')
   end
 
   def duke_of_yorks_contact_us_html
-    read_file('../../../../fixtures/info/Duke_Of_Yorks.html')
+    read_file('../../../../fixtures/Duke_Of_Yorks/info.html')
   end
 
   def duke_of_yorks_whats_on_html
-    read_file('../../../../fixtures/whats_on/Duke_Of_Yorks.html')
+    read_file('../../../../fixtures/Duke_Of_Yorks/whats_on.html')
   end
 
   def home_html

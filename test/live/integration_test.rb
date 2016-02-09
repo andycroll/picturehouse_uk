@@ -1,7 +1,9 @@
 require 'minitest/autorun'
 require 'minitest/reporters'
-reporter_options = { color: true, slow_count: 5 }
-Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
+
+Minitest::Reporters.use! [
+  Minitest::Reporters::DefaultReporter.new(color: true)
+]
 
 require File.expand_path('../../../lib/picturehouse_uk.rb', __FILE__)
 
@@ -25,25 +27,6 @@ describe PicturehouseUk::Cinema do
     it 'returns the right cinemas' do
       subject.first.name.must_equal 'Clapham Picturehouse'
       subject.last.name.must_equal 'City Screen Picturehouse'
-    end
-  end
-end
-
-describe PicturehouseUk::Film do
-  let(:described_class) { PicturehouseUk::Film }
-
-  describe '.at(cinema_id)' do
-    subject { described_class.at('Duke_Of_Yorks') }
-
-    it 'returns an array of films' do
-      subject.must_be_instance_of(Array)
-      subject.each do |film|
-        film.must_be_instance_of(PicturehouseUk::Film)
-      end
-    end
-
-    it 'returns a decent number of films' do
-      subject.count.must_be :>, 5
     end
   end
 end

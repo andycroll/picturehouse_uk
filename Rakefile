@@ -31,4 +31,16 @@ task :console do
   IRB.start
 end
 
+desc 'recreate test fixtures'
+task :fixtures do
+  require 'picturehouse_uk'
+  require_relative 'rake/fixture_creator'
+
+  FixtureCreator.new.home
+  %w(Duke_Of_Yorks Dukes_At_Komedia Phoenix_Picturehouse
+     National_Media_Museum).each do |cinema_id|
+    FixtureCreator.new.cinema(cinema_id)
+  end
+end
+
 task default: :test

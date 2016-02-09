@@ -113,12 +113,17 @@ module PicturehouseUk
     Showtime = Struct.new(:node, :date) do
       def to_hash
         {
-          booking_url: node['href'],
+          booking_url: booking_url,
           time:        time
         }
       end
 
       private
+
+      def booking_url
+        return if node['href'].nil? || node['href'].empty?
+        "https://picturehouses.com#{node['href']}"
+      end
 
       def time
         @time ||= begin

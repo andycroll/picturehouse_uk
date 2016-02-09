@@ -2,11 +2,9 @@ require_relative '../../test_helper'
 
 describe PicturehouseUk::Cinema do
   let(:described_class) { PicturehouseUk::Cinema }
-  let(:website) { MockWebsite.new }
+  let(:website) { FakeWebsite.new }
 
-  before do
-    WebMock.disable_net_connect!
-  end
+  before { WebMock.disable_net_connect! }
 
   describe '.all' do
     subject { described_class.all }
@@ -22,7 +20,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns the correctly sized array' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.size.must_equal 22
+        subject.size.must_equal 23
       end
     end
 
@@ -212,17 +210,17 @@ describe PicturehouseUk::Cinema do
 
   private
 
-  class MockWebsite
+  class FakeWebsite
     def home
       read_file('../../../fixtures/home.html')
     end
 
-    def cinema(filename)
-      read_file("../../../fixtures/cinema/#{filename}.html")
+    def cinema(cinema_id)
+      read_file("../../../fixtures/#{cinema_id}/cinema.html")
     end
 
-    def info(filename)
-      read_file("../../../fixtures/info/#{filename}.html")
+    def info(cinema_id)
+      read_file("../../../fixtures/#{cinema_id}/info.html")
     end
 
     private

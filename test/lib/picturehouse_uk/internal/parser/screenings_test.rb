@@ -2,12 +2,9 @@ require_relative '../../../../test_helper'
 
 describe PicturehouseUk::Internal::Parser::Screenings do
   let(:described_class) { PicturehouseUk::Internal::Parser::Screenings }
-
   let(:website) { Minitest::Mock.new }
 
-  before do
-    WebMock.disable_net_connect!
-  end
+  before { WebMock.disable_net_connect! }
 
   %w(Duke_Of_Yorks Dukes_At_Komedia Phoenix_Picturehouse).each do |cinema|
     describe "#{cinema}: #to_a" do
@@ -26,9 +23,8 @@ describe PicturehouseUk::Internal::Parser::Screenings do
             element[:film_name].must_be_kind_of(String)
             element[:dimension].must_match(/\A[23]d\z/)
             if element[:booking_url]
-              element[:booking_url].must_match(/\Ahttps?\:\/\//)
-              element[:booking_url].must_match(/ticketing/)
-              element[:booking_url].must_match(/visSelectTickets\.aspx\?cinemacode=\d+\&txtSessionId=\d+/)
+              element[:booking_url].must_match(%r{\Ahttps?\://picturehouses.com})
+              element[:booking_url].must_match(%r{/cinema/#{cinema}/film/[-\w]+/tickets/\d+})
             end
             element[:time].must_be_kind_of(Time)
           end
@@ -67,6 +63,6 @@ describe PicturehouseUk::Internal::Parser::Screenings do
   end
 
   def html(cinema)
-    read_file("../../../../../fixtures/whats_on/#{cinema}.html")
+    read_file("../../../../../fixtures/#{cinema}/whats_on.html")
   end
 end
