@@ -6,21 +6,22 @@ module PicturehouseUk
       # Parses screenings page into an array of hashes for an individual cinema
       Screenings = Struct.new(:cinema_id) do
         # css for a day of films & screenings
-        LISTINGS = '.listings li:not(.dark)'
-        DATE = '.nav-collapse.collapse'
+        LISTINGS = '.listings li:not(.dark)'.freeze
+        DATE = '.nav-collapse.collapse'.freeze
 
         # parse the cinema page into an array of screenings attributes
         # @return [Array<Hash>]
         def to_a
           doc.css(LISTINGS).flat_map do |node|
-            FilmWithShowtimes.new(node, date_from_html(node.css(DATE).to_s)).to_a
+            FilmWithShowtimes.new(node,
+                                  date_from_html(node.css(DATE).to_s)).to_a
           end
         end
 
         private
 
         def date_from_html(html)
-          if !!html.match(/listings-further-ahead-today/)
+          if html =~ /listings-further-ahead-today/
             Date.now
           else
             html.match(/listings-further-ahead-(\d{4})(\d{2})(\d{2})/) do |m|
@@ -39,11 +40,13 @@ module PicturehouseUk
       end
     end
 
+    # @api private
+    # collection of timings for a specific film
     FilmWithShowtimes = Struct.new(:node, :date) do
       # film name css
-      NAME = '.top-mg-sm a'
+      NAME = '.top-mg-sm a'.freeze
       # variants css
-      VARIANTS = '.film-times .col-xs-10'
+      VARIANTS = '.film-times .col-xs-10'.freeze
 
       # The film name
       # @return [String]
@@ -67,7 +70,7 @@ module PicturehouseUk
       private
 
       def dimension
-        raw_name.match(/3d/i) ? '3d' : '2d'
+        raw_name =~ /3d/i ? '3d' : '2d'
       end
 
       def raw_name
@@ -75,10 +78,11 @@ module PicturehouseUk
       end
     end
 
+    # @api private
     # variants can have multiple screenings
     Variant = Struct.new(:node, :date) do
-      SHOWTIMES  = '.btn'
-      VARIANT    = '.film-type-desc'
+      SHOWTIMES  = '.btn'.freeze
+      VARIANT    = '.film-type-desc'.freeze
       TRANSLATOR = {
         'Big Scream'    => 'baby',
         'IMAX'          => 'imax',
@@ -86,7 +90,7 @@ module PicturehouseUk
         'NT Live'       => 'arts',
         'Screen Arts'   => 'arts',
         'Silver Screen' => 'senior'
-      }
+      }.freeze
 
       # Variant arrays
       # @return [Array<Hash>]
@@ -109,6 +113,7 @@ module PicturehouseUk
       end
     end
 
+    # @api private
     # parse an individual screening node
     Showtime = Struct.new(:node, :date) do
       def to_hash
