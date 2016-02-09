@@ -2,10 +2,11 @@
 
 A simple gem to parse the [Picturehouse Cinemas UK website](http://picturehouses.com) and spit out useful formatted info.
 
-[![Gem Version](https://badge.fury.io/rb/picturehouse_uk.png)](http://badge.fury.io/rb/picturehouse_uk)
-[![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk.png)](https://codeclimate.com/github/andycroll/picturehouse_uk)
-[![Build Status](https://travis-ci.org/andycroll/picturehouse_uk.png?branch=master)](https://travis-ci.org/andycroll/picturehouse_uk)
-[![Inline docs](http://inch-ci.org/github/andycroll/picturehouse_uk.png)](http://inch-ci.org/github/andycroll/picturehouse_uk)
+[![Gem Version](https://badge.fury.io/rb/picturehouse_uk.svg)](https://badge.fury.io/rb/picturehouse_uk)
+[![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk/badges/gpa.svg)](https://codeclimate.com/github/andycroll/picturehouse_uk)
+[![Test Coverage](https://codeclimate.com/github/andycroll/picturehouse_uk/badges/coverage.svg)](https://codeclimate.com/github/andycroll/picturehouse_uk/coverage)
+[![Build Status](https://travis-ci.org/andycroll/picturehouse_uk.svg?branch=master)](https://travis-ci.org/andycroll/picturehouse_uk)
+[![Inline docs](http://inch-ci.org/github/andycroll/picturehouse_uk.svg?branch=master)](http://inch-ci.org/github/andycroll/picturehouse_uk)
 
 ## Installation
 

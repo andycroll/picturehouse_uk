@@ -18,6 +18,7 @@ The cinebase standardisation release.
 - Cinema uses `cinebase`
 - Screening becomes Performance
 - Performance uses `cinebase`
+- Badges in SVG
 
 ## [3.0.14] - 2015-05-17
 
