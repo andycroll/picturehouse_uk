@@ -20,7 +20,7 @@ module PicturehouseUk
             locality:         town,
             region:           array[-2] == town ? nil : array[-2],
             postal_code:      array[-1],
-            country:          'United Kingdom'
+            country_name:     'United Kingdom'.freeze
           }
         end
 

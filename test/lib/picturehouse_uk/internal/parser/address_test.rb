@@ -18,7 +18,7 @@ describe PicturehouseUk::Internal::Parser::Address do
                            locality:         nil,
                            region:           nil,
                            postal_code:      nil,
-                           country:          "United Kingdom")
+                           country_name:     "United Kingdom")
       end
     end
 
@@ -32,7 +32,7 @@ describe PicturehouseUk::Internal::Parser::Address do
                            locality:         nil,
                            region:           nil,
                            postal_code:      nil,
-                           country:          "United Kingdom")
+                           country_name:     "United Kingdom")
       end
     end
 
@@ -46,7 +46,7 @@ describe PicturehouseUk::Internal::Parser::Address do
                            locality:         "not an address",
                            region:           nil,
                            postal_code:      "not an address",
-                           country:          "United Kingdom")
+                           country_name:     "United Kingdom")
       end
     end
   end

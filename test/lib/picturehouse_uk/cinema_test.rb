@@ -32,55 +32,19 @@ describe PicturehouseUk::Cinema do
     end
   end
 
-  describe '.find(id)' do
-    subject { described_class.find(id) }
-
-    let(:id) { 'Duke_Of_Yorks' }
-
-    it 'returns a cinema' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_be_instance_of(PicturehouseUk::Cinema)
-
-        subject.id.must_equal id
-        subject.brand.must_equal 'Picturehouse'
-        subject.name.must_equal "Duke of York's Picturehouse"
-        subject.slug.must_equal 'duke-of-yorks-picturehouse'
-        subject.url.must_equal "http://www.picturehouses.com/cinema/#{id}"
-      end
-    end
-  end
-
-  describe '.new(options)' do
-    let(:options) do
-      {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia'
-      }
-    end
-
-    subject { described_class.new(options) }
+  describe '.new(id)' do
+    subject { described_class.new('Dukes_At_Komedia') }
 
     it 'stores id, name, slug and url' do
-      subject.id.must_equal 'Dukes_At_Komedia'
-      subject.brand.must_equal 'Picturehouse'
-      subject.name.must_equal "Duke's At Komedia"
-      subject.slug.must_equal 'dukes-at-komedia'
-      subject.url.must_equal 'http://www.picturehouses.com/cinema/Dukes_At_Komedia'
+      subject.must_be_instance_of(PicturehouseUk::Cinema)
     end
   end
 
   describe '#adr' do
-    let(:options) do
-      {
-        id:   'Phoenix_Picturehouse',
-        name: "Pheonix Picturehouse",
-        url:  '/cinema/Phoenix_Picturehouse'
-      }
-    end
+    subject { described_class.new(id).adr }
 
-    describe '#adr' do
-      subject { described_class.new(options).adr }
+    describe 'no region' do
+      let(:id) { 'Phoenix_Picturehouse' }
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -90,24 +54,14 @@ describe PicturehouseUk::Cinema do
             locality:         'Oxford',
             region:           nil,
             postal_code:      'OX2 6AE',
-            country:          'United Kingdom'
+            country_name:     'United Kingdom'
           )
         end
       end
     end
-  end
 
-  describe 'integration-y address tests' do
-    let(:options) do
-      {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia'
-      }
-    end
-
-    describe '#adr' do
-      subject { described_class.new(options).adr }
+    describe 'with region' do
+      let(:id) { 'Dukes_At_Komedia' }
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -117,93 +71,151 @@ describe PicturehouseUk::Cinema do
             locality:         'Brighton',
             region:           'East Sussex',
             postal_code:      'BN1 1UN',
-            country:          'United Kingdom'
+            country_name:     'United Kingdom'
           )
         end
       end
     end
+  end
 
-    describe '#street_address' do
-      subject { described_class.new(options).street_address }
+  describe '#address' do
+    subject { described_class.new(id).address }
 
-      it 'returns first line of address' do
+    describe 'no region' do
+      let(:id) { 'Phoenix_Picturehouse' }
+
+      it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('44–47 Gardner Street')
+          subject.must_equal(
+            street_address:   '57 Walton Street',
+            extended_address: nil,
+            locality:         'Oxford',
+            region:           nil,
+            postal_code:      'OX2 6AE',
+            country_name:     'United Kingdom'
+          )
         end
       end
     end
+  end
 
-    describe '#extended_address' do
-      subject { described_class.new(options).extended_address }
+  describe '#brand' do
+    subject { described_class.new(id).brand }
 
-      it 'returns second line of address' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal(nil)
-        end
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns Picturehouse' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('Picturehouse')
       end
     end
+  end
 
-    describe '#locality' do
-      subject { described_class.new(options).locality }
+  describe '#country_name' do
+    subject { described_class.new(id).country_name }
 
-      it 'returns second line of address' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('Brighton')
-        end
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns country' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('United Kingdom')
       end
     end
+  end
 
-    describe '#region' do
-      subject { described_class.new(options).region }
+  describe '#extended_address' do
+    subject { described_class.new(id).extended_address }
 
-      it 'returns second line of address' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('East Sussex')
-        end
-      end
-    end
+    let(:id) { 'Dukes_At_Komedia' }
 
-    describe '#postal_code' do
-      subject { described_class.new(options).postal_code }
-
-      it 'returns second line of address' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal('BN1 1UN')
-        end
+    it 'returns second line of address' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('')
       end
     end
   end
 
   describe '#full_name' do
-    let(:options) do
-      {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia'
-      }
-    end
+    subject { described_class.new(id).full_name }
 
-    subject { described_class.new(options).full_name }
+    let(:id) { 'Dukes_At_Komedia' }
 
-    it 'returns the cinema name' do
-      subject.must_equal "Duke's At Komedia"
+    it 'returns full name (same as name)' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal("Duke's at Komedia")
+        subject.must_equal(described_class.new(id).name)
+      end
     end
   end
 
-  describe '#screenings' do
-    let(:options) do
-      {
-        id:   'Dukes_At_Komedia',
-        name: "Duke's At Komedia",
-        url:  '/cinema/Dukes_At_Komedia'
-      }
+  describe '#locality' do
+    subject { described_class.new(id).locality }
+
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns second line of address' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('Brighton')
+      end
     end
+  end
 
-    subject { described_class.new(options).screenings }
+  describe '#name' do
+    subject { described_class.new(id).name }
 
-    it 'calls out to Screening object' do
-      PicturehouseUk::Screening.stub :at, [:screening] do
-        subject.must_equal([:screening])
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns full name (same as name)' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal("Duke's at Komedia")
+      end
+    end
+  end
+
+  describe '#postal_code' do
+    subject { described_class.new(id).postal_code }
+
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns second line of address' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('BN1 1UN')
+      end
+    end
+  end
+
+  describe '#region' do
+    subject { described_class.new(id).region }
+
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns second line of address' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('East Sussex')
+      end
+    end
+  end
+
+  describe '#slug' do
+    subject { described_class.new(id).slug }
+
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns downcased' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('dukes-at-komedia')
+      end
+    end
+  end
+
+  describe '#street_address' do
+    subject { described_class.new(id).street_address }
+
+    let(:id) { 'Dukes_At_Komedia' }
+
+    it 'returns first line of address' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        subject.must_equal('44–47 Gardner Street')
       end
     end
   end
