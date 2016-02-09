@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'API pulling information from picturehouse.com'
   spec.summary       = "It's a scraper, but a nice one"
   spec.homepage      = ''
-  spec.license       = 'MIT'
+  spec.licenses      = %w(AGPL MIT)
 
   spec.files         = `git ls-files`.split($RS)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
