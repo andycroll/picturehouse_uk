@@ -5,6 +5,7 @@ describe PicturehouseUk::Cinema do
   let(:website) { FakeWebsite.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '.all' do
     subject { described_class.all }
@@ -217,28 +218,6 @@ describe PicturehouseUk::Cinema do
       PicturehouseUk::Internal::Website.stub :new, website do
         subject.must_equal('44–47 Gardner Street')
       end
-    end
-  end
-
-  private
-
-  class FakeWebsite
-    def home
-      read_file('../../../fixtures/home.html')
-    end
-
-    def cinema(cinema_id)
-      read_file("../../../fixtures/#{cinema_id}/cinema.html")
-    end
-
-    def info(cinema_id)
-      read_file("../../../fixtures/#{cinema_id}/info.html")
-    end
-
-    private
-
-    def read_file(filepath)
-      File.read(File.expand_path(filepath, __FILE__))
     end
   end
 end

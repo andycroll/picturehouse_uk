@@ -6,3 +6,5 @@ Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_opti
 require 'webmock/minitest'
 
 require File.expand_path('../../lib/picturehouse_uk.rb', __FILE__)
+
+require_relative 'support/fake_website'
