@@ -1,18 +1,20 @@
 require_relative '../../test_helper'
 
-describe PicturehouseUk::Screening do
-  let(:website) { MockWebsite.new }
+describe PicturehouseUk::Performance do
+  let(:described_class) { PicturehouseUk::Performance }
+  let(:website) { FakeWebsite.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.disable_net_connect! }
 
   describe '.at(cinema_id)' do
-    subject { PicturehouseUk::Screening.at('Duke_Of_Yorks') }
+    subject { described_class.at('Duke_Of_Yorks') }
 
     it 'returns an array of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
         subject.must_be_instance_of(Array)
         subject.each do |screening|
-          screening.must_be_instance_of(PicturehouseUk::Screening)
+          screening.must_be_instance_of(PicturehouseUk::Performance)
         end
       end
     end
@@ -25,7 +27,7 @@ describe PicturehouseUk::Screening do
 
     it 'has valid screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.map(&:showing_at).each do |time|
+        subject.map(&:starting_at).each do |time|
           time.wont_equal Time.utc(1970, 1, 1, 0, 0)
         end
       end
@@ -33,7 +35,7 @@ describe PicturehouseUk::Screening do
   end
 
   describe '.new' do
-    subject { PicturehouseUk::Screening.new(options) }
+    subject { described_class.new(options) }
 
     describe 'simple' do
       let(:options) do
@@ -41,7 +43,7 @@ describe PicturehouseUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.utc(2013, 9, 12, 11, 0)
+          starting_at: Time.utc(2013, 9, 12, 11, 0)
         }
       end
 
@@ -65,11 +67,11 @@ describe PicturehouseUk::Screening do
         dimension:   '3d',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0)
+        starting_at: Time.utc(2013, 9, 12, 11, 0)
       }
     end
 
-    subject { PicturehouseUk::Screening.new(options).dimension }
+    subject { described_class.new(options).dimension }
 
     it 'returns 2d or 3d' do
       subject.must_be_instance_of(String)
@@ -77,8 +79,8 @@ describe PicturehouseUk::Screening do
     end
   end
 
-  describe '#showing_at' do
-    subject { PicturehouseUk::Screening.new(options).showing_at }
+  describe '#starting_at' do
+    subject { described_class.new(options).starting_at }
 
     describe 'with utc time' do
       let(:options) do
@@ -86,7 +88,7 @@ describe PicturehouseUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.utc(2013, 9, 12, 11, 0)
+          starting_at: Time.utc(2013, 9, 12, 11, 0)
         }
       end
 
@@ -102,7 +104,7 @@ describe PicturehouseUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.parse('2013-09-12 11:00')
+          starting_at: Time.parse('2013-09-12 11:00')
         }
       end
 
@@ -119,11 +121,11 @@ describe PicturehouseUk::Screening do
         film_name:   'Iron Man 3',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0)
+        starting_at: Time.utc(2013, 9, 12, 11, 0)
       }
     end
 
-    subject { PicturehouseUk::Screening.new(options).showing_on }
+    subject { described_class.new(options).showing_on }
 
     it 'returns date of showing' do
       subject.must_be_instance_of(Date)
@@ -132,14 +134,14 @@ describe PicturehouseUk::Screening do
   end
 
   describe '#variant' do
-    subject { PicturehouseUk::Screening.new(options).variant }
+    subject { described_class.new(options).variant }
 
     let(:options) do
       {
         film_name:   'Iron Man 3',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0),
+        starting_at: Time.utc(2013, 9, 12, 11, 0),
         variant:     ['Kids']
       }
     end
@@ -150,32 +152,6 @@ describe PicturehouseUk::Screening do
         tag.must_be_instance_of String
       end
       subject.must_equal %w(kids)
-    end
-  end
-
-  private
-
-  class MockWebsite
-    def home
-      read_file('../../../fixtures/home.html')
-    end
-
-    def cinema(cinema_id)
-      read_file("../../../fixtures/#{cinema_id}/cinema.html")
-    end
-
-    def contact_us(cinema_id)
-      read_file("../../../fixtures/#{cinema_id}/contact_us.html")
-    end
-
-    def whats_on(cinema_id)
-      read_file("../../../fixtures/#{cinema_id}/whats_on.html")
-    end
-
-    private
-
-    def read_file(filepath)
-      File.read(File.expand_path(filepath, __FILE__))
     end
   end
 end

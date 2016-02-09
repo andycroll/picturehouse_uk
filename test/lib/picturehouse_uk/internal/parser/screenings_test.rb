@@ -19,14 +19,15 @@ describe PicturehouseUk::Internal::Parser::Screenings do
 
           subject.each do |element|
             element.must_be_instance_of(Hash)
-            element.keys.must_equal([:film_name, :dimension, :variant, :booking_url, :time])
+            element.keys.must_equal([:film_name, :dimension, :variant,
+                                     :booking_url, :starting_at])
             element[:film_name].must_be_kind_of(String)
             element[:dimension].must_match(/\A[23]d\z/)
             if element[:booking_url]
               element[:booking_url].must_match(%r{\Ahttps?\://picturehouses.com})
               element[:booking_url].must_match(%r{/cinema/#{cinema}/film/[-\w]+/tickets/\d+})
             end
-            element[:time].must_be_kind_of(Time)
+            element[:starting_at].must_be_kind_of(Time)
           end
 
           variants = subject.flat_map { |e| e[:variant] }.uniq

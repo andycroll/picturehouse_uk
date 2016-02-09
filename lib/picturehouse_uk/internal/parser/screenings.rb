@@ -114,19 +114,23 @@ module PicturehouseUk
       def to_hash
         {
           booking_url: booking_url,
-          time:        time
+          starting_at: starting_at
         }
       end
 
       private
 
       def booking_url
-        return if node['href'].nil? || node['href'].empty?
-        "https://picturehouses.com#{node['href']}"
+        return if href.nil? || href.empty?
+        "https://picturehouses.com#{href}"
       end
 
-      def time
-        @time ||= begin
+      def href
+        @href ||= node['href']
+      end
+
+      def starting_at
+        @starting_at ||= begin
           hour, min = node.text.split('.').map(&:to_i)
           date.to_time + (hour * 60 + min) * 60
         end

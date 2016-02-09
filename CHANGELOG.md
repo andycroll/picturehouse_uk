@@ -16,6 +16,8 @@ The cinebase standardisation release.
 - New `rake fixtures` command and implementation
 - TitleSanitizer uses `cinebase`
 - Cinema uses `cinebase`
+- Screening becomes Performance
+- Performance uses `cinebase`
 
 ## [3.0.14] - 2015-05-17
 

@@ -9,7 +9,7 @@ require_relative './picturehouse_uk/internal/title_sanitizer'
 require_relative './picturehouse_uk/internal/website'
 
 require_relative './picturehouse_uk/cinema'
-require_relative './picturehouse_uk/screening'
+require_relative './picturehouse_uk/performance'
 
 module PicturehouseUk
 end
