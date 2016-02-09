@@ -42,11 +42,16 @@ module PicturehouseUk
 
     # @api private
     # collection of timings for a specific film
-    FilmWithShowtimes = Struct.new(:node, :date) do
+    class FilmWithShowtimes
       # film name css
       NAME = '.top-mg-sm a'.freeze
       # variants css
       VARIANTS = '.film-times .col-xs-10'.freeze
+
+      def initialize(node, date)
+        @node = node
+        @date = date
+      end
 
       # The film name
       # @return [String]
@@ -57,8 +62,8 @@ module PicturehouseUk
       # Showings hashes
       # @return [Array<Hash>]
       def to_a
-        Array(node.css(VARIANTS)).flat_map do |variant|
-          Variant.new(variant, date).to_a.map do |hash|
+        Array(@node.css(VARIANTS)).flat_map do |variant|
+          Variant.new(variant, @date).to_a.map do |hash|
             {
               film_name: name,
               dimension: dimension
@@ -74,13 +79,13 @@ module PicturehouseUk
       end
 
       def raw_name
-        @raw_name ||= node.css(NAME).children.first.to_s
+        @raw_name ||= @node.css(NAME).children.first.to_s
       end
     end
 
     # @api private
     # variants can have multiple screenings
-    Variant = Struct.new(:node, :date) do
+    class Variant
       SHOWTIMES  = '.btn'.freeze
       VARIANT    = '.film-type-desc'.freeze
       TRANSLATOR = {
@@ -92,11 +97,16 @@ module PicturehouseUk
         'Silver Screen' => 'senior'
       }.freeze
 
+      def initialize(node, date)
+        @node = node
+        @date = date
+      end
+
       # Variant arrays
       # @return [Array<Hash>]
       def to_a
-        node.css(SHOWTIMES).map do |node|
-          { variant: variant }.merge(Showtime.new(node, date).to_hash)
+        @node.css(SHOWTIMES).map do |node|
+          { variant: variant }.merge(Showtime.new(@node, @date).to_hash)
         end
       end
 
@@ -109,13 +119,18 @@ module PicturehouseUk
       end
 
       def variant_text
-        @variant_text ||= node.css(VARIANT).to_s
+        @variant_text ||= @node.css(VARIANT).to_s
       end
     end
 
     # @api private
     # parse an individual screening node
-    Showtime = Struct.new(:node, :date) do
+    class Showtime
+      def initialize(node, date)
+        @node = node
+        @date = date
+      end
+
       def to_hash
         {
           booking_url: booking_url,
@@ -135,7 +150,7 @@ module PicturehouseUk
       end
 
       def href
-        @href ||= node['href']
+        @href ||= @node['href']
       end
 
       def min
@@ -143,11 +158,11 @@ module PicturehouseUk
       end
 
       def split
-        @split ||= node.text.split('.').map(&:to_i)
+        @split ||= @node.text.split('.').map(&:to_i)
       end
 
       def starting_at
-        @starting_at ||= date.to_time + (hour * 60 + min) * 60
+        @starting_at ||= @date.to_time + (hour * 60 + min) * 60
       end
     end
   end
