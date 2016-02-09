@@ -5,6 +5,7 @@ describe PicturehouseUk::Internal::Parser::Screenings do
   let(:website) { Minitest::Mock.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   %w(Duke_Of_Yorks Dukes_At_Komedia Phoenix_Picturehouse).each do |cinema|
     describe "#{cinema}: #to_a" do

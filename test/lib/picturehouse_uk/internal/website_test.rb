@@ -3,6 +3,9 @@ require_relative '../../../test_helper'
 describe PicturehouseUk::Internal::Website do
   let(:described_class) { PicturehouseUk::Internal::Website }
 
+  before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
+
   describe '#cinema(id)' do
     subject { described_class.new.cinema('Duke_Of_Yorks') }
 

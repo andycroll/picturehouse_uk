@@ -5,7 +5,7 @@ describe PicturehouseUk::Performance do
   let(:website) { FakeWebsite.new }
 
   before { WebMock.disable_net_connect! }
-  after { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '.at(cinema_id)' do
     subject { described_class.at('Duke_Of_Yorks') }
