@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'picturehouse_uk/version'
@@ -8,12 +7,12 @@ Gem::Specification.new do |spec|
   spec.version       = PicturehouseUk::VERSION
   spec.authors       = ['Andy Croll']
   spec.email         = ['andy@goodscary.com']
-  spec.description   = 'An API to pull movie information from the picturehouse.co.uk website'
+  spec.description   = 'API pulling information from picturehouse.com'
   spec.summary       = "It's a scraper, but a nice one"
   spec.homepage      = ''
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = `git ls-files`.split($RS)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
