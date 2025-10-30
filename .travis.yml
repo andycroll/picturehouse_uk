@@ -1,8 +1,0 @@
-language: ruby
-rvm:
-  - 2.2.4
-  - 2.3.0
-script: 'rake && rake live'
-addons:
-  code_climate:
-    repo_token: ee3db68987e4aa204e26dc3cf28571de78264e52268edc4682be74b48b7e46c3
