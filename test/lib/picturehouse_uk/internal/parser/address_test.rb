@@ -12,8 +12,8 @@ describe PicturehouseUk::Internal::Parser::Address do
       let(:html) { nil }
 
       it 'returns hash of nils' do
-        subject.must_be_instance_of(Hash)
-        subject.must_equal(street_address:   nil,
+        _(subject).must_be_instance_of(Hash)
+        _(subject).must_equal(street_address:   nil,
                            extended_address: nil,
                            locality:         nil,
                            region:           nil,
@@ -26,8 +26,8 @@ describe PicturehouseUk::Internal::Parser::Address do
       let(:html) { '' }
 
       it 'returns hash of nils' do
-        subject.must_be_instance_of(Hash)
-        subject.must_equal(street_address:   nil,
+        _(subject).must_be_instance_of(Hash)
+        _(subject).must_equal(street_address:   nil,
                            extended_address: nil,
                            locality:         nil,
                            region:           nil,
@@ -40,8 +40,8 @@ describe PicturehouseUk::Internal::Parser::Address do
       let(:html) { 'not an address' }
 
       it 'returns hash of nils' do
-        subject.must_be_instance_of(Hash)
-        subject.must_equal(street_address:   nil,
+        _(subject).must_be_instance_of(Hash)
+        _(subject).must_equal(street_address:   nil,
                            extended_address: nil,
                            locality:         "not an address",
                            region:           nil,

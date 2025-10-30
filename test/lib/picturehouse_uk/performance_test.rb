@@ -21,14 +21,14 @@ describe PicturehouseUk::Performance do
 
     it 'returns correct number of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.count.must_be :>, 40
+        _(subject.count).must_be :>, 40
       end
     end
 
     it 'has valid screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
         subject.map(&:starting_at).each do |time|
-          time.wont_equal Time.utc(1970, 1, 1, 0, 0)
+          _(time).wont_equal Time.utc(1970, 1, 1, 0, 0)
         end
       end
     end
@@ -48,14 +48,14 @@ describe PicturehouseUk::Performance do
       end
 
       it 'sets cinema name and film name' do
-        subject.film_name.must_equal 'Iron Man 3'
-        subject.cinema_name.must_equal 'Cineworld Brighton'
+        _(subject.film_name).must_equal 'Iron Man 3'
+        _(subject.cinema_name).must_equal 'Cineworld Brighton'
       end
 
       it 'booking url, dimension & varient are set to defaults' do
-        subject.booking_url.must_equal nil
-        subject.dimension.must_equal '2d'
-        subject.variant.must_equal []
+        _(subject.booking_url).must_be_nil
+        _(subject.dimension).must_equal '2d'
+        _(subject.variant).must_equal []
       end
     end
   end
@@ -75,7 +75,7 @@ describe PicturehouseUk::Performance do
 
     it 'returns 2d or 3d' do
       _(subject).must_be_instance_of(String)
-      subject.must_equal '3d'
+      _(subject).must_equal '3d'
     end
   end
 
@@ -94,7 +94,7 @@ describe PicturehouseUk::Performance do
 
       it 'returns UTC time' do
         _(subject).must_be_instance_of Time
-        subject.must_equal Time.utc(2013, 9, 12, 11, 0)
+        _(subject).must_equal Time.utc(2013, 9, 12, 11, 0)
       end
     end
 
@@ -110,7 +110,7 @@ describe PicturehouseUk::Performance do
 
       it 'returns UTC time' do
         _(subject).must_be_instance_of Time
-        subject.must_equal Time.utc(2013, 9, 12, 10, 0)
+        _(subject).must_equal Time.utc(2013, 9, 12, 10, 0)
       end
     end
   end
@@ -129,7 +129,7 @@ describe PicturehouseUk::Performance do
 
     it 'returns date of showing' do
       _(subject).must_be_instance_of(Date)
-      subject.must_equal Date.new(2013, 9, 12)
+      _(subject).must_equal Date.new(2013, 9, 12)
     end
   end
 
@@ -151,7 +151,7 @@ describe PicturehouseUk::Performance do
       subject.each do |tag|
         _(tag).must_be_instance_of String
       end
-      subject.must_equal %w(kids)
+      _(subject).must_equal %w(kids)
     end
   end
 end

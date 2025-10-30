@@ -12,7 +12,7 @@ describe PicturehouseUk::Internal::Website do
     before { stub_get('cinema/Duke_Of_Yorks', duke_of_yorks_html) }
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 
@@ -22,7 +22,7 @@ describe PicturehouseUk::Internal::Website do
     before { stub_get('', home_html) }
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 
@@ -37,7 +37,7 @@ describe PicturehouseUk::Internal::Website do
     end
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 
@@ -52,7 +52,7 @@ describe PicturehouseUk::Internal::Website do
     end
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 

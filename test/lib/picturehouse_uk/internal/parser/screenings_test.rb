@@ -15,25 +15,25 @@ describe PicturehouseUk::Internal::Parser::Screenings do
 
       it 'returns an non-zero array of hashes' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_be_instance_of(Array)
-          subject.size.must_be :>, 0
+          _(subject).must_be_instance_of(Array)
+          _(subject.size).must_be :>, 0
 
           subject.each do |element|
-            element.must_be_instance_of(Hash)
-            element.keys.must_equal([:film_name, :dimension, :variant,
+          _(  element).must_be_instance_of(Hash)
+          _(  element.keys).must_equal([:film_name, :dimension, :variant,
                                      :booking_url, :starting_at])
-            element[:film_name].must_be_kind_of(String)
-            element[:dimension].must_match(/\A[23]d\z/)
+          _(  element[:film_name]).must_be_kind_of(String)
+          _(  element[:dimension]).must_match(/\A[23]d\z/)
             if element[:booking_url]
-              element[:booking_url].must_match(%r{\Ahttps?\://picturehouses.com})
-              element[:booking_url].must_match(%r{/cinema/#{cinema}/film/[-\w]+/tickets/\d+})
+          _(    element[:booking_url]).must_match(%r{\Ahttps?\://picturehouses.com})
+          _(    element[:booking_url]).must_match(%r{/cinema/#{cinema}/film/[-\w]+/tickets/\d+})
             end
-            element[:starting_at].must_be_kind_of(Time)
+          _(  element[:starting_at]).must_be_kind_of(Time)
           end
 
           variants = subject.flat_map { |e| e[:variant] }.uniq
           %w(arts baby senior).each do |expected| # also kids
-            variants.must_include(expected)
+          _(  variants).must_include(expected)
           end
         end
       end
@@ -48,11 +48,11 @@ describe PicturehouseUk::Internal::Parser::Screenings do
 
       it 'returns an non-zero array of hashes with imax variants' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_be_instance_of(Array)
-          subject.size.must_be :>, 0
+          _(subject).must_be_instance_of(Array)
+          _(subject.size).must_be :>, 0
 
           variants = subject.flat_map { |e| e[:variant] }.uniq
-          variants.must_include('imax')
+          _(variants).must_include('imax')
         end
       end
     end

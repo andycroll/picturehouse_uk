@@ -10,7 +10,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Withnail &amp; I' }
 
       it 'removes dimension' do
-        subject.must_equal('Withnail & I')
+        _(subject).must_equal('Withnail & I')
       end
     end
 
@@ -18,7 +18,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 2D' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -26,7 +26,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'ParaNorman (2D)' }
 
       it 'removes dimension' do
-        subject.must_equal('ParaNorman')
+        _(subject).must_equal('ParaNorman')
       end
     end
 
@@ -34,7 +34,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Miracle on 34th Street (1947)' }
 
       it 'removes year' do
-        subject.must_equal('Miracle on 34th Street')
+        _(subject).must_equal('Miracle on 34th Street')
       end
     end
 
@@ -42,7 +42,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 3d' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -50,7 +50,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Tarzan - Autism-Friendly Screening' }
 
       it 'removes screening type' do
-        subject.must_equal('Tarzan')
+        _(subject).must_equal('Tarzan')
       end
     end
 
@@ -58,7 +58,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 [NO CERT]' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -66,7 +66,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 []' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -74,7 +74,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Beauty and the Beast 2D [U]' }
 
       it 'removes dimension' do
-        subject.must_equal('Beauty and the Beast')
+        _(subject).must_equal('Beauty and the Beast')
       end
     end
 
@@ -82,7 +82,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'KIDS CLUB Escape from Planet Earth' }
 
       it 'removes KIDS CLUB' do
-        subject.must_equal('Escape from Planet Earth')
+        _(subject).must_equal('Escape from Planet Earth')
       end
     end
 
@@ -90,7 +90,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'DISCOVER TUE All this Mayhem' }
 
       it 'remove rogue screening type' do
-        subject.must_equal('All this Mayhem')
+        _(subject).must_equal('All this Mayhem')
       end
     end
 
@@ -98,7 +98,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Discover Tuesday: Manakamana [U]' }
 
       it 'remove rogue screening type' do
-        subject.must_equal('Manakamana')
+        _(subject).must_equal('Manakamana')
       end
     end
 
@@ -106,7 +106,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Frozen Singalong [PG]' }
 
       it 'remove rogue screening type' do
-        subject.must_equal('Frozen')
+        _(subject).must_equal('Frozen')
       end
     end
 
@@ -114,7 +114,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'FREE Screening - Withnail &amp; I' }
 
       it 'remove rogue screening type' do
-        subject.must_equal('Withnail & I')
+        _(subject).must_equal('Withnail & I')
       end
     end
 
@@ -122,7 +122,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Beauty and the Beast 2D (Re) [U]' }
 
       it 'removes dimension' do
-        subject.must_equal('Beauty and the Beast')
+        _(subject).must_equal('Beauty and the Beast')
       end
     end
 
@@ -130,7 +130,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Hidden Colors 3: The Rules of Racism + Q&amp;A' }
 
       it 'removes suffix' do
-        subject.must_equal('Hidden Colors 3: The Rules of Racism')
+        _(subject).must_equal('Hidden Colors 3: The Rules of Racism')
       end
     end
 
@@ -138,7 +138,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Luna Plus Q&A with Director and Artist Dave McKean' }
 
       it 'removes suffix' do
-        subject.must_equal('Luna')
+        _(subject).must_equal('Luna')
       end
     end
 
@@ -146,7 +146,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'A Dangerous Game + Panel Discussion' }
 
       it 'removes suffix' do
-        subject.must_equal('A Dangerous Game')
+        _(subject).must_equal('A Dangerous Game')
       end
     end
 
@@ -154,7 +154,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Cinemania: The Imposter' }
 
       it 'removes prefix' do
-        subject.must_equal('The Imposter')
+        _(subject).must_equal('The Imposter')
       end
     end
 
@@ -162,7 +162,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Gone Girl @ Komedia [18]' }
 
       it 'removes suffix' do
-        subject.must_equal('Gone Girl')
+        _(subject).must_equal('Gone Girl')
       end
     end
 
@@ -170,7 +170,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Paddington@Komedia' }
 
       it 'removes suffix' do
-        subject.must_equal('Paddington')
+        _(subject).must_equal('Paddington')
       end
     end
 
@@ -178,7 +178,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Dinosaurs Alive! IMAX' }
 
       it 'removes suffix' do
-        subject.must_equal('Dinosaurs Alive!')
+        _(subject).must_equal('Dinosaurs Alive!')
       end
     end
 
@@ -186,7 +186,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Metropolis (Re-issue)' }
 
       it 'removes suffix' do
-        subject.must_equal('Metropolis')
+        _(subject).must_equal('Metropolis')
       end
     end
 
@@ -194,7 +194,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { "'71 *HOH Subtitled*" }
 
       it 'removes extra info' do
-        subject.must_equal("'71")
+        _(subject).must_equal("'71")
       end
     end
 
@@ -202,7 +202,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Big Scream - Effie Gray' }
 
       it 'removes extra info' do
-        subject.must_equal('Effie Gray')
+        _(subject).must_equal('Effie Gray')
       end
     end
 
@@ -210,7 +210,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { "ParaNorman (2D) - Kids' Club" }
 
       it 'removes extra info' do
-        subject.must_equal('ParaNorman')
+        _(subject).must_equal('ParaNorman')
       end
     end
 
@@ -218,7 +218,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { "Rosemary's Baby - Reminiscence" }
 
       it 'removes extra info' do
-        subject.must_equal("Rosemary's Baby")
+        _(subject).must_equal("Rosemary's Baby")
       end
     end
 
@@ -226,7 +226,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Bolshoi: Spartacus [NO CERT]' }
 
       it 'removes prefix' do
-        subject.must_equal('Bolshoi: Spartacus')
+        _(subject).must_equal('Bolshoi: Spartacus')
       end
     end
 
@@ -234,7 +234,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Bolshoi: La Bayadere (Captured Live in 2012)' }
 
       it 'removes suffix' do
-        subject.must_equal('Bolshoi: La Bayadere')
+        _(subject).must_equal('Bolshoi: La Bayadere')
       end
     end
 
@@ -244,7 +244,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       end
 
       it 'removes certificate TBC' do
-        subject.must_equal 'Glyndebourne Tour 2014: The Cunning Little Vixen'
+        _(subject).must_equal 'Glyndebourne Tour 2014: The Cunning Little Vixen'
       end
     end
 
@@ -252,7 +252,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Met. Opera: Macbeth [NO CERT]' }
 
       it 'removes prefix' do
-        subject.must_equal('Met Opera: Macbeth')
+        _(subject).must_equal('Met Opera: Macbeth')
       end
     end
 
@@ -260,7 +260,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Met Opera: Rusalka [AS LIVE: 12A]' }
 
       it 'removes prefix' do
-        subject.must_equal('Met Opera: Rusalka')
+        _(subject).must_equal('Met Opera: Rusalka')
       end
     end
 
@@ -268,7 +268,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Met Opera:Le Nozze di Figaro [AS LIVE:12A]' }
 
       it 'removes prefix' do
-        subject.must_equal('Met Opera: Le Nozze di Figaro')
+        _(subject).must_equal('Met Opera: Le Nozze di Figaro')
       end
     end
 
@@ -276,7 +276,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'National Theatre: Hamlet [PG]' }
 
       it 'removes prefix' do
-        subject.must_equal('NT Live: Hamlet')
+        _(subject).must_equal('NT Live: Hamlet')
       end
     end
 
@@ -284,7 +284,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'ourscreen: Northern Soul [15]' }
 
       it 'removes prefix' do
-        subject.must_equal('Northern Soul')
+        _(subject).must_equal('Northern Soul')
       end
     end
 
@@ -292,7 +292,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'To Kill A Mockingbird (Re) [PG]' }
 
       it 'removes rerelease notice' do
-        subject.must_equal('To Kill A Mockingbird')
+        _(subject).must_equal('To Kill A Mockingbird')
       end
     end
 
@@ -300,7 +300,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Withnail & I (re: 2014) [15]' }
 
       it 'removes rerelease notice' do
-        subject.must_equal('Withnail & I')
+        _(subject).must_equal('Withnail & I')
       end
     end
 
@@ -308,7 +308,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'TODDLER TIME: Timmy Time Programme 15' }
 
       it 'removes rerelease notice' do
-        subject.must_equal('Timmy Time Programme 15')
+        _(subject).must_equal('Timmy Time Programme 15')
       end
     end
 
@@ -316,7 +316,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Royal Shakespeare Company: Richard II [NO CERT]' }
 
       it 'removes prefix' do
-        subject.must_equal('Royal Shakespeare Company: Richard II')
+        _(subject).must_equal('Royal Shakespeare Company: Richard II')
       end
     end
 
@@ -324,7 +324,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'ROH Encore: Swan Lake' }
 
       it 'removes prefix' do
-        subject.must_equal('Royal Opera House: Swan Lake')
+        _(subject).must_equal('Royal Opera House: Swan Lake')
       end
     end
 
@@ -332,7 +332,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Paddington - Parents & Babies' }
 
       it 'removes suffix' do
-        subject.must_equal('Paddington')
+        _(subject).must_equal('Paddington')
       end
     end
 
@@ -340,7 +340,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Subtitled: The Hobbit: The Battle of the Five Armies' }
 
       it 'removes prefix' do
-        subject.must_equal('The Hobbit: The Battle of the Five Armies')
+        _(subject).must_equal('The Hobbit: The Battle of the Five Armies')
       end
     end
 
@@ -348,7 +348,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'English National Opera: Carmen (Live)' }
 
       it 'removes live suffix' do
-        subject.must_equal('English National Opera: Carmen')
+        _(subject).must_equal('English National Opera: Carmen')
       end
     end
 
@@ -356,7 +356,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'The Living Room with Gavin Clark [TBC]' }
 
       it 'removes tbc cert' do
-        subject.must_equal('The Living Room with Gavin Clark')
+        _(subject).must_equal('The Living Room with Gavin Clark')
       end
     end
 
@@ -364,7 +364,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Woman In Gold [N/A]' }
 
       it 'removes tbc cert' do
-        subject.must_equal('Woman In Gold')
+        _(subject).must_equal('Woman In Gold')
       end
     end
 
@@ -372,7 +372,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Maxine Peake As Hamlet (Theatre)' }
 
       it 'removes tbc cert' do
-        subject.must_equal('Maxine Peake As Hamlet')
+        _(subject).must_equal('Maxine Peake As Hamlet')
       end
     end
 
@@ -380,7 +380,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { "Dr Sketchy's Anti-Art School [R18]" }
 
       it 'removes tbc cert' do
-        subject.must_equal("Dr Sketchy's Anti-Art School")
+        _(subject).must_equal("Dr Sketchy's Anti-Art School")
       end
     end
 
@@ -388,7 +388,7 @@ describe PicturehouseUk::Internal::TitleSanitizer do
       let(:title) { 'Spartacus (Bolshoi Ballet)' }
 
       it 'reorders the title' do
-        subject.must_equal('Bolshoi Ballet: Spartacus')
+        _(subject).must_equal('Bolshoi Ballet: Spartacus')
       end
     end
   end

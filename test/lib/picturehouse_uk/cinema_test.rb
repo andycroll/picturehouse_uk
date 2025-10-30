@@ -12,23 +12,23 @@ describe PicturehouseUk::Cinema do
 
     it 'returns an Array of CineworldUK::Cinemas' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_be_instance_of(Array)
+        _(subject).must_be_instance_of(Array)
         subject.each do |value|
-          value.must_be_instance_of(PicturehouseUk::Cinema)
+          _(value).must_be_instance_of(PicturehouseUk::Cinema)
         end
       end
     end
 
     it 'returns the correctly sized array' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.size.must_equal 23
+        _(subject.size).must_equal 23
       end
     end
 
     it 'returns the right cinemas' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.first.name.must_equal 'Clapham Picturehouse'
-        subject.last.name.must_equal 'City Screen Picturehouse'
+        _(subject.first.name).must_equal 'Clapham Picturehouse'
+        _(subject.last.name).must_equal 'City Screen Picturehouse'
       end
     end
   end
@@ -37,7 +37,7 @@ describe PicturehouseUk::Cinema do
     subject { described_class.new('Dukes_At_Komedia') }
 
     it 'stores id, name, slug and url' do
-      subject.must_be_instance_of(PicturehouseUk::Cinema)
+      _(subject).must_be_instance_of(PicturehouseUk::Cinema)
     end
   end
 
@@ -49,7 +49,7 @@ describe PicturehouseUk::Cinema do
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal(
+          _(subject).must_equal(
             street_address:   '57 Walton Street',
             extended_address: nil,
             locality:         'Oxford',
@@ -66,7 +66,7 @@ describe PicturehouseUk::Cinema do
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal(
+          _(subject).must_equal(
             street_address:   '44–47 Gardner Street',
             extended_address: nil,
             locality:         'Brighton',
@@ -87,7 +87,7 @@ describe PicturehouseUk::Cinema do
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
-          subject.must_equal(
+          _(subject).must_equal(
             street_address:   '57 Walton Street',
             extended_address: nil,
             locality:         'Oxford',
@@ -107,7 +107,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns Picturehouse' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('Picturehouse')
+        _(subject).must_equal('Picturehouse')
       end
     end
   end
@@ -119,7 +119,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns country' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('United Kingdom')
+        _(subject).must_equal('United Kingdom')
       end
     end
   end
@@ -131,7 +131,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('')
+        _(subject).must_equal('')
       end
     end
   end
@@ -143,8 +143,8 @@ describe PicturehouseUk::Cinema do
 
     it 'returns full name (same as name)' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal("Duke's at Komedia")
-        subject.must_equal(described_class.new(id).name)
+        _(subject).must_equal("Duke's at Komedia")
+        _(subject).must_equal(described_class.new(id).name)
       end
     end
   end
@@ -156,7 +156,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('Brighton')
+        _(subject).must_equal('Brighton')
       end
     end
   end
@@ -168,7 +168,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns full name (same as name)' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal("Duke's at Komedia")
+        _(subject).must_equal("Duke's at Komedia")
       end
     end
   end
@@ -180,7 +180,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('BN1 1UN')
+        _(subject).must_equal('BN1 1UN')
       end
     end
   end
@@ -192,7 +192,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('East Sussex')
+        _(subject).must_equal('East Sussex')
       end
     end
   end
@@ -204,7 +204,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns downcased' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('dukes-at-komedia')
+        _(subject).must_equal('dukes-at-komedia')
       end
     end
   end
@@ -216,7 +216,7 @@ describe PicturehouseUk::Cinema do
 
     it 'returns first line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_equal('44–47 Gardner Street')
+        _(subject).must_equal('44–47 Gardner Street')
       end
     end
   end
