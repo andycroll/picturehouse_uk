@@ -1,7 +1,7 @@
 # Create fitures from the live website
 class FixtureCreator
   def cinema(cinema_id)
-    %i(cinema info whats_on).each do |action|
+    %i(cinema information).each do |action|
       write_fixture_for_cinema(cinema_id, action)
     end
   end

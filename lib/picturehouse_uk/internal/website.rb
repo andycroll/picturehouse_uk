@@ -12,18 +12,10 @@ module PicturehouseUk
         get("cinema/#{id}")
       end
 
-      # get the cinema screenings page for passed id
-      # @return [String]
-      def whats_on(id)
-        get("cinema/#{id}/Whats_On")
-      rescue OpenURI::HTTPError
-        ''
-      end
-
       # get the cinema contact information page for passed id
       # @return [String]
-      def info(id)
-        get("cinema/info/#{id}")
+      def information(id)
+        get("cinema/#{id}/information")
       rescue OpenURI::HTTPError
         ''
       end
