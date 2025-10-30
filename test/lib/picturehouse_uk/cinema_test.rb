@@ -34,7 +34,7 @@ describe PicturehouseUk::Cinema do
   end
 
   describe '.new(id)' do
-    subject { described_class.new('Dukes_At_Komedia') }
+    subject { described_class.new('duke-s-at-komedia') }
 
     it 'stores id, name, slug and url' do
       _(subject).must_be_instance_of(PicturehouseUk::Cinema)
@@ -45,7 +45,7 @@ describe PicturehouseUk::Cinema do
     subject { described_class.new(id).adr }
 
     describe 'no region' do
-      let(:id) { 'Phoenix_Picturehouse' }
+      let(:id) { 'phoenix-picturehouse' }
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -62,7 +62,7 @@ describe PicturehouseUk::Cinema do
     end
 
     describe 'with region' do
-      let(:id) { 'Dukes_At_Komedia' }
+      let(:id) { 'duke-s-at-komedia' }
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -83,7 +83,7 @@ describe PicturehouseUk::Cinema do
     subject { described_class.new(id).address }
 
     describe 'no region' do
-      let(:id) { 'Phoenix_Picturehouse' }
+      let(:id) { 'phoenix-picturehouse' }
 
       it 'returns address hash' do
         PicturehouseUk::Internal::Website.stub :new, website do
@@ -103,7 +103,7 @@ describe PicturehouseUk::Cinema do
   describe '#brand' do
     subject { described_class.new(id).brand }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns Picturehouse' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -115,7 +115,7 @@ describe PicturehouseUk::Cinema do
   describe '#country_name' do
     subject { described_class.new(id).country_name }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns country' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -127,7 +127,7 @@ describe PicturehouseUk::Cinema do
   describe '#extended_address' do
     subject { described_class.new(id).extended_address }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -139,7 +139,7 @@ describe PicturehouseUk::Cinema do
   describe '#full_name' do
     subject { described_class.new(id).full_name }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns full name (same as name)' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -152,7 +152,7 @@ describe PicturehouseUk::Cinema do
   describe '#locality' do
     subject { described_class.new(id).locality }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -164,7 +164,7 @@ describe PicturehouseUk::Cinema do
   describe '#name' do
     subject { described_class.new(id).name }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns full name (same as name)' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -176,7 +176,7 @@ describe PicturehouseUk::Cinema do
   describe '#postal_code' do
     subject { described_class.new(id).postal_code }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -188,7 +188,7 @@ describe PicturehouseUk::Cinema do
   describe '#region' do
     subject { described_class.new(id).region }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns second line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -200,7 +200,7 @@ describe PicturehouseUk::Cinema do
   describe '#slug' do
     subject { described_class.new(id).slug }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns downcased' do
       PicturehouseUk::Internal::Website.stub :new, website do
@@ -212,7 +212,7 @@ describe PicturehouseUk::Cinema do
   describe '#street_address' do
     subject { described_class.new(id).street_address }
 
-    let(:id) { 'Dukes_At_Komedia' }
+    let(:id) { 'duke-s-at-komedia' }
 
     it 'returns first line of address' do
       PicturehouseUk::Internal::Website.stub :new, website do

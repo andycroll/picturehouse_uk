@@ -8,12 +8,8 @@ class FakeWebsite
     read_file("../../fixtures/#{cinema_id}/cinema.html")
   end
 
-  def info(cinema_id)
-    read_file("../../fixtures/#{cinema_id}/info.html")
-  end
-
-  def whats_on(cinema_id)
-    read_file("../../fixtures/#{cinema_id}/whats_on.html")
+  def information(cinema_id)
+    read_file("../../fixtures/#{cinema_id}/information.html")
   end
 
   private

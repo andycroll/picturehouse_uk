@@ -15,7 +15,7 @@ module PicturehouseUk
         # @note Uses the address naming from http://microformats.org/wiki/adr
         def address
           {
-            street_address:   array[1],
+            street_address:   address_lines[0],
             extended_address: extended_address,
             locality:         town,
             region:           region,
@@ -27,23 +27,38 @@ module PicturehouseUk
         private
 
         def array
-          @array ||= Array(@html.gsub(/\<.?p.?\>/, '').split('<br>'))
+          @array ||= begin
+            # Split on <br> tags first, then strip all HTML tags from each part
+            @html.split(/<br\s*\/?>/).map do |part|
+              # Strip all HTML tags and clean up whitespace
+              Nokogiri::HTML::DocumentFragment.parse(part).text.strip
+            end.reject(&:empty?)
+          end
+        end
+
+        # Skip the first element (cinema name) and return address lines
+        def address_lines
+          @address_lines ||= array[1..-1] || []
         end
 
         def extended_address
-          array.length > 5 ? array[2] : nil
+          address_lines.length > 4 ? address_lines[1] : nil
         end
 
         def postal_code
-          array[-1]
+          address_lines[-1]
         end
 
         def region
-          array[-2] == town ? nil : array[-2]
+          # If there are 4+ address lines (street, town, region, postcode),
+          # the region is at -2, otherwise nil
+          address_lines.length >= 4 ? address_lines[-2] : nil
         end
 
         def town
-          @town ||= array[0].to_s.split(', ')[-1]
+          # Town is always the second-to-last item (before postcode)
+          # unless there's a region, then it's third-to-last
+          @town ||= address_lines.length >= 4 ? address_lines[-3] : address_lines[-2]
         end
       end
     end

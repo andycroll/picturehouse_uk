@@ -7,9 +7,9 @@ describe PicturehouseUk::Internal::Website do
   after { WebMock.allow_net_connect! }
 
   describe '#cinema(id)' do
-    subject { described_class.new.cinema('Duke_Of_Yorks') }
+    subject { described_class.new.cinema('duke-of-york-s-picturehouse') }
 
-    before { stub_get('cinema/Duke_Of_Yorks', duke_of_yorks_html) }
+    before { stub_get('cinema/duke-of-york-s-picturehouse', duke_of_yorks_html) }
 
     it 'returns a string' do
       _(subject.class).must_equal String
@@ -26,28 +26,13 @@ describe PicturehouseUk::Internal::Website do
     end
   end
 
-  describe '#info(id)' do
-    subject { described_class.new.info('Duke_Of_Yorks') }
+  describe '#information(id)' do
+    subject { described_class.new.information('duke-of-york-s-picturehouse') }
 
     before do
       stub_get(
-        'cinema/info/Duke_Of_Yorks',
-        duke_of_yorks_contact_us_html
-      )
-    end
-
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
-  end
-
-  describe '#whats_on(id)' do
-    subject { described_class.new.whats_on('Duke_Of_Yorks') }
-
-    before do
-      stub_get(
-        'cinema/Duke_Of_Yorks/Whats_On',
-        duke_of_yorks_whats_on_html
+        'cinema/duke-of-york-s-picturehouse/information',
+        duke_of_yorks_information_html
       )
     end
 
@@ -59,15 +44,11 @@ describe PicturehouseUk::Internal::Website do
   private
 
   def duke_of_yorks_html
-    read_file('../../../../fixtures/Duke_Of_Yorks/cinema.html')
+    read_file('../../../../fixtures/duke-of-york-s-picturehouse/cinema.html')
   end
 
-  def duke_of_yorks_contact_us_html
-    read_file('../../../../fixtures/Duke_Of_Yorks/info.html')
-  end
-
-  def duke_of_yorks_whats_on_html
-    read_file('../../../../fixtures/Duke_Of_Yorks/whats_on.html')
+  def duke_of_yorks_information_html
+    read_file('../../../../fixtures/duke-of-york-s-picturehouse/information.html')
   end
 
   def home_html

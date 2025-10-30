@@ -2,7 +2,7 @@ module PicturehouseUk
   # The object representing a cinema on the Picturehouse UK website
   class Cinema < Cinebase::Cinema
     # address css
-    ADDRESS_CSS = '.static-content #contact-us + p:first'.freeze
+    ADDRESS_CSS = '.cinemaAdrass:not(.openingTime)'.freeze
     # cinema link css
     CINEMA_LINKS_CSS = '.footer .col-sm-3 option + option'.freeze
 
@@ -163,7 +163,7 @@ module PicturehouseUk
 
     def info_doc
       @info_doc ||=
-        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.info(id))
+        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.information(id))
     end
 
     # @api private
