@@ -37,6 +37,7 @@ task :fixtures do
   require_relative 'rake/fixture_creator'
 
   FixtureCreator.new.home
+  FixtureCreator.new.cinemas
   %w(duke-of-york-s-picturehouse duke-s-at-komedia phoenix-picturehouse).each do |cinema_id|
     FixtureCreator.new.cinema(cinema_id)
   end

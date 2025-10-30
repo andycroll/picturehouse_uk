@@ -10,6 +10,10 @@ class FixtureCreator
     write_fixture(:home)
   end
 
+  def cinemas
+    write_fixture(:cinemas)
+  end
+
   private
 
   def fixture(name)
