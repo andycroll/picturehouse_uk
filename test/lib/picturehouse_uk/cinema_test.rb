@@ -21,14 +21,14 @@ describe PicturehouseUk::Cinema do
 
     it 'returns the correctly sized array' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.size).must_equal 23
+        _(subject.size).must_equal 25
       end
     end
 
     it 'returns the right cinemas' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.first.name).must_equal 'Clapham Picturehouse'
-        _(subject.last.name).must_equal 'City Screen Picturehouse'
+        _(subject.first.name).must_equal 'Little Theatre Cinema'
+        _(subject.last.name).must_equal 'City Screen York'
       end
     end
   end

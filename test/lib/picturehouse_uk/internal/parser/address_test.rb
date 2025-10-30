@@ -43,9 +43,9 @@ describe PicturehouseUk::Internal::Parser::Address do
         _(subject).must_be_instance_of(Hash)
         _(subject).must_equal(street_address:   nil,
                            extended_address: nil,
-                           locality:         "not an address",
+                           locality:         nil,
                            region:           nil,
-                           postal_code:      "not an address",
+                           postal_code:      nil,
                            country_name:     "United Kingdom")
       end
     end

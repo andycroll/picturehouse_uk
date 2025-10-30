@@ -3,8 +3,8 @@ module PicturehouseUk
   class Cinema < Cinebase::Cinema
     # address css
     ADDRESS_CSS = '.cinemaAdrass:not(.openingTime)'.freeze
-    # cinema link css
-    CINEMA_LINKS_CSS = '.footer .col-sm-3 option + option'.freeze
+    # cinema link css on the /cinema page
+    CINEMA_LINKS_CSS = 'a[href*="/cinema/"]'.freeze
 
     # @!attribute [r] id
     #   @return [Integer] the numeric id of the cinema on the Cineworld website
@@ -147,15 +147,15 @@ module PicturehouseUk
     private
 
     def self.cinema_links
-      home_doc.css(CINEMA_LINKS_CSS)
+      cinemas_doc.css(CINEMA_LINKS_CSS)
     end
     private_class_method :cinema_links
 
-    def self.home_doc
-      @home_doc ||=
-        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.home)
+    def self.cinemas_doc
+      @cinemas_doc ||=
+        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.cinemas)
     end
-    private_class_method :home_doc
+    private_class_method :cinemas_doc
 
     def address_node
       @address_node ||= info_doc.css(ADDRESS_CSS)
@@ -167,7 +167,7 @@ module PicturehouseUk
     end
 
     # @api private
-    # Utility class to parse the links spat out from the options
+    # Utility class to parse the links from the cinemas page
     class ListParser
       def initialize(nodes)
         @nodes = nodes
@@ -175,22 +175,38 @@ module PicturehouseUk
 
       def to_hash
         @nodes.each_with_object({}) do |node, result|
-          result[id(node)] = { name: name(node), url: url(node) }
+          cinema_id = id(node)
+          cinema_name = name(node)
+          # Skip links that don't have valid cinema data
+          next unless cinema_id && cinema_name
+          # Skip duplicate entries
+          next if result.key?(cinema_id)
+
+          result[cinema_id] = { name: cinema_name, url: url(node) }
         end
       end
 
       private
 
       def id(node)
-        url(node).match(%r{/cinema/(.+)$})[1]
+        href = url(node)
+        return nil unless href
+        match = href.match(%r{/cinema/([^/?#]+)})
+        match ? match[1] : nil
       end
 
       def name(node)
-        node.children.first.to_s.split(' — ')[1]
+        # Cinema name is in a <p> tag within the link
+        p_tag = node.css('p').first
+        return nil unless p_tag
+        # Get text and remove the location span
+        p_tag.children.find { |child| child.text? }&.text&.strip
       end
 
       def url(node)
-        node.get_attribute('data-href')
+        href = node.get_attribute('href')
+        # Convert relative URLs to absolute if needed
+        href&.start_with?('http') ? href : "https://www.picturehouses.com#{href}"
       end
     end
   end

@@ -4,6 +4,10 @@ class FakeWebsite
     read_file('../../fixtures/home.html')
   end
 
+  def cinemas
+    read_file('../../fixtures/cinemas.html')
+  end
+
   def cinema(cinema_id)
     read_file("../../fixtures/#{cinema_id}/cinema.html")
   end

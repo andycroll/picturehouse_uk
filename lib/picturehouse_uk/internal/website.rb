@@ -26,6 +26,12 @@ module PicturehouseUk
         get(nil)
       end
 
+      # get the cinemas listing page
+      # @return [String]
+      def cinemas
+        get("cinema")
+      end
+
       private
 
       def get(path)
