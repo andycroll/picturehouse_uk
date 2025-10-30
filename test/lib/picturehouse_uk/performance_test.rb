@@ -12,9 +12,9 @@ describe PicturehouseUk::Performance do
 
     it 'returns an array of screenings' do
       PicturehouseUk::Internal::Website.stub :new, website do
-        subject.must_be_instance_of(Array)
+        _(subject).must_be_instance_of(Array)
         subject.each do |screening|
-          screening.must_be_instance_of(PicturehouseUk::Performance)
+          _(screening).must_be_instance_of(PicturehouseUk::Performance)
         end
       end
     end
@@ -74,7 +74,7 @@ describe PicturehouseUk::Performance do
     subject { described_class.new(options).dimension }
 
     it 'returns 2d or 3d' do
-      subject.must_be_instance_of(String)
+      _(subject).must_be_instance_of(String)
       subject.must_equal '3d'
     end
   end
@@ -93,7 +93,7 @@ describe PicturehouseUk::Performance do
       end
 
       it 'returns UTC time' do
-        subject.must_be_instance_of Time
+        _(subject).must_be_instance_of Time
         subject.must_equal Time.utc(2013, 9, 12, 11, 0)
       end
     end
@@ -109,7 +109,7 @@ describe PicturehouseUk::Performance do
       end
 
       it 'returns UTC time' do
-        subject.must_be_instance_of Time
+        _(subject).must_be_instance_of Time
         subject.must_equal Time.utc(2013, 9, 12, 10, 0)
       end
     end
@@ -128,7 +128,7 @@ describe PicturehouseUk::Performance do
     subject { described_class.new(options).showing_on }
 
     it 'returns date of showing' do
-      subject.must_be_instance_of(Date)
+      _(subject).must_be_instance_of(Date)
       subject.must_equal Date.new(2013, 9, 12)
     end
   end
@@ -147,9 +147,9 @@ describe PicturehouseUk::Performance do
     end
 
     it 'is an alphabetically ordered array of lower-cased strings' do
-      subject.must_be_instance_of Array
+      _(subject).must_be_instance_of Array
       subject.each do |tag|
-        tag.must_be_instance_of String
+        _(tag).must_be_instance_of String
       end
       subject.must_equal %w(kids)
     end

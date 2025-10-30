@@ -38,8 +38,8 @@ module PicturehouseUk
 
       def get(path)
         # SSL verification doesn't work on picturehouses.com
-        open("https://www.picturehouses.com/#{path}",
-             ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read
+        URI.open("https://www.picturehouses.com/#{path}",
+                 ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read
       end
     end
   end
