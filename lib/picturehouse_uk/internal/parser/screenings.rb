@@ -3,170 +3,122 @@ module PicturehouseUk
   module Internal
     # @api private
     module Parser
-      # Parses screenings page into an array of hashes for an individual cinema
+      # Parses JSON API response into an array of screening hashes
       class Screenings
-        # css for a day of films & screenings
-        LISTINGS = '.listings li:not(.dark)'.freeze
-        DATE = '.nav-collapse.collapse'.freeze
-
         def initialize(cinema_id)
           @cinema_id = cinema_id
         end
 
-        # parse the cinema page into an array of screenings attributes
+        # Parse the JSON response into an array of screening attributes
         # @return [Array<Hash>]
         def to_a
-          doc.css(LISTINGS).flat_map do |node|
-            FilmWithShowtimes.new(node,
-                                  date_from_html(node.css(DATE).to_s)).to_a
-          end
+          return [] unless json_data['response'] == 'success'
+          return [] unless json_data['movies']
+
+          json_data['movies'].flat_map do |movie|
+            parse_movie(movie)
+          end.compact
         end
 
         private
 
-        def date_from_html(html)
-          if html =~ /listings-further-ahead-today/
-            Date.now
-          else
-            html.match(/listings-further-ahead-(\d{4})(\d{2})(\d{2})/) do |m|
-              Date.new(m[1].to_i, m[2].to_i, m[3].to_i)
-            end
+        def parse_movie(movie)
+          return [] if movie['show_times'].nil? || movie['show_times'].empty?
+
+          movie['show_times'].map do |timing|
+            parse_timing(movie, timing)
+          end.compact
+        end
+
+        def parse_timing(movie, timing)
+          # Skip sold out or unavailable screenings
+          return nil if timing['SoldoutStatus'] == 2
+          return nil unless timing['date_f'] && timing['time']
+
+          # Skip advance booking restrictions if not advertised
+          if movie['ABgtToday'] == true && movie['AdvertiseAdvanceBookingDate'] == false
+            return nil
           end
+
+          {
+            film_name: sanitize_title(movie['Title']),
+            dimension: determine_dimension(movie['Title'], timing),
+            variant: extract_variants(timing),
+            booking_url: booking_url(timing),
+            starting_at: parse_datetime(timing['date_f'], timing['time'])
+          }
         end
 
-        def doc
-          @doc ||= Nokogiri::HTML(page)
+        def sanitize_title(title)
+          TitleSanitizer.new(title).sanitized
         end
 
-        def page
-          @page ||= PicturehouseUk::Internal::Website.new.whats_on(@cinema_id)
-        end
-      end
-    end
+        def determine_dimension(title, timing)
+          # Check title for 3D indicator
+          return '3d' if title =~ /3d/i
 
-    # @api private
-    # collection of timings for a specific film
-    class FilmWithShowtimes
-      # film name css
-      NAME = '.top-mg-sm a'.freeze
-      # variants css
-      VARIANTS = '.film-times .col-xs-10'.freeze
-
-      def initialize(node, date)
-        @node = node
-        @date = date
-      end
-
-      # The film name
-      # @return [String]
-      def name
-        TitleSanitizer.new(raw_name).sanitized
-      end
-
-      # Showings hashes
-      # @return [Array<Hash>]
-      def to_a
-        Array(@node.css(VARIANTS)).flat_map do |variant|
-          Variant.new(variant, @date).to_a.map do |hash|
-            {
-              film_name: name,
-              dimension: dimension
-            }.merge(hash)
+          # Check timing attributes for 3D
+          if timing['SessionAttributesNames']
+            return '3d' if timing['SessionAttributesNames'].any? { |attr| attr =~ /3d/i }
           end
+
+          '2d'
         end
-      end
 
-      private
+        def extract_variants(timing)
+          return [] unless timing['SessionAttributesNames']
 
-      def dimension
-        raw_name =~ /3d/i ? '3d' : '2d'
-      end
+          variants = []
 
-      def raw_name
-        @raw_name ||= @node.css(NAME).children.first.to_s
-      end
-    end
+          timing['SessionAttributesNames'].each do |attribute|
+            # Map known attributes to variant types
+            variants << 'baby' if attribute =~ /big scream/i
+            variants << 'imax' if attribute =~ /imax/i
+            variants << 'kids' if attribute =~ /kids|toddler/i
+            variants << 'arts' if attribute =~ /nt live|screen arts|rbo|roh|met opera/i
+            variants << 'senior' if attribute =~ /silver screen/i
+          end
 
-    # @api private
-    # variants can have multiple screenings
-    class Variant
-      SHOWTIMES  = '.btn'.freeze
-      VARIANT    = '.film-type-desc'.freeze
-      TRANSLATOR = {
-        'Big Scream'    => 'baby',
-        'IMAX'          => 'imax',
-        "Kids' Club"    => 'kids',
-        'NT Live'       => 'arts',
-        'Screen Arts'   => 'arts',
-        'Silver Screen' => 'senior'
-      }.freeze
-
-      def initialize(node, date)
-        @node = node
-        @date = date
-      end
-
-      # Variant arrays
-      # @return [Array<Hash>]
-      def to_a
-        @node.css(SHOWTIMES).map do |node|
-          { variant: variant }.merge(Showtime.new(@node, @date).to_hash)
+          variants.uniq.sort
         end
-      end
 
-      private
+        def booking_url(timing)
+          return nil unless timing['SessionId']
 
-      def variant
-        @variant ||= TRANSLATOR.select do |k, _|
-          variant_text.include?(k)
-        end.values.uniq
-      end
+          # Vista booking URL format
+          "https://web.picturehouses.com/order/showtimes/#{@cinema_id}-#{timing['SessionId']}/seats"
+        end
 
-      def variant_text
-        @variant_text ||= @node.css(VARIANT).to_s
-      end
-    end
+        def parse_datetime(date_str, time_str)
+          # date_str format: "2024-10-30"
+          # time_str format: "19:30"
+          return nil unless date_str && time_str
 
-    # @api private
-    # parse an individual screening node
-    class Showtime
-      def initialize(node, date)
-        @node = node
-        @date = date
-      end
+          date_parts = date_str.split('-').map(&:to_i)
+          time_parts = time_str.split(':').map(&:to_i)
 
-      def to_hash
-        {
-          booking_url: booking_url,
-          starting_at: starting_at
-        }
-      end
+          # Create Time object in local timezone, then convert to UTC
+          Time.new(
+            date_parts[0], # year
+            date_parts[1], # month
+            date_parts[2], # day
+            time_parts[0], # hour
+            time_parts[1], # minute
+            0,             # second
+            '+00:00'       # UTC timezone
+          )
+        rescue StandardError => e
+          warn "Failed to parse datetime from #{date_str} #{time_str}: #{e.message}"
+          nil
+        end
 
-      private
+        def json_data
+          @json_data ||= api_client.get_movies(@cinema_id)
+        end
 
-      def booking_url
-        return if href.nil? || href.empty?
-        "https://picturehouses.com#{href}"
-      end
-
-      def hour
-        split[0]
-      end
-
-      def href
-        @href ||= @node['href']
-      end
-
-      def min
-        split[1]
-      end
-
-      def split
-        @split ||= @node.text.split('.').map(&:to_i)
-      end
-
-      def starting_at
-        @starting_at ||= @date.to_time + (hour * 60 + min) * 60
+        def api_client
+          @api_client ||= Api.new
+        end
       end
     end
   end

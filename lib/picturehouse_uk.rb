@@ -3,6 +3,7 @@ require 'nokogiri'
 
 require_relative './picturehouse_uk/version'
 
+require_relative './picturehouse_uk/internal/api'
 require_relative './picturehouse_uk/internal/parser/address'
 require_relative './picturehouse_uk/internal/parser/screenings'
 require_relative './picturehouse_uk/internal/title_sanitizer'
