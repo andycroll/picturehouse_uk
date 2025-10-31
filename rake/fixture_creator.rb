@@ -4,6 +4,7 @@ class FixtureCreator
     %i(cinema information).each do |action|
       write_fixture_for_cinema(cinema_id, action)
     end
+    write_api_fixture_for_cinema(cinema_id)
   end
 
   def home
@@ -20,6 +21,10 @@ class FixtureCreator
     File.expand_path("#{fixture_path}/#{name}.html", __FILE__)
   end
 
+  def json_fixture(name)
+    File.expand_path("#{fixture_path}/#{name}.json", __FILE__)
+  end
+
   def fixture_path
     '../../test/fixtures'
   end
@@ -34,6 +39,17 @@ class FixtureCreator
     File.open(fixture(text), 'w+') do |file|
       log(text)
       file.write PicturehouseUk::Internal::Website.new.send(kind, cinema_id)
+    end
+  end
+
+  def write_api_fixture_for_cinema(cinema_id)
+    require 'json'
+    FileUtils.mkdir_p File.expand_path("#{fixture_path}/#{cinema_id}", __FILE__)
+    text = "#{cinema_id}/get_movies"
+    File.open(json_fixture(text), 'w+') do |file|
+      log(text)
+      data = PicturehouseUk::Internal::Api.new.get_movies(cinema_id)
+      file.write JSON.pretty_generate(data)
     end
   end
 
