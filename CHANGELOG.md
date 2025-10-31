@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [5.0.0] - 2025-10-31
 
 ### Added
 - JSON API client for fetching performance data from `/api/get-movies-ajax` endpoint
