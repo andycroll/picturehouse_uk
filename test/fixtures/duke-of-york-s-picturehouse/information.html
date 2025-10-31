@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
     <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
-    <!-- 2025-10-30 22:54:14 -->
+    <!-- 2025-10-31 12:04:44 -->
     <meta name="keywords" content="accessible, accessible cinema, picturehouse, picturehouse cinemas, cinema, brighton picturrehouse,duke of york&#039;s picturehouse,duke of york&#039;s cinema,brighton cinema,brighton,what&#039;s on brighton,movies,films,film listings,movie listings,cinema listings,movie theatre,theatre" />
     <meta name="description" content="One of the oldest cinemas in the world - and a Brighton institution. Showing the best blockbuster and independent films. Browse showtimes, book tickets, and more." />
         <meta name="robots" content="" />
@@ -1174,7 +1174,7 @@ We typically show:        <br>A new release every second Monday of the m
                             <div class="right">
                                 <h3>Sign In</h3>
                                 <form action="https://www.picturehouses.com/login-post" method="post">
-                                    <input type="hidden" name="_token" value="bJNIy4P8LTHfgIytEISAohlp7dl9j4KcdhIGcdKX">
+                                    <input type="hidden" name="_token" value="jZYSoSD7u1KuH89rN7bdvzh8Oayv1zGthAnFBFAo">
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="username" id="username"
                                             placeholder="Username">
@@ -1505,7 +1505,7 @@ Get the app!</p>
                     <!--                    <h4></h4>
                             <section class="newsletter get-in-touch">
                                 <form class="newsletter-form" method="post" action="https://www.picturehouses.com/subscribers_mail">
-                                    <input type="hidden" name="_token" value="bJNIy4P8LTHfgIytEISAohlp7dl9j4KcdhIGcdKX" />
+                                    <input type="hidden" name="_token" value="jZYSoSD7u1KuH89rN7bdvzh8Oayv1zGthAnFBFAo" />
                                     <fieldset>
                                         <input type="email" class="newsletter-email" name="email" required placeholder="E-mail">
                                         <button type="submit" class="newsletter-submit">Subscribe</button>
@@ -2591,7 +2591,7 @@ Get the app!</p>
                 },
                 beforeSend: function(xhr) {
 
-                    var token = "eyJpdiI6ImhLdStlbnNmWndiTUZPNkNiUDFEYUE9PSIsInZhbHVlIjoiLy84cjVYOGx2YzZCL1BockpUVUF0L01ybWdUWHBmZkIzRlVrUVZCNU9BREpVZ1ZsZC9aZUNKYlE1V2dwaE9McUJtN1BNR3lUZHljZmZwMkhPSkNCYXc9PSIsIm1hYyI6ImQ2YTJiYWNmZWE2YjkxMWQyZjY4MjVlYjExNWY2YzU5NDI3ZGJhODI0MmY2YWRjZjMyNjAzZGVlZGFiNTM1YmUiLCJ0YWciOiIifQ==";
+                    var token = "eyJpdiI6IkZJNm1VYWZycmpGam5Lamp6YytrQmc9PSIsInZhbHVlIjoiWEFYbE03NWNHQmZNd2NKWXB4OWtIMkFHbFNOcXA5RjQwUU5TYXhlTTIxSFpGNURSUWZidXBoZThBUHc0RVFvSFNBY1JOaC9sdE43bU05dW81aTJVbWc9PSIsIm1hYyI6IjVlNGM1ZDZlNTczZWQzNzhiZWY1OTUxOGRjMDk0MGU1NWEzZGY4ODcyYTU2NzEwODUxNjdmZTIxNWJkZTllNzciLCJ0YWciOiIifQ==";
                     if (token) {
                         return xhr.setRequestHeader('X-XSRF-TOKEN', token);
                     }
@@ -3197,7 +3197,7 @@ Get the app!</p>
                 url: "https://www.picturehouses.com/ajax-cinema-list",
                 type: "POST",
                 data: {
-                    _token: "bJNIy4P8LTHfgIytEISAohlp7dl9j4KcdhIGcdKX",
+                    _token: "jZYSoSD7u1KuH89rN7bdvzh8Oayv1zGthAnFBFAo",
 
                 },
                 cache: false,
@@ -3360,7 +3360,7 @@ Get the app!</p>
             // put it in a date object, it will convert to 24 hours format for us
             var da = new Date();
             var strDate = da.getFullYear() + "/" + (da.getMonth() + 1) + "/" + da.getDate();
-            var d = new Date("10/30/2025" + str);
+            var d = new Date("10/31/2025" + str);
             //console.log(strDate);
 
             // make hours and minutes double digits
@@ -3452,16 +3452,16 @@ Get the app!</p>
                     url: "https://www.picturehouses.com/api/validate-member",
                     type: "POST",
                     beforeSend: function(xhr) {
-                        var token = "eyJpdiI6InFqZUZwc3dpc0tOV3JNMEdlVmFGRVE9PSIsInZhbHVlIjoiTE9tSDEybExtNGE0cnZCdmdRS3lmNmx3TGZpS0h2TXlZWGtVMUZpeXZtYlllNkF2enU2MnBEN3hBeG5QKzZEemVIaFpvcldCSVpjNXFBdW1XaGdtUkE9PSIsIm1hYyI6IjQ0N2RlYmU0M2JlMTFlYzg4ODBjNGI1OTcwZTczYjBjMTk3Yjg2ZTc5ZTg4NTk2YzU5MGU2YjM1MzFiZDBiYjMiLCJ0YWciOiIifQ==";
+                        var token = "eyJpdiI6ImIxU3k5ekxHRUlzeFdoZG1nbTgva1E9PSIsInZhbHVlIjoiTHMrVXpQdWRQcDlaNWxobWRtdkx1aGF4Z3hXdmdjcTczOGkrTW9NSFcyeU8reWpxOTYzYTMwdUdQM013c2twakRkWkVQV1ROUTFpNm1xaEhhT3JUd0E9PSIsIm1hYyI6IjYwNjU4MmIzNmRhMGIyYWNjYWY1MTJhZDlhOTZjY2Y2YTc2NDkyZjYwODFhNTE2MzVjYjI4NmQwNDQ3NTM0ZDAiLCJ0YWciOiIifQ==";
                         if (token) {
                             return xhr.setRequestHeader('X-XSRF-TOKEN', token);
                         }
                     },
                     data: {
                         member_id: member_id,
-                        device_id: "833750738",
+                        device_id: "274904972",
                         card_number: true,
-                        user_session_id: "1761864854"
+                        user_session_id: "1761912284"
                     },
                     cache: false,
                     success: function(data) {
