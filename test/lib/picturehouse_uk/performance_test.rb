@@ -7,34 +7,72 @@ describe PicturehouseUk::Performance do
   before { WebMock.disable_net_connect! }
   after { WebMock.allow_net_connect! }
 
-  # NOTE: These tests are commented out because they rely on whats_on functionality
-  # which has been removed. The Performance.at method needs to be updated for the new API.
-  # describe '.at(cinema_id)' do
-  #   subject { described_class.at('duke-of-york-s-picturehouse') }
-  #
-  #   it 'returns an array of screenings' do
-  #     PicturehouseUk::Internal::Website.stub :new, website do
-  #       _(subject).must_be_instance_of(Array)
-  #       subject.each do |screening|
-  #         _(screening).must_be_instance_of(PicturehouseUk::Performance)
-  #       end
-  #     end
-  #   end
-  #
-  #   it 'returns correct number of screenings' do
-  #     PicturehouseUk::Internal::Website.stub :new, website do
-  #       _(subject.count).must_be :>, 40
-  #     end
-  #   end
-  #
-  #   it 'has valid screenings' do
-  #     PicturehouseUk::Internal::Website.stub :new, website do
-  #       subject.map(&:starting_at).each do |time|
-  #         _(time).wont_equal Time.utc(1970, 1, 1, 0, 0)
-  #       end
-  #     end
-  #   end
-  # end
+  describe '.at(cinema_id)' do
+    let(:api_client) { FakeApi.new }
+    subject { described_class.at('duke-s-at-komedia') }
+
+    it 'returns an array of screenings' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          _(subject).must_be_instance_of(Array)
+          subject.each do |screening|
+            _(screening).must_be_instance_of(PicturehouseUk::Performance)
+          end
+        end
+      end
+    end
+
+    it 'returns correct number of screenings' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          _(subject.count).must_equal 8
+        end
+      end
+    end
+
+    it 'has valid screenings' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          subject.map(&:starting_at).each do |time|
+            _(time).wont_equal Time.utc(1970, 1, 1, 0, 0)
+          end
+        end
+      end
+    end
+
+    it 'includes different variants' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          variants = subject.flat_map(&:variant).uniq
+          _(variants).must_include 'arts'
+          _(variants).must_include 'kids'
+          _(variants).must_include 'senior'
+        end
+      end
+    end
+
+    it 'correctly identifies 3D films' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          three_d_screenings = subject.select { |s| s.dimension == '3d' }
+          _(three_d_screenings).wont_be_empty
+          three_d_screenings.each do |screening|
+            _(screening.film_name).must_match(/Marvels/i)
+          end
+        end
+      end
+    end
+
+    it 'generates booking URLs' do
+      PicturehouseUk::Internal::Website.stub :new, website do
+        PicturehouseUk::Internal::Api.stub :new, api_client do
+          subject.each do |screening|
+            _(screening.booking_url).must_match(%r{\Ahttps://web\.picturehouses\.com/order/showtimes/})
+          end
+        end
+      end
+    end
+  end
 
   describe '.new' do
     subject { described_class.new(options) }
