@@ -15,4 +15,5 @@ require 'webmock/minitest'
 
 require File.expand_path('../../lib/picturehouse_uk.rb', __FILE__)
 
+require_relative 'support/fake_api'
 require_relative 'support/fake_website'
