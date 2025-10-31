@@ -2,6 +2,31 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+- JSON API client for fetching performance data from `/api/get-movies-ajax` endpoint
+- `PicturehouseUk::Internal::Api` for making API requests
+- `PicturehouseUk::Internal::Parser::Screenings` for parsing JSON responses (replaced old HTML parser)
+- Comprehensive tests for JSON API functionality
+- Sample JSON fixtures for testing
+
+### Changed
+- `Performance.at()` now uses JSON API instead of HTML parsing
+- Improved variant detection (arts, baby, kids, senior, imax)
+- Booking URLs now use Vista format: `https://web.picturehouses.com/order/showtimes/{cinema_id}-{session_id}/seats`
+- Enhanced 3D film detection from both title and attributes
+- Increased test coverage to 98.65%
+
+### Removed
+- Old HTML parser `Parser::Screenings` (completely replaced with JSON API version)
+- Test file for old HTML parser
+
+### Technical Details
+- The Picturehouse website now dynamically populates screening data via AJAX calls to their JSON API
+- The `#show_all_date_list` div is populated client-side with data from the API endpoint
+- HTML parsing approach replaced with direct API consumption for better reliability
+
 ## 4.0.0 - 2016-02-10
 
 The cinebase standardisation release.
