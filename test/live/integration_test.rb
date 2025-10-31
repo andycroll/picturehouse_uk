@@ -14,19 +14,19 @@ describe PicturehouseUk::Cinema do
     subject { described_class.all }
 
     it 'returns an Array of CineworldUK::Cinemas' do
-      subject.must_be_instance_of(Array)
+      _(subject).must_be_instance_of(Array)
       subject.each do |value|
-        value.must_be_instance_of(PicturehouseUk::Cinema)
+        _(value).must_be_instance_of(PicturehouseUk::Cinema)
       end
     end
 
     it 'returns the correctly sized array' do
-      subject.size.must_be :>, 18
+      _(subject.size).must_be :>, 18
     end
 
     it 'returns the right cinemas' do
-      subject.first.name.must_equal 'Clapham Picturehouse'
-      subject.last.name.must_equal 'City Screen Picturehouse'
+      _(subject.first.name).must_equal 'Little Theatre Cinema'
+      _(subject.last.name).must_equal 'City Screen York'
     end
   end
 end
@@ -38,14 +38,14 @@ describe PicturehouseUk::Performance do
     subject { described_class.at('Duke_Of_Yorks') }
 
     it 'returns an array of screenings' do
-      subject.must_be_instance_of(Array)
+      _(subject).must_be_instance_of(Array)
       subject.each do |performance|
-        performance.must_be_instance_of(PicturehouseUk::Performance)
+        _(performance).must_be_instance_of(PicturehouseUk::Performance)
       end
     end
 
     it 'returns correct number of screenings' do
-      subject.count.must_be :>, 10
+      _(subject.count).must_be :>, 10
     end
   end
 end
