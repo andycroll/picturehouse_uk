@@ -1,0 +1,112 @@
+{
+  "response": "success",
+  "movies": [
+    {
+      "Title": "The Holdovers",
+      "ScheduledFilmId": "12345",
+      "FilmHOCode": "HO00012345",
+      "OpeningDate": "2024-01-15",
+      "Rating": "15",
+      "RunTime": "133",
+      "image_url": "https://example.com/holdovers.jpg",
+      "image_alt": "The Holdovers poster",
+      "TrailerUrl": "https://example.com/trailer",
+      "filter_class_names": "drama comedy",
+      "show_times": [
+        {
+          "date_f": "2024-11-01",
+          "time": "14:30",
+          "SessionId": "789001",
+          "ScreenName": "Screen 1",
+          "SessionAttributesNames": [],
+          "SoldoutStatus": 0
+        },
+        {
+          "date_f": "2024-11-01",
+          "time": "17:45",
+          "SessionId": "789002",
+          "ScreenName": "Screen 1",
+          "SessionAttributesNames": ["Subtitled"],
+          "SoldoutStatus": 1
+        },
+        {
+          "date_f": "2024-11-01",
+          "time": "20:15",
+          "SessionId": "789003",
+          "ScreenName": "Screen 2",
+          "SessionAttributesNames": [],
+          "SoldoutStatus": 0
+        }
+      ]
+    },
+    {
+      "Title": "The Marvels 3D",
+      "ScheduledFilmId": "12346",
+      "FilmHOCode": "HO00012346",
+      "OpeningDate": "2024-11-01",
+      "Rating": "12A",
+      "RunTime": "105",
+      "image_url": "https://example.com/marvels.jpg",
+      "show_times": [
+        {
+          "date_f": "2024-11-01",
+          "time": "15:00",
+          "SessionId": "789004",
+          "ScreenName": "Screen 2",
+          "SessionAttributesNames": ["3D"],
+          "SoldoutStatus": 0
+        },
+        {
+          "date_f": "2024-11-02",
+          "time": "18:30",
+          "SessionId": "789005",
+          "ScreenName": "Screen 1",
+          "SessionAttributesNames": ["3D"],
+          "SoldoutStatus": 0
+        }
+      ]
+    },
+    {
+      "Title": "Kids Club: Paddington",
+      "ScheduledFilmId": "12347",
+      "show_times": [
+        {
+          "date_f": "2024-11-02",
+          "time": "11:00",
+          "SessionId": "789006",
+          "ScreenName": "Screen 1",
+          "SessionAttributesNames": ["Kids Club"],
+          "SoldoutStatus": 0
+        }
+      ]
+    },
+    {
+      "Title": "Silver Screen: The Great Escaper",
+      "ScheduledFilmId": "12348",
+      "show_times": [
+        {
+          "date_f": "2024-11-02",
+          "time": "14:00",
+          "SessionId": "789007",
+          "ScreenName": "Screen 2",
+          "SessionAttributesNames": ["Silver Screen"],
+          "SoldoutStatus": 0
+        }
+      ]
+    },
+    {
+      "Title": "NT Live: The Crucible",
+      "ScheduledFilmId": "12349",
+      "show_times": [
+        {
+          "date_f": "2024-11-03",
+          "time": "19:00",
+          "SessionId": "789008",
+          "ScreenName": "Screen 1",
+          "SessionAttributesNames": ["NT Live"],
+          "SoldoutStatus": 0
+        }
+      ]
+    }
+  ]
+}
