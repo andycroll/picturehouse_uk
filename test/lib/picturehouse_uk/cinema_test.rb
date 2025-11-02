@@ -1,223 +1,167 @@
 require_relative '../../test_helper'
 
-describe PicturehouseUk::Cinema do
-  let(:described_class) { PicturehouseUk::Cinema }
-  let(:website) { FakeWebsite.new }
+class PicturehouseUkCinemaTest < Minitest::Test
+  def setup
+    @website = FakeWebsite.new
+    WebMock.disable_net_connect!
+  end
 
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
+  def teardown
+    WebMock.allow_net_connect!
+  end
 
-  describe '.all' do
-    subject { described_class.all }
-
-    it 'returns an Array of CineworldUK::Cinemas' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_be_instance_of(Array)
-        subject.each do |value|
-          _(value).must_be_instance_of(PicturehouseUk::Cinema)
-        end
-      end
-    end
-
-    it 'returns the correctly sized array' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.size).must_equal 25
-      end
-    end
-
-    it 'returns the right cinemas' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.first.name).must_equal 'Little Theatre Cinema'
-        _(subject.last.name).must_equal 'City Screen York'
+  def test_all_returns_array_of_cinemas
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      result = PicturehouseUk::Cinema.all
+      assert_instance_of Array, result
+      result.each do |value|
+        assert_instance_of PicturehouseUk::Cinema, value
       end
     end
   end
 
-  describe '.new(id)' do
-    subject { described_class.new('duke-s-at-komedia') }
-
-    it 'stores id, name, slug and url' do
-      _(subject).must_be_instance_of(PicturehouseUk::Cinema)
+  def test_all_returns_correctly_sized_array
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      result = PicturehouseUk::Cinema.all
+      assert_equal 25, result.size
     end
   end
 
-  describe '#adr' do
-    subject { described_class.new(id).adr }
-
-    describe 'no region' do
-      let(:id) { 'phoenix-picturehouse' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '57 Walton Street',
-            extended_address: nil,
-            locality:         'Oxford',
-            region:           nil,
-            postal_code:      'OX2 6AE',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
-    end
-
-    describe 'with region' do
-      let(:id) { 'duke-s-at-komedia' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '44–47 Gardner Street',
-            extended_address: nil,
-            locality:         'Brighton',
-            region:           'East Sussex',
-            postal_code:      'BN1 1UN',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
+  def test_all_returns_right_cinemas
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      result = PicturehouseUk::Cinema.all
+      assert_equal 'Little Theatre Cinema', result.first.name
+      assert_equal 'City Screen York', result.last.name
     end
   end
 
-  describe '#address' do
-    subject { described_class.new(id).address }
+  def test_new_stores_id_name_slug_and_url
+    cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+    assert_instance_of PicturehouseUk::Cinema, cinema
+  end
 
-    describe 'no region' do
-      let(:id) { 'phoenix-picturehouse' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '57 Walton Street',
-            extended_address: nil,
-            locality:         'Oxford',
-            region:           nil,
-            postal_code:      'OX2 6AE',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
+  def test_adr_with_no_region_returns_address_hash
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('phoenix-picturehouse')
+      result = cinema.adr
+      assert_equal(
+        {
+          street_address:   '57 Walton Street',
+          extended_address: nil,
+          locality:         'Oxford',
+          region:           nil,
+          postal_code:      'OX2 6AE',
+          country_name:     'United Kingdom'
+        },
+        result
+      )
     end
   end
 
-  describe '#brand' do
-    subject { described_class.new(id).brand }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns Picturehouse' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('Picturehouse')
-      end
+  def test_adr_with_region_returns_address_hash
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      result = cinema.adr
+      assert_equal(
+        {
+          street_address:   '44–47 Gardner Street',
+          extended_address: nil,
+          locality:         'Brighton',
+          region:           'East Sussex',
+          postal_code:      'BN1 1UN',
+          country_name:     'United Kingdom'
+        },
+        result
+      )
     end
   end
 
-  describe '#country_name' do
-    subject { described_class.new(id).country_name }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns country' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('United Kingdom')
-      end
+  def test_address_with_no_region_returns_address_hash
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('phoenix-picturehouse')
+      result = cinema.address
+      assert_equal(
+        {
+          street_address:   '57 Walton Street',
+          extended_address: nil,
+          locality:         'Oxford',
+          region:           nil,
+          postal_code:      'OX2 6AE',
+          country_name:     'United Kingdom'
+        },
+        result
+      )
     end
   end
 
-  describe '#extended_address' do
-    subject { described_class.new(id).extended_address }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('')
-      end
+  def test_brand_returns_picturehouse
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'Picturehouse', cinema.brand
     end
   end
 
-  describe '#full_name' do
-    subject { described_class.new(id).full_name }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns full name (same as name)' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal("Duke's at Komedia")
-        _(subject).must_equal(described_class.new(id).name)
-      end
+  def test_country_name_returns_country
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'United Kingdom', cinema.country_name
     end
   end
 
-  describe '#locality' do
-    subject { described_class.new(id).locality }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('Brighton')
-      end
+  def test_extended_address_returns_second_line_of_address
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal '', cinema.extended_address
     end
   end
 
-  describe '#name' do
-    subject { described_class.new(id).name }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns full name (same as name)' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal("Duke's at Komedia")
-      end
+  def test_full_name_returns_full_name_same_as_name
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal "Duke's at Komedia", cinema.full_name
+      assert_equal cinema.name, cinema.full_name
     end
   end
 
-  describe '#postal_code' do
-    subject { described_class.new(id).postal_code }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('BN1 1UN')
-      end
+  def test_locality_returns_locality
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'Brighton', cinema.locality
     end
   end
 
-  describe '#region' do
-    subject { described_class.new(id).region }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('East Sussex')
-      end
+  def test_name_returns_full_name
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal "Duke's at Komedia", cinema.name
     end
   end
 
-  describe '#slug' do
-    subject { described_class.new(id).slug }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns downcased' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('dukes-at-komedia')
-      end
+  def test_postal_code_returns_postal_code
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'BN1 1UN', cinema.postal_code
     end
   end
 
-  describe '#street_address' do
-    subject { described_class.new(id).street_address }
+  def test_region_returns_region
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'East Sussex', cinema.region
+    end
+  end
 
-    let(:id) { 'duke-s-at-komedia' }
+  def test_slug_returns_downcased
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal 'dukes-at-komedia', cinema.slug
+    end
+  end
 
-    it 'returns first line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('44–47 Gardner Street')
-      end
+  def test_street_address_returns_first_line_of_address
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      cinema = PicturehouseUk::Cinema.new('duke-s-at-komedia')
+      assert_equal '44–47 Gardner Street', cinema.street_address
     end
   end
 end

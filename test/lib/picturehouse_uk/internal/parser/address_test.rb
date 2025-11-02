@@ -1,53 +1,56 @@
 require_relative '../../../../test_helper'
 
-describe PicturehouseUk::Internal::Parser::Address do
-  let(:described_class) { PicturehouseUk::Internal::Parser::Address }
+class PicturehouseUkInternalParserAddressTest < Minitest::Test
+  # real functionality tested via integration
 
-  describe '#address' do
-    subject { described_class.new(html).address }
+  def test_address_passed_nil_returns_hash_of_nils
+    parser = PicturehouseUk::Internal::Parser::Address.new(nil)
+    result = parser.address
+    assert_instance_of Hash, result
+    assert_equal(
+      {
+        street_address:   nil,
+        extended_address: nil,
+        locality:         nil,
+        region:           nil,
+        postal_code:      nil,
+        country_name:     "United Kingdom"
+      },
+      result
+    )
+  end
 
-    # real functionality tested via integration
+  def test_address_passed_empty_string_returns_hash_of_nils
+    parser = PicturehouseUk::Internal::Parser::Address.new('')
+    result = parser.address
+    assert_instance_of Hash, result
+    assert_equal(
+      {
+        street_address:   nil,
+        extended_address: nil,
+        locality:         nil,
+        region:           nil,
+        postal_code:      nil,
+        country_name:     "United Kingdom"
+      },
+      result
+    )
+  end
 
-    describe 'passed nil' do
-      let(:html) { nil }
-
-      it 'returns hash of nils' do
-        _(subject).must_be_instance_of(Hash)
-        _(subject).must_equal(street_address:   nil,
-                           extended_address: nil,
-                           locality:         nil,
-                           region:           nil,
-                           postal_code:      nil,
-                           country_name:     "United Kingdom")
-      end
-    end
-
-    describe 'passed empty string' do
-      let(:html) { '' }
-
-      it 'returns hash of nils' do
-        _(subject).must_be_instance_of(Hash)
-        _(subject).must_equal(street_address:   nil,
-                           extended_address: nil,
-                           locality:         nil,
-                           region:           nil,
-                           postal_code:      nil,
-                           country_name:     "United Kingdom")
-      end
-    end
-
-    describe 'passed nonsense' do
-      let(:html) { 'not an address' }
-
-      it 'returns hash of nils' do
-        _(subject).must_be_instance_of(Hash)
-        _(subject).must_equal(street_address:   nil,
-                           extended_address: nil,
-                           locality:         nil,
-                           region:           nil,
-                           postal_code:      nil,
-                           country_name:     "United Kingdom")
-      end
-    end
+  def test_address_passed_nonsense_returns_hash_of_nils
+    parser = PicturehouseUk::Internal::Parser::Address.new('not an address')
+    result = parser.address
+    assert_instance_of Hash, result
+    assert_equal(
+      {
+        street_address:   nil,
+        extended_address: nil,
+        locality:         nil,
+        region:           nil,
+        postal_code:      nil,
+        country_name:     "United Kingdom"
+      },
+      result
+    )
   end
 end

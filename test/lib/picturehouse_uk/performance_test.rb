@@ -1,197 +1,171 @@
 require_relative '../../test_helper'
 
-describe PicturehouseUk::Performance do
-  let(:described_class) { PicturehouseUk::Performance }
-  let(:website) { FakeWebsite.new }
+class PicturehouseUkPerformanceTest < Minitest::Test
+  def setup
+    @website = FakeWebsite.new
+    @api_client = FakeApi.new
+    WebMock.disable_net_connect!
+  end
 
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
+  def teardown
+    WebMock.allow_net_connect!
+  end
 
-  describe '.at(cinema_id)' do
-    let(:api_client) { FakeApi.new }
-    subject { described_class.at('duke-s-at-komedia') }
-
-    it 'returns an array of screenings' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          _(subject).must_be_instance_of(Array)
-          subject.each do |screening|
-            _(screening).must_be_instance_of(PicturehouseUk::Performance)
-          end
-        end
-      end
-    end
-
-    it 'returns correct number of screenings' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          _(subject.count).must_equal 8
-        end
-      end
-    end
-
-    it 'has valid screenings' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          subject.map(&:starting_at).each do |time|
-            _(time).wont_equal Time.utc(1970, 1, 1, 0, 0)
-          end
-        end
-      end
-    end
-
-    it 'includes different variants' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          variants = subject.flat_map(&:variant).uniq
-          _(variants).must_include 'arts'
-          _(variants).must_include 'kids'
-          _(variants).must_include 'senior'
-        end
-      end
-    end
-
-    it 'correctly identifies 3D films' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          three_d_screenings = subject.select { |s| s.dimension == '3d' }
-          _(three_d_screenings).wont_be_empty
-          three_d_screenings.each do |screening|
-            _(screening.film_name).must_match(/Marvels/i)
-          end
-        end
-      end
-    end
-
-    it 'generates booking URLs' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        PicturehouseUk::Internal::Api.stub :new, api_client do
-          subject.each do |screening|
-            _(screening.booking_url).must_match(%r{\Ahttps://web\.picturehouses\.com/order/showtimes/})
-          end
+  def test_at_returns_array_of_screenings
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        assert_instance_of Array, result
+        result.each do |screening|
+          assert_instance_of PicturehouseUk::Performance, screening
         end
       end
     end
   end
 
-  describe '.new' do
-    subject { described_class.new(options) }
-
-    describe 'simple' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.utc(2013, 9, 12, 11, 0)
-        }
-      end
-
-      it 'sets cinema name and film name' do
-        _(subject.film_name).must_equal 'Iron Man 3'
-        _(subject.cinema_name).must_equal 'Cineworld Brighton'
-      end
-
-      it 'booking url, dimension & varient are set to defaults' do
-        _(subject.booking_url).must_be_nil
-        _(subject.dimension).must_equal '2d'
-        _(subject.variant).must_equal []
+  def test_at_returns_correct_number_of_screenings
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        assert_equal 8, result.count
       end
     end
   end
 
-  describe '#dimension' do
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        dimension:   '3d',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0)
-      }
-    end
-
-    subject { described_class.new(options).dimension }
-
-    it 'returns 2d or 3d' do
-      _(subject).must_be_instance_of(String)
-      _(subject).must_equal '3d'
-    end
-  end
-
-  describe '#starting_at' do
-    subject { described_class.new(options).starting_at }
-
-    describe 'with utc time' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.utc(2013, 9, 12, 11, 0)
-        }
-      end
-
-      it 'returns UTC time' do
-        _(subject).must_be_instance_of Time
-        _(subject).must_equal Time.utc(2013, 9, 12, 11, 0)
-      end
-    end
-
-    describe 'with non-utc time' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.parse('2013-09-12 11:00')
-        }
-      end
-
-      it 'returns UTC time' do
-        _(subject).must_be_instance_of Time
-        _(subject).must_equal Time.utc(2013, 9, 12, 10, 0)
+  def test_at_has_valid_screenings
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        result.map(&:starting_at).each do |time|
+          refute_equal Time.utc(1970, 1, 1, 0, 0), time
+        end
       end
     end
   end
 
-  describe '#showing_on' do
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0)
-      }
-    end
-
-    subject { described_class.new(options).showing_on }
-
-    it 'returns date of showing' do
-      _(subject).must_be_instance_of(Date)
-      _(subject).must_equal Date.new(2013, 9, 12)
+  def test_at_includes_different_variants
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        variants = result.flat_map(&:variant).uniq
+        assert_includes variants, 'arts'
+        assert_includes variants, 'kids'
+        assert_includes variants, 'senior'
+      end
     end
   end
 
-  describe '#variant' do
-    subject { described_class.new(options).variant }
-
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0),
-        variant:     ['Kids']
-      }
-    end
-
-    it 'is an alphabetically ordered array of lower-cased strings' do
-      _(subject).must_be_instance_of Array
-      subject.each do |tag|
-        _(tag).must_be_instance_of String
+  def test_at_correctly_identifies_3d_films
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        three_d_screenings = result.select { |s| s.dimension == '3d' }
+        refute_empty three_d_screenings
+        three_d_screenings.each do |screening|
+          assert_match(/Marvels/i, screening.film_name)
+        end
       end
-      _(subject).must_equal %w(kids)
     end
+  end
+
+  def test_at_generates_booking_urls
+    PicturehouseUk::Internal::Website.stub :new, @website do
+      PicturehouseUk::Internal::Api.stub :new, @api_client do
+        result = PicturehouseUk::Performance.at('duke-s-at-komedia')
+        result.each do |screening|
+          assert_match(%r{\Ahttps://web\.picturehouses\.com/order/showtimes/}, screening.booking_url)
+        end
+      end
+    end
+  end
+
+  def test_new_simple_sets_cinema_name_and_film_name
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_equal 'Iron Man 3', performance.film_name
+    assert_equal 'Cineworld Brighton', performance.cinema_name
+  end
+
+  def test_new_simple_sets_defaults_for_booking_url_dimension_and_variant
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_nil performance.booking_url
+    assert_equal '2d', performance.dimension
+    assert_equal [], performance.variant
+  end
+
+  def test_dimension_returns_2d_or_3d
+    options = {
+      film_name:   'Iron Man 3',
+      dimension:   '3d',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_instance_of String, performance.dimension
+    assert_equal '3d', performance.dimension
+  end
+
+  def test_starting_at_with_utc_time_returns_utc_time
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_instance_of Time, performance.starting_at
+    assert_equal Time.utc(2013, 9, 12, 11, 0), performance.starting_at
+  end
+
+  def test_starting_at_with_non_utc_time_returns_utc_time
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.parse('2013-09-12 11:00')
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_instance_of Time, performance.starting_at
+    assert_equal Time.utc(2013, 9, 12, 10, 0), performance.starting_at
+  end
+
+  def test_showing_on_returns_date_of_showing
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_instance_of Date, performance.showing_on
+    assert_equal Date.new(2013, 9, 12), performance.showing_on
+  end
+
+  def test_variant_is_alphabetically_ordered_array_of_lowercased_strings
+    options = {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0),
+      variant:     ['Kids']
+    }
+    performance = PicturehouseUk::Performance.new(options)
+    assert_instance_of Array, performance.variant
+    performance.variant.each do |tag|
+      assert_instance_of String, tag
+    end
+    assert_equal %w(kids), performance.variant
   end
 end

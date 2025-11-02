@@ -1,92 +1,92 @@
 require_relative '../../../test_helper'
 
-describe PicturehouseUk::Internal::Api do
-  let(:described_class) { PicturehouseUk::Internal::Api }
+class PicturehouseUkInternalApiTest < Minitest::Test
+  def setup
+    @client = PicturehouseUk::Internal::Api.new
+    @cinema_id = 'duke-s-at-komedia'
+    WebMock.disable_net_connect!
+  end
 
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
+  def teardown
+    WebMock.allow_net_connect!
+  end
 
-  describe '#get_movies' do
-    let(:client) { described_class.new }
-    let(:cinema_id) { 'duke-s-at-komedia' }
+  def test_get_movies_makes_post_request_to_correct_endpoint
+    stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
+      .with do |request|
+        request.body.include?('start_date=show_all_dates') &&
+          request.body.include?("cinema_id=#{@cinema_id}")
+      end
+      .to_return(
+        status: 200,
+        body: '{"response":"success","movies":[]}',
+        headers: { 'Content-Type' => 'application/json' }
+      )
 
-    it 'makes POST request to correct endpoint' do
-      stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
-        .with do |request|
-          request.body.include?('start_date=show_all_dates') &&
-            request.body.include?("cinema_id=#{cinema_id}")
-        end
-        .to_return(
-          status: 200,
-          body: '{"response":"success","movies":[]}',
-          headers: { 'Content-Type' => 'application/json' }
-        )
+    result = @client.get_movies(@cinema_id)
 
-      result = client.get_movies(cinema_id)
+    assert_instance_of Hash, result
+    assert_equal 'success', result['response']
+  end
 
-      _(result).must_be_instance_of(Hash)
-      _(result['response']).must_equal 'success'
-    end
+  def test_get_movies_accepts_custom_date_parameter
+    stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
+      .with do |request|
+        request.body.include?('start_date=2024-11-01') &&
+          request.body.include?("cinema_id=#{@cinema_id}")
+      end
+      .to_return(
+        status: 200,
+        body: '{"response":"success","movies":[]}',
+        headers: { 'Content-Type' => 'application/json' }
+      )
 
-    it 'accepts custom date parameter' do
-      stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
-        .with do |request|
-          request.body.include?('start_date=2024-11-01') &&
-            request.body.include?("cinema_id=#{cinema_id}")
-        end
-        .to_return(
-          status: 200,
-          body: '{"response":"success","movies":[]}',
-          headers: { 'Content-Type' => 'application/json' }
-        )
+    result = @client.get_movies(@cinema_id, '2024-11-01')
 
-      result = client.get_movies(cinema_id, '2024-11-01')
+    assert_equal 'success', result['response']
+  end
 
-      _(result['response']).must_equal 'success'
-    end
+  def test_get_movies_returns_empty_hash_on_http_error
+    stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
+      .to_return(status: 500, body: 'Internal Server Error')
 
-    it 'returns empty hash on HTTP error' do
-      stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
-        .to_return(status: 500, body: 'Internal Server Error')
+    result = @client.get_movies(@cinema_id)
 
-      result = client.get_movies(cinema_id)
+    assert_equal({}, result)
+  end
 
-      _(result).must_equal({})
-    end
+  def test_get_movies_returns_empty_hash_on_network_error
+    stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
+      .to_raise(StandardError.new('Network error'))
 
-    it 'returns empty hash on network error' do
-      stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
-        .to_raise(StandardError.new('Network error'))
+    result = @client.get_movies(@cinema_id)
 
-      result = client.get_movies(cinema_id)
+    assert_equal({}, result)
+  end
 
-      _(result).must_equal({})
-    end
+  def test_get_movies_parses_json_response
+    response_body = {
+      'response' => 'success',
+      'movies' => [
+        {
+          'Title' => 'Test Film',
+          'ScheduledFilmId' => '12345',
+          'movie_times' => []
+        }
+      ]
+    }.to_json
 
-    it 'parses JSON response' do
-      response_body = {
-        'response' => 'success',
-        'movies' => [
-          {
-            'Title' => 'Test Film',
-            'ScheduledFilmId' => '12345',
-            'movie_times' => []
-          }
-        ]
-      }.to_json
+    stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
+      .to_return(
+        status: 200,
+        body: response_body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
 
-      stub_request(:post, 'https://www.picturehouses.com/api/get-movies-ajax')
-        .to_return(
-          status: 200,
-          body: response_body,
-          headers: { 'Content-Type' => 'application/json' }
-        )
+    result = @client.get_movies(@cinema_id)
 
-      result = client.get_movies(cinema_id)
-
-      _(result).must_be_instance_of(Hash)
-      _(result['movies']).must_be_instance_of(Array)
-      _(result['movies'].first['Title']).must_equal 'Test Film'
-    end
+    assert_instance_of Hash, result
+    assert_instance_of Array, result['movies']
+    assert_equal 'Test Film', result['movies'].first['Title']
   end
 end

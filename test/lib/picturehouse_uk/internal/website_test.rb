@@ -1,44 +1,33 @@
 require_relative '../../../test_helper'
 
-describe PicturehouseUk::Internal::Website do
-  let(:described_class) { PicturehouseUk::Internal::Website }
-
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '#cinema(id)' do
-    subject { described_class.new.cinema('duke-of-york-s-picturehouse') }
-
-    before { stub_get('cinema/duke-of-york-s-picturehouse', duke_of_yorks_html) }
-
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
+class PicturehouseUkInternalWebsiteTest < Minitest::Test
+  def setup
+    WebMock.disable_net_connect!
   end
 
-  describe '#home' do
-    subject { described_class.new.home }
-
-    before { stub_get('', home_html) }
-
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
+  def teardown
+    WebMock.allow_net_connect!
   end
 
-  describe '#information(id)' do
-    subject { described_class.new.information('duke-of-york-s-picturehouse') }
+  def test_cinema_returns_string
+    stub_get('cinema/duke-of-york-s-picturehouse', duke_of_yorks_html)
+    result = PicturehouseUk::Internal::Website.new.cinema('duke-of-york-s-picturehouse')
+    assert_equal String, result.class
+  end
 
-    before do
-      stub_get(
-        'cinema/duke-of-york-s-picturehouse/information',
-        duke_of_yorks_information_html
-      )
-    end
+  def test_home_returns_string
+    stub_get('', home_html)
+    result = PicturehouseUk::Internal::Website.new.home
+    assert_equal String, result.class
+  end
 
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
+  def test_information_returns_string
+    stub_get(
+      'cinema/duke-of-york-s-picturehouse/information',
+      duke_of_yorks_information_html
+    )
+    result = PicturehouseUk::Internal::Website.new.information('duke-of-york-s-picturehouse')
+    assert_equal String, result.class
   end
 
   private

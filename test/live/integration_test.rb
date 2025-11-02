@@ -7,45 +7,38 @@ Minitest::Reporters.use! [
 
 require File.expand_path('../../../lib/picturehouse_uk.rb', __FILE__)
 
-describe PicturehouseUk::Cinema do
-  let(:described_class) { PicturehouseUk::Cinema }
-
-  describe '.all' do
-    subject { described_class.all }
-
-    it 'returns an Array of CineworldUK::Cinemas' do
-      _(subject).must_be_instance_of(Array)
-      subject.each do |value|
-        _(value).must_be_instance_of(PicturehouseUk::Cinema)
-      end
+class PicturehouseUkCinemaIntegrationTest < Minitest::Test
+  def test_all_returns_array_of_cinemas
+    result = PicturehouseUk::Cinema.all
+    assert_instance_of Array, result
+    result.each do |value|
+      assert_instance_of PicturehouseUk::Cinema, value
     end
+  end
 
-    it 'returns the correctly sized array' do
-      _(subject.size).must_be :>, 18
-    end
+  def test_all_returns_correctly_sized_array
+    result = PicturehouseUk::Cinema.all
+    assert_operator result.size, :>, 18
+  end
 
-    it 'returns the right cinemas' do
-      _(subject.first.name).must_equal 'Little Theatre Cinema'
-      _(subject.last.name).must_equal 'City Screen York'
-    end
+  def test_all_returns_right_cinemas
+    result = PicturehouseUk::Cinema.all
+    assert_equal 'Little Theatre Cinema', result.first.name
+    assert_equal 'City Screen York', result.last.name
   end
 end
 
-describe PicturehouseUk::Performance do
-  let(:described_class) { PicturehouseUk::Performance }
-
-  describe '.at(cinema_id)' do
-    subject { described_class.at('Duke_Of_Yorks') }
-
-    it 'returns an array of screenings' do
-      _(subject).must_be_instance_of(Array)
-      subject.each do |performance|
-        _(performance).must_be_instance_of(PicturehouseUk::Performance)
-      end
+class PicturehouseUkPerformanceIntegrationTest < Minitest::Test
+  def test_at_returns_array_of_screenings
+    result = PicturehouseUk::Performance.at('Duke_Of_Yorks')
+    assert_instance_of Array, result
+    result.each do |performance|
+      assert_instance_of PicturehouseUk::Performance, performance
     end
+  end
 
-    it 'returns correct number of screenings' do
-      _(subject.count).must_be :>, 10
-    end
+  def test_at_returns_correct_number_of_screenings
+    result = PicturehouseUk::Performance.at('Duke_Of_Yorks')
+    assert_operator result.count, :>, 10
   end
 end
