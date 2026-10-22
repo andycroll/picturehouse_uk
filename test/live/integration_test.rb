@@ -1,44 +1,27 @@
-require 'minitest/autorun'
-require 'minitest/reporters'
+require_relative 'live_helper'
 
-Minitest::Reporters.use! [
-  Minitest::Reporters::DefaultReporter.new(color: true)
-]
+class LiveCinemaTest < Minitest::Test
+  def test_all_returns_cinemas
+    cinemas = PicturehouseUk::Cinema.all
 
-require File.expand_path('../../../lib/picturehouse_uk.rb', __FILE__)
+    assert(cinemas.all? { |cinema| cinema.instance_of?(PicturehouseUk::Cinema) })
+    assert_operator cinemas.size, :>, 18
+    assert_equal "Duke's at Komedia", cinemas.detect { |cinema| cinema.id == '019' }.name
+  end
 
-class PicturehouseUkCinemaIntegrationTest < Minitest::Test
-  def test_all_returns_array_of_cinemas
-    result = PicturehouseUk::Cinema.all
-    assert_instance_of Array, result
-    result.each do |value|
-      assert_instance_of PicturehouseUk::Cinema, value
+  def test_every_cinema_has_a_postcode
+    PicturehouseUk::Cinema.all.each do |cinema|
+      refute_empty cinema.postal_code, "#{cinema.id} #{cinema.name}"
     end
-  end
-
-  def test_all_returns_correctly_sized_array
-    result = PicturehouseUk::Cinema.all
-    assert_operator result.size, :>, 18
-  end
-
-  def test_all_returns_right_cinemas
-    result = PicturehouseUk::Cinema.all
-    assert_equal 'Little Theatre Cinema', result.first.name
-    assert_equal 'City Screen York', result.last.name
   end
 end
 
-class PicturehouseUkPerformanceIntegrationTest < Minitest::Test
-  def test_at_returns_array_of_screenings
-    result = PicturehouseUk::Performance.at('Duke_Of_Yorks')
-    assert_instance_of Array, result
-    result.each do |performance|
-      assert_instance_of PicturehouseUk::Performance, performance
-    end
-  end
+class LivePerformanceTest < Minitest::Test
+  def test_at_returns_performances
+    tomorrow = Date.today + 1
+    performances = PicturehouseUk::Performance.at(19, from: tomorrow, to: tomorrow)
 
-  def test_at_returns_correct_number_of_screenings
-    result = PicturehouseUk::Performance.at('Duke_Of_Yorks')
-    assert_operator result.count, :>, 10
+    assert(performances.all? { |p| p.instance_of?(PicturehouseUk::Performance) })
+    assert_operator performances.count, :>, 5
   end
 end

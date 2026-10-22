@@ -1,12 +1,8 @@
 # PicturehouseUk
 
-A simple gem to parse the [Picturehouse Cinemas UK website](http://picturehouses.com) and spit out useful formatted info.
+A simple gem to pull cinemas and performances from the Vista API behind the [Picturehouse website](https://www.picturehouses.com) and spit out useful formatted info.
 
 [![Gem Version](https://badge.fury.io/rb/picturehouse_uk.svg)](https://badge.fury.io/rb/picturehouse_uk)
-[![Code Climate](https://codeclimate.com/github/andycroll/picturehouse_uk/badges/gpa.svg)](https://codeclimate.com/github/andycroll/picturehouse_uk)
-[![Test Coverage](https://codeclimate.com/github/andycroll/picturehouse_uk/badges/coverage.svg)](https://codeclimate.com/github/andycroll/picturehouse_uk/coverage)
-[![Build Status](https://travis-ci.org/andycroll/picturehouse_uk.svg?branch=master)](https://travis-ci.org/andycroll/picturehouse_uk)
-[![Inline docs](http://inch-ci.org/github/andycroll/picturehouse_uk.svg?branch=master)](http://inch-ci.org/github/andycroll/picturehouse_uk)
 
 ## Installation
 
@@ -24,42 +20,145 @@ Or install it yourself as:
 
 ## Usage
 
-### Cinema
+The gem conforms to the API set down in the `cinebase` gem, [andycroll/cinebase](https://github.com/andycroll/cinebase), which provides a lot of useful base vocabulary and repetitive code for this series of cinema focussed gems.
+
+Performance titles are sanitized as much as possible, removing 'screening type' information, years, Q&A add-ons and festival prefixes, and standardising theatre and opera event naming.
+
+### Guest token
+
+Every API call needs the public guest token the Picturehouse ticketing site
+gives each visitor. Fetch one before anything else:
 
 ``` ruby
-PicturehouseUK::Cinema.all
-#=> [
-      <PicturehouseUK::Cinema brand="Picturehouse" name="Duke's at Komedia" slug="dukes-at-komedia" chain_id="Dukes_At_Komedia" url="...">,
-      <PicturehouseUK::Cinema brand="Picturehouse" name="Duke of York's" slug="duke-of-yorks" chain_id="Duke_Of_Yorks" url="...">,
-      ...
-    ]
+PicturehouseUk.acquire_token!
+PicturehouseUk::Cinema.all
+```
 
-PicturehouseUK::Cinema.find('Duke_Of_Yorks')
-#=> <PicturehouseUK::Cinema brand="Picturehouse" name="Duke_Of_Yorks" slug="duke-of-yorks" address="..." chain_id="Duke_Of_Yorks" url="...">
+This shells out to **`curl-impersonate`**, not ordinary system `curl`, using its
+Chrome 150 TLS/HTTP profile, and reads `gasToken` from the page data of
+`https://web.picturehouses.com/`. No browser or JavaScript execution is needed.
+
+Platform-specific gem packages include the pinned `curl-impersonate` 2.2.3
+executable for glibc Linux (x86-64, ARM64) and macOS (Intel, Apple Silicon).
+On other platforms, or when installing from Git, install a
+[curl-impersonate release](https://github.com/lexiforest/curl-impersonate/releases/tag/v2.2.3)
+yourself and put it on your `PATH` or pass its path:
+
+``` ruby
+PicturehouseUk.acquire_token!(curl: '/opt/curl-impersonate/curl-impersonate')
+```
+
+Or supply your own current guest JWT, without the `Bearer ` prefix:
+
+``` ruby
+PicturehouseUk.token = ENV.fetch('PICTUREHOUSE_TOKEN')
+```
+
+Tokens currently last 12 hours. The gem checks the declared expiry but does not
+verify the signature. Missing, expired or rejected tokens raise
+`PicturehouseUk::AuthenticationError`; call `PicturehouseUk.acquire_token!`
+again. Normal API calls never acquire or renew a token automatically.
+
+### Cinema
+
+Cinema ids are Vista site ids. Duke's at Komedia is `'019'`.
+
+``` ruby
+PicturehouseUk::Cinema.all
+#=> [<PicturehouseUk::Cinema ...>, <PicturehouseUk::Cinema ...>, ...]
+
+cinema = PicturehouseUk::Cinema.new(19)
+#=> <PicturehouseUk::Cinema ...>
+
+cinema.adr
+#=> {
+  street_address:   '44-47 Gardner Street',
+  extended_address: nil,
+  locality:         'Brighton',
+  region:           nil,
+  postal_code:      'BN1 1UN',
+  country_name:     'United Kingdom'
+}
 
 cinema.brand
 #=> 'Picturehouse'
 
-cinema.chain_id
-#=> 'Duke_Of_Yorks'
+cinema.name
+#=> "Duke's at Komedia"
+
+cinema.id
+#=> '019'
 
 cinema.url
-#=> "http://www.picturehouses.co.uk/cinema/Duke_Of_Yorks/"
-
-cinema.films
-#=> [<PicturehouseUK::Film name="Iron Man 3">, <PicturehouseUK::Film name="Star Trek: Into Darkness">]
-
-cinema.screenings
-#=> [<PicturehouseUK::Screening film="About Time" when="2013-09-09 11:00 UTC" varient="3d">, <PicturehouseUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" varient="kids">, <PicturehouseUK::Screening ..>, <PicturehouseUK::Screening ...>]
-
+#=> 'https://www.picturehouses.com/cinema/duke-s-at-komedia'
 ```
 
-## Running Tests
+### Performances
 
-To redownload the test URLs run
+`Performance.at` returns performances for an inclusive range of business dates,
+defaulting to today in London and the following 13 days. It makes one request
+per day.
 
+``` ruby
+PicturehouseUk::Performance.at(19, from: Date.today, to: Date.today + 2)
+#=> [<PicturehouseUk::Performance ...>, <PicturehouseUk::Performance ...>, ...]
+
+performance = PicturehouseUk::Performance.at(19).first
+#=> <PicturehouseUk::Performance ...>
+
+performance.film_name
+#=> 'Sense and Sensibility'
+
+performance.film_year
+#=> 2026 # from the title, nil when it has no year
+
+performance.dimension
+#=> '2d'
+
+performance.variant
+#=> ['audio_described', 'subtitled']
+
+performance.subtitled?
+#=> true
+
+performance.festival
+#=> #<data Cinebase::Festival name="CFF", year=2026> # nil outside festivals
+
+performance.starting_at
+#=> 2026-10-23 15:00:00 UTC
+
+performance.booking_url
+#=> 'https://web.picturehouses.com/order/showtimes/019-41632/seats'
+
+performance.cinema_name
+#=> "Duke's at Komedia"
+
+performance.cinema_id
+#=> '019'
 ```
-ruby test/fixture_updater.rb
+
+Variants are `arts`, `audio_described`, `baby`, `kids`, `q&a`, `relaxed`,
+`senior` and `subtitled`. Picturehouse doesn't tag audio languages, so
+`language` is always `nil`.
+
+## Tests
+
+```sh
+bundle exec rake          # unit tests against fixtures
+bundle exec rake live     # live API, needs curl-impersonate or PICTUREHOUSE_TOKEN
+```
+
+Fixtures in `test/fixtures/api` are hand-written: invented films and
+addresses in the shape of Vista responses, never recorded API output.
+`test/support/api_shapes.rb` describes the fields the gem reads. The unit suite
+checks the fixtures against it and the live suite checks real responses, held
+only in memory. When the API changes, update the shape first, then the fixtures.
+
+## Building release packages
+
+```sh
+bundle exec rake build         # Portable source gem; external curl-impersonate required
+bundle exec rake package:all   # Four platform gems with bundled executables
 ```
 
 ## Contributing

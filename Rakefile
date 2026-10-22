@@ -2,13 +2,16 @@
 require 'bundler/gem_tasks'
 
 require 'rake/testtask'
+require 'cinebase/vista/package_task'
+
+Cinebase::Vista::PackageTask.new('picturehouse_uk.gemspec', root: __dir__)
 
 Rake::TestTask.new do |t|
   t.libs << 'lib/picturehouse_uk'
   t.test_files = FileList[
     'test/lib/picturehouse_uk/*_test.rb',
     'test/lib/picturehouse_uk/internal/*_test.rb',
-    'test/lib/picturehouse_uk/internal/parser/*_test.rb'
+    'test/lib/picturehouse_uk/internal/parser/api/*_test.rb'
   ]
   t.verbose = true
 end
@@ -29,18 +32,6 @@ task :console do
   require 'picturehouse_uk'
   ARGV.clear
   IRB.start
-end
-
-desc 'recreate test fixtures'
-task :fixtures do
-  require 'picturehouse_uk'
-  require_relative 'rake/fixture_creator'
-
-  FixtureCreator.new.home
-  FixtureCreator.new.cinemas
-  %w(duke-of-york-s-picturehouse duke-s-at-komedia phoenix-picturehouse).each do |cinema_id|
-    FixtureCreator.new.cinema(cinema_id)
-  end
 end
 
 task default: :test

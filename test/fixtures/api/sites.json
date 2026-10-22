@@ -1,0 +1,40 @@
+{
+  "sites": [
+    {
+      "id": "002",
+      "name": { "text": "Arts Picturehouse Cambridge" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "1 Example Street" },
+          "line2": { "text": "Cambridge" },
+          "line3": { "text": "CB2 0ZZ" },
+          "line4": null
+        }
+      }
+    },
+    {
+      "id": "013",
+      "name": { "text": "Picturehouse at FACT Liverpool" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "2 Example Street" },
+          "line2": { "text": "Ropewalks" },
+          "line3": { "text": "Liverpool" },
+          "line4": { "text": "L1 0ZZ" }
+        }
+      }
+    },
+    {
+      "id": "019",
+      "name": { "text": "Duke's at Komedia" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "3 Example Street" },
+          "line2": { "text": "Brighton" },
+          "line3": { "text": "BN1 0ZZ" },
+          "line4": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "businessDate": "2026-10-24",
+  "showtimes": [
+    {
+      "id": "019-1001",
+      "filmId": "FILM-1",
+      "schedule": { "startsAt": "2026-10-24T10:30:00+01:00" },
+      "attributeIds": ["A-2D", "A-AD"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "019-1002",
+      "filmId": "FILM-1",
+      "schedule": { "startsAt": "2026-10-24T14:00:00+01:00" },
+      "attributeIds": ["A-SILVER"],
+      "requires3dGlasses": true
+    },
+    {
+      "id": "019-1003",
+      "filmId": "FILM-2",
+      "schedule": { "startsAt": "2026-10-24T18:00:00+01:00" },
+      "attributeIds": ["A-SUB", "A-QA"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "019-1004",
+      "filmId": "FILM-3",
+      "schedule": { "startsAt": "2026-10-24T11:00:00+01:00" },
+      "attributeIds": ["A-BABY", "A-TODDLER"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "019-1005",
+      "filmId": "FILM-4",
+      "schedule": { "startsAt": "2026-10-25T00:15:00+01:00" },
+      "attributeIds": ["A-ARTS", "A-HOH"],
+      "requires3dGlasses": false
+    }
+  ],
+  "relatedData": {
+    "films": [
+      { "id": "FILM-1", "title": { "text": "The Example Film" } },
+      { "id": "FILM-2", "title": { "text": "Imaginary Picture (1996)" } },
+      { "id": "FILM-3", "title": { "text": "Pretend Pups + director Q&A" } },
+      { "id": "FILM-4", "title": { "text": "CFF: Made Up Matinee (70mm)" } }
+    ],
+    "attributes": [
+      { "id": "A-2D", "shortName": { "text": "2D" }, "name": { "text": "2D" } },
+      { "id": "A-AD", "shortName": { "text": "Audio D" }, "name": { "text": "AD" } },
+      { "id": "A-SILVER", "shortName": { "text": "Silver Scr" }, "name": { "text": "Silver Screen" } },
+      { "id": "A-SUB", "shortName": { "text": "Sub Cinema" }, "name": { "text": "Subtitled" } },
+      { "id": "A-QA", "shortName": { "text": "Q+A" }, "name": { "text": "+ Q&A " } },
+      { "id": "A-BABY", "shortName": { "text": "Watch Baby" }, "name": { "text": "Watch with Baby" } },
+      { "id": "A-TODDLER", "shortName": { "text": "Toddler Ti" }, "name": { "text": "Toddler Time" } },
+      { "id": "A-ARTS", "shortName": { "text": "Screen Art" }, "name": { "text": "Screen Arts" } },
+      { "id": "A-HOH", "shortName": { "text": "HOHSub" }, "name": { "text": "Subtitled (Captioned)" } }
+    ],
+    "sites": [
+      { "id": "019", "name": { "text": "Duke's at Komedia" } }
+    ]
+  }
+}

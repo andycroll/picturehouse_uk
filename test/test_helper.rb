@@ -1,7 +1,10 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/test/'
+end
 
 require 'minitest/autorun'
+require 'minitest/mock'
 require 'minitest/reporters'
 
 Minitest::Reporters.use! [
@@ -9,11 +12,9 @@ Minitest::Reporters.use! [
 ]
 
 require 'webmock/minitest'
-WebMock.allow_net_connect!
-
-require 'webmock/minitest'
 
 require File.expand_path('../../lib/picturehouse_uk.rb', __FILE__)
 
-require_relative 'support/fake_api'
-require_relative 'support/fake_website'
+require_relative 'support/api_fixtures_helper'
+require_relative 'support/api_shapes'
+require_relative 'support/fake_api_response'

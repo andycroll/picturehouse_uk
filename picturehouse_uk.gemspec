@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.version       = PicturehouseUk::VERSION
   spec.authors       = ['Andy Croll']
   spec.email         = ['andy@goodscary.com']
-  spec.description   = 'API pulling information from picturehouse.com'
+  spec.description   = 'Pull movie & cinema information from the Picturehouse Vista API'
   spec.summary       = "It's a scraper, but a nice one"
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/andycroll/picturehouse_uk'
   spec.licenses      = %w(AGPL MIT)
 
   spec.files         = `git ls-files`.split("\n")
@@ -17,11 +17,13 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  spec.add_development_dependency 'base64'
+  spec.add_development_dependency 'bundler', '>= 2.0'
+  spec.add_development_dependency 'minitest-mock'
   spec.add_development_dependency 'minitest-reporters'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'simplecov', '< 1'
   spec.add_development_dependency 'webmock'
 
-  spec.add_runtime_dependency 'cinebase', '~> 3.0'
-  spec.add_runtime_dependency 'nokogiri'
+  spec.add_runtime_dependency 'cinebase', '~> 5.4'
 end

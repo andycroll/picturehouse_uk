@@ -49,8 +49,13 @@ module PicturehouseUk
           /\s+\-?\s*Parents \& Babies/i,      # parents and babies
           /Subtitled\:*\s*/i,                 # subtitled
           /\(?live\)?\z/i,                    # live
-          /amp\;/i
-        ]
+          /amp\;/i,
+          /\ADog-Friendly - /,                # dog friendly
+          /\ARelaxed-Screening: /,            # relaxed screening
+          /\ALMF Presents: /,                 # LMF strand
+          /\AGreen Screen: /,                 # Green Screen strand
+          /\AFFQ: /                           # FFQ strand
+        ] + COMMON_REMOVE
       end
 
       # regexes and their replacements
@@ -66,7 +71,7 @@ module PicturehouseUk
           /RSC\.? Live:\s*(.*)/      => 'Royal Shakespeare Company: ',
           /RSC\.? Encore:\s*(.*)/    => 'Royal Shakespeare Company: ',
           /(.*) \(Bolshoi Ballet\)/  => 'Bolshoi Ballet: '
-        }
+        }.merge(COMMON_REPLACE)
       end
     end
   end

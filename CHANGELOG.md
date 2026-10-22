@@ -2,6 +2,32 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.0.0] - 2026-10-22
+
+### Changed
+- Retrieve cinemas and performances from the Vista API behind picturehouses.com, as cineworld_uk and odeon_uk do, instead of scraping HTML pages and the `get-movies-ajax` endpoint.
+- **BREAKING**: Cinema ids are Vista site ids, zero-padded strings such as `'019'` for Duke's at Komedia, instead of page slugs such as `'duke-s-at-komedia'`.
+- **BREAKING**: `Performance.at` accepts inclusive `from:` and `to:` business dates, defaulting to today in London and the following 13 days. One request per day.
+- **BREAKING**: Require cinebase 5.4, and so Ruby 3.3 or newer. Nokogiri is no longer needed.
+- `Cinema#adr` comes from the API's address lines; `region` is no longer given. `Cinema#url` points at the current cinema pages.
+- Film titles also use cinebase's common rules and lose `Dog-Friendly -`, `Relaxed-Screening:`, `LMF Presents:`, `Green Screen:` and `FFQ:` prefixes.
+- Tests use hand-written fixtures in place of recorded pages and API responses.
+
+### Added
+- `PicturehouseUk.token` and `PicturehouseUk.acquire_token!`, with platform gems that bundle curl-impersonate 2.2.3.
+- `Performance#film_year`, `#subtitled?` and `#festival`.
+- Variants from the current Vista attributes: `audio_described`, `baby`, `kids`, `q&a`, `relaxed`, `senior`, `subtitled` and `arts`.
+- Live API shape tests that check real responses without storing them.
+
+### Fixed
+- Performance times were London local times labelled as UTC, an hour out during British Summer Time. They now use Vista's explicit offsets.
+- Booking links used the cinema slug and now use Vista's showtime id, as in `https://web.picturehouses.com/order/showtimes/019-41632/seats`.
+- Performances could include other cinemas' films returned by the old endpoint.
+- Unit tests failed under Minitest 6, which moved `stub` into `minitest-mock`.
+
+### Removed
+- HTML scraping, the `fixtures` rake task, and live tests in CI.
+
 ## [5.0.0] - 2025-10-31
 
 ### Added
