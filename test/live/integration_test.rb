@@ -1,51 +1,27 @@
-require 'minitest/autorun'
-require 'minitest/reporters'
+require_relative 'live_helper'
 
-Minitest::Reporters.use! [
-  Minitest::Reporters::DefaultReporter.new(color: true)
-]
+class LiveCinemaTest < Minitest::Test
+  def test_all_returns_cinemas
+    cinemas = PicturehouseUk::Cinema.all
 
-require File.expand_path('../../../lib/picturehouse_uk.rb', __FILE__)
+    assert(cinemas.all? { |cinema| cinema.instance_of?(PicturehouseUk::Cinema) })
+    assert_operator cinemas.size, :>, 18
+    assert_equal "Duke's at Komedia", cinemas.detect { |cinema| cinema.id == '019' }.name
+  end
 
-describe PicturehouseUk::Cinema do
-  let(:described_class) { PicturehouseUk::Cinema }
-
-  describe '.all' do
-    subject { described_class.all }
-
-    it 'returns an Array of CineworldUK::Cinemas' do
-      _(subject).must_be_instance_of(Array)
-      subject.each do |value|
-        _(value).must_be_instance_of(PicturehouseUk::Cinema)
-      end
-    end
-
-    it 'returns the correctly sized array' do
-      _(subject.size).must_be :>, 18
-    end
-
-    it 'returns the right cinemas' do
-      _(subject.first.name).must_equal 'Little Theatre Cinema'
-      _(subject.last.name).must_equal 'City Screen York'
+  def test_every_cinema_has_a_postcode
+    PicturehouseUk::Cinema.all.each do |cinema|
+      refute_empty cinema.postal_code, "#{cinema.id} #{cinema.name}"
     end
   end
 end
 
-describe PicturehouseUk::Performance do
-  let(:described_class) { PicturehouseUk::Performance }
+class LivePerformanceTest < Minitest::Test
+  def test_at_returns_performances
+    tomorrow = Date.today + 1
+    performances = PicturehouseUk::Performance.at(19, from: tomorrow, to: tomorrow)
 
-  describe '.at(cinema_id)' do
-    subject { described_class.at('Duke_Of_Yorks') }
-
-    it 'returns an array of screenings' do
-      _(subject).must_be_instance_of(Array)
-      subject.each do |performance|
-        _(performance).must_be_instance_of(PicturehouseUk::Performance)
-      end
-    end
-
-    it 'returns correct number of screenings' do
-      _(subject.count).must_be :>, 10
-    end
+    assert(performances.all? { |p| p.instance_of?(PicturehouseUk::Performance) })
+    assert_operator performances.count, :>, 5
   end
 end

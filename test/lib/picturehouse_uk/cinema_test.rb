@@ -1,223 +1,85 @@
 require_relative '../../test_helper'
 
-describe PicturehouseUk::Cinema do
-  let(:described_class) { PicturehouseUk::Cinema }
-  let(:website) { FakeWebsite.new }
+class PicturehouseUk::CinemaTest < Minitest::Test
+  def setup
+    @api_response = FakeApiResponse.new
+  end
 
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
+  def test_new_zero_pads_id
+    assert_equal '019', PicturehouseUk::Cinema.new(19).id
+    assert_equal '019', PicturehouseUk::Cinema.new('019').id
+  end
 
-  describe '.all' do
-    subject { described_class.all }
+  def test_all_returns_cinemas
+    with_fake_api do
+      cinemas = PicturehouseUk::Cinema.all
 
-    it 'returns an Array of CineworldUK::Cinemas' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_be_instance_of(Array)
-        subject.each do |value|
-          _(value).must_be_instance_of(PicturehouseUk::Cinema)
-        end
-      end
-    end
-
-    it 'returns the correctly sized array' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.size).must_equal 25
-      end
-    end
-
-    it 'returns the right cinemas' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject.first.name).must_equal 'Little Theatre Cinema'
-        _(subject.last.name).must_equal 'City Screen York'
-      end
+      assert(cinemas.all? { |cinema| cinema.instance_of?(PicturehouseUk::Cinema) })
+      assert_equal %w(002 013 019), cinemas.map(&:id)
     end
   end
 
-  describe '.new(id)' do
-    subject { described_class.new('duke-s-at-komedia') }
+  def test_adr_with_postcode_on_third_line
+    expected = {
+      street_address:   '3 Example Street',
+      extended_address: nil,
+      locality:         'Brighton',
+      region:           nil,
+      postal_code:      'BN1 0ZZ',
+      country_name:     'United Kingdom'
+    }
 
-    it 'stores id, name, slug and url' do
-      _(subject).must_be_instance_of(PicturehouseUk::Cinema)
+    with_fake_api do
+      assert_equal expected, PicturehouseUk::Cinema.new(19).adr
+      assert_equal expected, PicturehouseUk::Cinema.new(19).address
     end
   end
 
-  describe '#adr' do
-    subject { described_class.new(id).adr }
+  def test_adr_with_extended_address
+    with_fake_api do
+      adr = PicturehouseUk::Cinema.new(13).adr
 
-    describe 'no region' do
-      let(:id) { 'phoenix-picturehouse' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '57 Walton Street',
-            extended_address: nil,
-            locality:         'Oxford',
-            region:           nil,
-            postal_code:      'OX2 6AE',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
-    end
-
-    describe 'with region' do
-      let(:id) { 'duke-s-at-komedia' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '44–47 Gardner Street',
-            extended_address: nil,
-            locality:         'Brighton',
-            region:           'East Sussex',
-            postal_code:      'BN1 1UN',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
+      assert_equal '2 Example Street', adr[:street_address]
+      assert_equal 'Ropewalks', adr[:extended_address]
+      assert_equal 'Liverpool', adr[:locality]
+      assert_equal 'L1 0ZZ', adr[:postal_code]
     end
   end
 
-  describe '#address' do
-    subject { described_class.new(id).address }
+  def test_brand
+    assert_equal 'Picturehouse', PicturehouseUk::Cinema.new(19).brand
+  end
 
-    describe 'no region' do
-      let(:id) { 'phoenix-picturehouse' }
-
-      it 'returns address hash' do
-        PicturehouseUk::Internal::Website.stub :new, website do
-          _(subject).must_equal(
-            street_address:   '57 Walton Street',
-            extended_address: nil,
-            locality:         'Oxford',
-            region:           nil,
-            postal_code:      'OX2 6AE',
-            country_name:     'United Kingdom'
-          )
-        end
-      end
+  def test_name_and_full_name
+    with_fake_api do
+      assert_equal "Duke's at Komedia", PicturehouseUk::Cinema.new(19).name
+      assert_equal "Duke's at Komedia", PicturehouseUk::Cinema.new(19).full_name
     end
   end
 
-  describe '#brand' do
-    subject { described_class.new(id).brand }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns Picturehouse' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('Picturehouse')
-      end
+  def test_slug
+    with_fake_api do
+      assert_equal 'dukes-at-komedia', PicturehouseUk::Cinema.new(19).slug
     end
   end
 
-  describe '#country_name' do
-    subject { described_class.new(id).country_name }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns country' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('United Kingdom')
-      end
+  def test_url
+    with_fake_api do
+      assert_equal 'https://www.picturehouses.com/cinema/duke-s-at-komedia',
+                   PicturehouseUk::Cinema.new(19).url
     end
   end
 
-  describe '#extended_address' do
-    subject { described_class.new(id).extended_address }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('')
-      end
+  def test_url_uses_slug_that_differs_from_name
+    with_fake_api do
+      assert_equal 'https://www.picturehouses.com/cinema/picturehouse-at-fact',
+                   PicturehouseUk::Cinema.new(13).url
     end
   end
 
-  describe '#full_name' do
-    subject { described_class.new(id).full_name }
+  private
 
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns full name (same as name)' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal("Duke's at Komedia")
-        _(subject).must_equal(described_class.new(id).name)
-      end
-    end
-  end
-
-  describe '#locality' do
-    subject { described_class.new(id).locality }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('Brighton')
-      end
-    end
-  end
-
-  describe '#name' do
-    subject { described_class.new(id).name }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns full name (same as name)' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal("Duke's at Komedia")
-      end
-    end
-  end
-
-  describe '#postal_code' do
-    subject { described_class.new(id).postal_code }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('BN1 1UN')
-      end
-    end
-  end
-
-  describe '#region' do
-    subject { described_class.new(id).region }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns second line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('East Sussex')
-      end
-    end
-  end
-
-  describe '#slug' do
-    subject { described_class.new(id).slug }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns downcased' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('dukes-at-komedia')
-      end
-    end
-  end
-
-  describe '#street_address' do
-    subject { described_class.new(id).street_address }
-
-    let(:id) { 'duke-s-at-komedia' }
-
-    it 'returns first line of address' do
-      PicturehouseUk::Internal::Website.stub :new, website do
-        _(subject).must_equal('44–47 Gardner Street')
-      end
-    end
+  def with_fake_api(&block)
+    PicturehouseUk::Internal::ApiResponse.stub(:new, @api_response, &block)
   end
 end

@@ -18,16 +18,28 @@ module PicturehouseUk
     #   @option options [String] :cinema_name name of the cinema
     #   @option options [String] :cinema_id website id of the cinema
     #   @option options [String] :dimension ('2d') dimension of the screening
+    #   @option options [Cinebase::Festival] :festival (nil) festival edition
     #   @option options [String] :film_name name of the film
+    #   @option options [Integer] :film_year (nil) year from the film's title
     #   @option options [Time] :starting_at listed start time of the performance
 
-    # Screenings at a single cinema
-    # @param [String] cinema_id the id of the cinema
-    # @return [Array<PicturehouseUk::Screening>]
-    def self.at(cinema_id)
-      screenings(cinema_id).map do |attributes|
-        new cinema_hash(cinema_id).merge(attributes)
-      end.uniq
+    # Performances within an inclusive range of cinema business dates.
+    # @param [Integer, String] cinema_id id of the cinema
+    # @param [Date] from first date (defaults to today in London)
+    # @param [Date] to last date (defaults to 13 days after from)
+    # @return [Array<PicturehouseUk::Performance>]
+    def self.at(
+      cinema_id,
+      from: TZInfo::Timezone.get('Europe/London').now.to_date,
+      to: from + 13
+    )
+      raise ArgumentError, 'to must not precede from' if to < from
+
+      api = PicturehouseUk::Internal::ApiResponse.new
+      cinema = Cinema.new(cinema_id)
+      (from..to).flat_map do |date|
+        performances_on(api, cinema, date)
+      end
     end
 
     # @!method showing_on
@@ -39,22 +51,30 @@ module PicturehouseUk
     #   @return [Time]
 
     # @!method variant
-    #   The kinds of screening (IMAX, kids, baby, senior)
+    #   The kinds of screening (arts, baby, kids, senior, subtitled ...)
     #   @return <Array[String]>
 
     # private
 
-    def self.cinema_hash(cinema_id)
-      {
-        cinema_id: cinema_id,
-        cinema_name: PicturehouseUk::Cinema.new(cinema_id).name
-      }
-    end
-    private_class_method :cinema_hash
+    def self.performances_on(api, cinema, date)
+      response = api.showtimes(cinema.id, date)
+      related = response.fetch('relatedData')
+      films = by_id(related.fetch('films'))
+      attributes = by_id(related.fetch('attributes'))
 
-    def self.screenings(cinema_id)
-      PicturehouseUk::Internal::Parser::Screenings.new(cinema_id).to_a
+      response.fetch('showtimes').map do |data|
+        showtime = PicturehouseUk::Internal::Parser::Api::Showtime.new(
+          data, films: films, attributes: attributes
+        )
+        new(showtime.to_hash.merge(cinema_id: cinema.id,
+                                   cinema_name: cinema.name))
+      end
     end
-    private_class_method :screenings
+    private_class_method :performances_on
+
+    def self.by_id(items)
+      items.to_h { |item| [item.fetch('id'), item] }
+    end
+    private_class_method :by_id
   end
 end

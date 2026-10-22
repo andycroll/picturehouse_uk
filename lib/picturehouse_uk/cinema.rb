@@ -1,18 +1,24 @@
 module PicturehouseUk
   # The object representing a cinema on the Picturehouse UK website
   class Cinema < Cinebase::Cinema
-    # address css
-    ADDRESS_CSS = '.cinemaAdrass:not(.openingTime)'.freeze
-    # cinema link css on the /cinema page
-    CINEMA_LINKS_CSS = 'a[href*="/cinema/"]'.freeze
-
     # @!attribute [r] id
-    #   @return [Integer] the numeric id of the cinema on the Cineworld website
+    #   @return [String] the zero-padded Vista id of the cinema, e.g. '019'
 
-    # @!method initialize(options)
-    #   Constructor
-    #   @param [String] id the cinema id of the cinema in capitalized snake case
-    #   @return [PicturehouseUk::Cinema]
+    # Vista site ids whose page slug differs from the cinema name
+    URL_SLUGS = {
+      '013' => 'picturehouse-at-fact',
+      '030' => 'epsom-picturehouse'
+    }.freeze
+
+    # UK postcode, the last line of an address
+    POSTCODE = /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i.freeze
+
+    # Constructor
+    # @param [Integer, String] id the cinema id of the format 19/'019'
+    # @return [PicturehouseUk::Cinema]
+    def initialize(id)
+      @id = id.to_s.rjust(3, '0')
+    end
 
     # Return basic cinema information for all cinemas
     # @return [Array<PicturehouseUk::Cinema>]
@@ -20,12 +26,7 @@ module PicturehouseUk
     #   PicturehouseUk::Cinema.all
     #   #=> [<PicturehouseUk::Cinema>, <PicturehouseUk::Cinema>, ...]
     def self.all
-      cinema_hash.keys.map { |id| new(id) }
-    end
-
-    # @api private
-    def self.cinema_hash
-      @cinema_hash ||= ListParser.new(cinema_links).to_hash
+      sites_hash.keys.map { |id| new(id) }
     end
 
     # @!method address
@@ -35,178 +36,91 @@ module PicturehouseUk
 
     # Address of the cinema
     # @return [Hash] contains :street_address, :extended_address,
-    # :locality, :postal_code, :country
+    # :locality, :region, :postal_code, :country_name
     # @example
-    #   cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
+    #   cinema = PicturehouseUk::Cinema.new(19)
     #   cinema.adr
     #   #=> {
     #         street_address:   '44-47 Gardner Street',
-    #         extended_address: 'North Laine',
+    #         extended_address: nil,
     #         locality:         'Brighton',
-    #         region:           'East Sussex',
+    #         region:           nil,
     #         postal_code:      'BN1 1UN',
-    #         country_name: 'United Kingdom'
+    #         country_name:     'United Kingdom'
     #       }
     # @note Uses method naming as at http://microformats.org/wiki/adr
     def adr
-      PicturehouseUk::Internal::Parser::Address.new(address_node.to_s).address
+      lines = address_lines
+      postal_code = lines.pop if lines.last&.match?(POSTCODE)
+      street_address = lines.shift
+      locality = lines.pop
+      {
+        street_address:   street_address,
+        extended_address: lines.empty? ? nil : lines.join(', '),
+        locality:         locality,
+        region:           nil,
+        postal_code:      postal_code,
+        country_name:     'United Kingdom'.freeze
+      }
     end
 
     # Brand of the cinema
     # @return [String] which will always be 'Picturehouse'
-    # @example
-    #   cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #   cinema.brand
-    #   #=> 'Picturehouse'
     def brand
       'Picturehouse'.freeze
     end
 
-    # @!method country_name
-    #   Country of the cinema
-    #   @return [String] which will always be 'United Kingdom'
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.country_name
-    #     #=> 'United Kingdom'
-
-    # @!method extended_address
-    #   The second address line of the cinema
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.extended_address
-    #     #=> 'North Laine'
-
-    # The name of the cinema (might include brand)
+    # The name of the cinema, which often includes the brand
     # @return [String]
     # @example
-    #   cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
+    #   cinema = PicturehouseUk::Cinema.new(19)
     #   cinema.full_name
-    #   #=> "Duke's At Komedia"
+    #   #=> "Duke's at Komedia"
     def full_name
       name
     end
 
-    # @!method locality
-    #   The locality (town) of the cinema
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.locality
-    #     #=> 'Brighton'
-
     # The name of the cinema
     # @return [String]
     # @example
-    #   cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
+    #   cinema = PicturehouseUk::Cinema.new(19)
     #   cinema.name
-    #   #=> "Duke's At Komedia"
+    #   #=> "Duke's at Komedia"
     def name
-      self.class.cinema_hash.fetch(id, {})[:name]
+      site_hash.dig('name', 'text').to_s
     end
-
-    # @!method postal_code
-    #   Post code of the cinema
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.postal_code
-    #     #=> 'BN1 1UN'
-
-    # @!method region
-    #   The region (county) of the cinema if provided
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.region
-    #     #=> 'East Sussex'
-
-    # @!method slug
-    #   The URL-able slug of the cinema
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.slug
-    #     #=> 'dukes-at-komedia'
-
-    # @!method street_address
-    #   The street address of the cinema
-    #   @return [String]
-    #   @example
-    #     cinema = PicturehouseUk::Cinema.new('Dukes_At_Komedia')
-    #     cinema.street_address
-    #     #=> '44-47 Gardner Street'
 
     # The url of the cinema on the Picturehouse website
     # @return [String]
     def url
-      "http://www.picturehouses.com#/cinema/#{id}"
-    end
-
-    private
-
-    def self.cinema_links
-      cinemas_doc.css(CINEMA_LINKS_CSS)
-    end
-    private_class_method :cinema_links
-
-    def self.cinemas_doc
-      @cinemas_doc ||=
-        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.cinemas)
-    end
-    private_class_method :cinemas_doc
-
-    def address_node
-      @address_node ||= info_doc.css(ADDRESS_CSS)
-    end
-
-    def info_doc
-      @info_doc ||=
-        Nokogiri::HTML(PicturehouseUk::Internal::Website.new.information(id))
+      "https://www.picturehouses.com/cinema/#{url_slug}"
     end
 
     # @api private
-    # Utility class to parse the links from the cinemas page
-    class ListParser
-      def initialize(nodes)
-        @nodes = nodes
+    def self.sites_hash
+      @sites_hash ||= PicturehouseUk::Internal::ApiResponse.new.sites.to_h do |site|
+        [site.fetch('id'), site]
       end
+    end
+    private_class_method :sites_hash
 
-      def to_hash
-        @nodes.each_with_object({}) do |node, result|
-          cinema_id = id(node)
-          cinema_name = name(node)
-          # Skip links that don't have valid cinema data
-          next unless cinema_id && cinema_name
-          # Skip duplicate entries
-          next if result.key?(cinema_id)
+    private
 
-          result[cinema_id] = { name: cinema_name, url: url(node) }
-        end
+    def address_lines
+      address = site_hash.dig('contactDetails', 'addressV2') || {}
+      %w(line1 line2 line3 line4).filter_map do |key|
+        text = address.dig(key, 'text').to_s.strip
+        text unless text.empty?
       end
+    end
 
-      private
+    def site_hash
+      @site_hash ||= self.class.send(:sites_hash).fetch(id, {})
+    end
 
-      def id(node)
-        href = url(node)
-        return nil unless href
-        match = href.match(%r{/cinema/([^/?#]+)})
-        match ? match[1] : nil
-      end
-
-      def name(node)
-        # Cinema name is in a <p> tag within the link
-        p_tag = node.css('p').first
-        return nil unless p_tag
-        # Get text and remove the location span
-        p_tag.children.find { |child| child.text? }&.text&.strip
-      end
-
-      def url(node)
-        href = node.get_attribute('href')
-        # Convert relative URLs to absolute if needed
-        href&.start_with?('http') ? href : "https://www.picturehouses.com#{href}"
+    def url_slug
+      URL_SLUGS.fetch(id) do
+        name.downcase.gsub(/[^a-z0-9]+/, '-').gsub(/\A-|-\z/, '')
       end
     end
   end
