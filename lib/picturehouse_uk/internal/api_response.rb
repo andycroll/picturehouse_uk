@@ -25,10 +25,17 @@ module PicturehouseUk
 
       private
 
-      # Picturehouse's API rejects every Connect-Region-Code, so send none.
+      # One client keeps one connection open, so reuse it until the token
+      # changes. Picturehouse's API rejects every Connect-Region-Code, so
+      # send none.
       def client
-        Cinebase::Vista::Client.new(base_url: BASE_URL, region_code: nil,
-                                    token: PicturehouseUk.token)
+        token = PicturehouseUk.token
+        if @client.nil? || @client_token != token
+          @client_token = token
+          @client = Cinebase::Vista::Client.new(base_url: BASE_URL, region_code: nil,
+                                                token: token)
+        end
+        @client
       end
     end
   end
