@@ -161,6 +161,11 @@ bundle exec rake build         # Portable source gem; external curl-impersonate 
 bundle exec rake package:all   # Four platform gems with bundled executables
 ```
 
+To release, bump the version, merge, then run the **Release Gem** workflow in
+GitHub Actions. It builds the source and four platform gems, publishes them
+through RubyGems trusted publishing (no MFA code needed) and tags the release.
+Versions already on RubyGems are skipped, so a failed run can be rerun.
+
 ## Contributing
 
 1. Fork it
