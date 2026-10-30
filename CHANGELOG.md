@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - `Cinema#latitude` and `Cinema#longitude` as Floats in decimal degrees, from the Vista sites response. They are `nil` when a site has no location or sits at 0, 0.
+- `PicturehouseUk.ensure_token!` fetches a guest token only when there is none or it expires within an hour, and `PicturehouseUk.token_expires_at` reads its expiry. Both come from cinebase's `Vista::TokenHolder`.
+
+### Changed
+- A token the API rejects is cleared from `PicturehouseUk.token`, so the next `ensure_token!` fetches a fresh one.
+- Requires cinebase 5.6.
 
 ## [6.0.1] - 2026-10-22
 

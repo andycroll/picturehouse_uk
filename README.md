@@ -55,9 +55,21 @@ PicturehouseUk.token = ENV.fetch('PICTUREHOUSE_TOKEN')
 ```
 
 Tokens currently last 12 hours. The gem checks the declared expiry but does not
-verify the signature. Missing, expired or rejected tokens raise
-`PicturehouseUk::AuthenticationError`; call `PicturehouseUk.acquire_token!`
-again. Normal API calls never acquire or renew a token automatically.
+verify the signature. Normal API calls never acquire or renew a token
+automatically. `PicturehouseUk.ensure_token!` fetches one only when there is no
+token, or the token expires within an hour, and otherwise keeps the current one.
+Call it before each batch of requests:
+
+``` ruby
+PicturehouseUk.ensure_token!
+PicturehouseUk.token_expires_at
+#=> 2026-10-31 03:00:00 UTC
+PicturehouseUk::Cinema.all
+```
+
+Missing, expired or rejected tokens raise `PicturehouseUk::AuthenticationError`. A
+token the API rejects is cleared from `PicturehouseUk.token`, so the next
+`ensure_token!` fetches a fresh one.
 
 ### Cinema
 

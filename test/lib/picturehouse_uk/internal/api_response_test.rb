@@ -44,6 +44,14 @@ class PicturehouseUk::Internal::ApiResponseTest < Minitest::Test
     assert_raises(PicturehouseUk::AuthenticationError) { api.sites }
   end
 
+  def test_rejected_token_is_cleared
+    stub_request(:get, "#{BASE_URL}/sites").to_return(status: 401)
+
+    assert_raises(PicturehouseUk::AuthenticationError) { api.sites }
+
+    assert_nil PicturehouseUk.token
+  end
+
   def test_reuses_one_client_while_the_token_holds
     stub_request(:get, "#{BASE_URL}/sites").to_return(status: 200, body: sites_json)
     shared = api
