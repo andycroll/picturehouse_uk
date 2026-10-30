@@ -50,6 +50,29 @@ class PicturehouseUk::CinemaTest < Minitest::Test
     assert_equal 'Picturehouse', PicturehouseUk::Cinema.new(19).brand
   end
 
+  def test_latitude_and_longitude
+    with_fake_api do
+      cinema = PicturehouseUk::Cinema.new(19)
+
+      assert_in_delta 50.8248, cinema.latitude, 0.0001
+      assert_in_delta(-0.1394, cinema.longitude, 0.0001)
+    end
+  end
+
+  def test_latitude_and_longitude_are_nil_without_a_location
+    with_fake_api do
+      assert_nil PicturehouseUk::Cinema.new(13).latitude
+      assert_nil PicturehouseUk::Cinema.new(13).longitude
+    end
+  end
+
+  def test_latitude_and_longitude_are_nil_at_zero_zero
+    with_fake_api do
+      assert_nil PicturehouseUk::Cinema.new(2).latitude
+      assert_nil PicturehouseUk::Cinema.new(2).longitude
+    end
+  end
+
   def test_name_and_full_name
     with_fake_api do
       assert_equal "Duke's at Komedia", PicturehouseUk::Cinema.new(19).name

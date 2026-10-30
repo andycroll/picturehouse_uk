@@ -86,6 +86,12 @@ cinema.brand
 cinema.name
 #=> "Duke's at Komedia"
 
+cinema.latitude
+#=> 50.8247985839844
+
+cinema.longitude
+#=> -0.139400005340576
+
 cinema.id
 #=> '019'
 

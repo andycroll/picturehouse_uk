@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.1.0] - Unreleased
+
+### Added
+- `Cinema#latitude` and `Cinema#longitude` as Floats in decimal degrees, from the Vista sites response. They are `nil` when a site has no location or sits at 0, 0.
+
 ## [6.0.1] - 2026-10-22
 
 ### Changed
