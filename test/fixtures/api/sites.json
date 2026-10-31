@@ -3,6 +3,7 @@
     {
       "id": "002",
       "name": { "text": "Arts Picturehouse Cambridge" },
+      "location": { "latitude": 0, "longitude": 0 },
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "1 Example Street" },
@@ -15,6 +16,7 @@
     {
       "id": "013",
       "name": { "text": "Picturehouse at FACT Liverpool" },
+      "location": null,
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "2 Example Street" },
@@ -27,6 +29,7 @@
     {
       "id": "019",
       "name": { "text": "Duke's at Komedia" },
+      "location": { "latitude": 50.8247985839844, "longitude": -0.139400005340576 },
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "3 Example Street" },

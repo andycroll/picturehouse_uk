@@ -80,6 +80,26 @@ module PicturehouseUk
       name
     end
 
+    # Latitude of the cinema
+    # @return [Float, nil] decimal degrees, or nil when unknown
+    # @example
+    #   cinema = PicturehouseUk::Cinema.new(19)
+    #   cinema.latitude
+    #   #=> 50.8247985839844
+    def latitude
+      coordinates&.first
+    end
+
+    # Longitude of the cinema
+    # @return [Float, nil] decimal degrees, or nil when unknown
+    # @example
+    #   cinema = PicturehouseUk::Cinema.new(19)
+    #   cinema.longitude
+    #   #=> -0.139400005340576
+    def longitude
+      coordinates&.last
+    end
+
     # The name of the cinema
     # @return [String]
     # @example
@@ -112,6 +132,13 @@ module PicturehouseUk
         text = address.dig(key, 'text').to_s.strip
         text unless text.empty?
       end
+    end
+
+    # 0, 0 marks a site whose position was never set
+    def coordinates
+      location = site_hash['location'] || {}
+      pair = [location['latitude'], location['longitude']]
+      pair.map(&:to_f) if pair.all?(Numeric) && pair.any?(&:nonzero?)
     end
 
     def site_hash
