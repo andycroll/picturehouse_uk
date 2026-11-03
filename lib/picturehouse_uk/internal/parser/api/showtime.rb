@@ -25,6 +25,9 @@ module PicturehouseUk
             "Watch with Baby" => "baby"
           }.freeze
 
+          # Cinema City in Norwich hosts the Norwich Film Festival
+          FESTIVAL_NAMES = { "NFF" => "Norwich Film Festival" }.freeze
+
           # @param [Hash] data one showtime
           # @param [Hash{String => Hash}] films related films keyed by id
           # @param [Hash{String => Hash}] attributes related attributes keyed by id
@@ -39,7 +42,7 @@ module PicturehouseUk
             {
               booking_url: format(BOOKING_URL, @data.fetch("id")),
               dimension: @data["requires3dGlasses"] ? "3d" : "2d",
-              festival: Cinebase::Festival.from_title(title, year: starting_at.year),
+              festival: Cinebase::Festival.from_title(title, year: starting_at.year, names: FESTIVAL_NAMES),
               film_name: TitleSanitizer.new(title).sanitized,
               film_year: Cinebase::TitleSanitizer.film_year(title),
               starting_at: starting_at,

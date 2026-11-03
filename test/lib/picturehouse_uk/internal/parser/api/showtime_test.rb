@@ -3,7 +3,8 @@ require_relative '../../../../../test_helper'
 class PicturehouseUk::Internal::Parser::Api::ShowtimeTest < Minitest::Test
   FILMS = {
     'HO1' => { 'title' => { 'text' => 'Sense and Sensibility (2026)' } },
-    'HO2' => { 'title' => { 'text' => 'CFF: Rocket Girl' } }
+    'HO2' => { 'title' => { 'text' => 'CFF: Rocket Girl' } },
+    'HO3' => { 'title' => { 'text' => 'NFF 2026: Comedy Shorts' } }
   }.freeze
 
   ATTRIBUTES = {
@@ -41,6 +42,12 @@ class PicturehouseUk::Internal::Parser::Api::ShowtimeTest < Minitest::Test
 
     assert_equal Cinebase::Festival.new(name: 'Cambridge Film Festival', year: 2026), showtime[:festival]
     assert_equal 'Rocket Girl', showtime[:film_name]
+  end
+
+  def test_nff_is_the_norwich_film_festival
+    showtime = parse(film_id: 'HO3')
+
+    assert_equal Cinebase::Festival.new(name: 'Norwich Film Festival', year: 2026), showtime[:festival]
   end
 
   private

@@ -292,9 +292,12 @@ class PicturehouseUkInternalTitleSanitizerTest < Minitest::Test
     end
   end
 
+  def test_sanitized_removes_mulled_wine
+    assert_equal 'Elf', PicturehouseUk::Internal::TitleSanitizer.new('Elf + Mulled Wine and Carols').sanitized
+  end
+
   def test_sanitized_keeps_events_with_their_films
     [
-      'Elf + Mulled Wine and Carols',
       'Hocus Pocus + Pumpkin Party',
       'Rammstein - Live in Mexico City'
     ].each do |title|
