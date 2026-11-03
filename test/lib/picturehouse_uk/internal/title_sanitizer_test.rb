@@ -138,12 +138,12 @@ class PicturehouseUkInternalTitleSanitizerTest < Minitest::Test
 
   def test_sanitized_with_bolshoi_screening
     sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Bolshoi: Spartacus [NO CERT]')
-    assert_equal 'Bolshoi: Spartacus', sanitizer.sanitized
+    assert_equal 'Bolshoi Ballet: Spartacus', sanitizer.sanitized
   end
 
   def test_sanitized_with_bolshoi_with_captured
     sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Bolshoi: La Bayadere (Captured Live in 2012)')
-    assert_equal 'Bolshoi: La Bayadere', sanitizer.sanitized
+    assert_equal 'Bolshoi Ballet: La Bayadere', sanitizer.sanitized
   end
 
   def test_sanitized_with_glyndebourne
@@ -168,7 +168,7 @@ class PicturehouseUkInternalTitleSanitizerTest < Minitest::Test
 
   def test_sanitized_with_nt_live_screening
     sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('National Theatre: Hamlet [PG]')
-    assert_equal 'NT Live: Hamlet', sanitizer.sanitized
+    assert_equal 'National Theatre Live: Hamlet', sanitizer.sanitized
   end
 
   def test_sanitized_with_ourscreen
@@ -239,5 +239,66 @@ class PicturehouseUkInternalTitleSanitizerTest < Minitest::Test
   def test_sanitized_with_bolshoi_reorders_title
     sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Spartacus (Bolshoi Ballet)')
     assert_equal 'Bolshoi Ballet: Spartacus', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_harbour_highlights_strand
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Harbour Highlights: Arrival 10th Anniversary')
+    assert_equal 'Arrival', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_little_theatre_birthday
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new("Little Theatre's 90th - Mr. Deeds Goes to Town")
+    assert_equal 'Mr. Deeds Goes to Town', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_little_theatre_anniversary
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new("Little Theatre's 90th Anniversary: The Third Man")
+    assert_equal 'The Third Man', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_q_and_a_with_guest
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('The Devils + Live Q+A with Mark Kermode')
+    assert_equal 'The Devils', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_livestream_q_and_a
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('A Long Winter Livestream Q+A')
+    assert_equal 'A Long Winter', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_broadcast_q_and_a
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('The Trip to the Northern Lights: Broadcast Q&A')
+    assert_equal 'The Trip to the Northern Lights', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_preview_and_q_and_a
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('The Trip to the Northern Lights: Preview and Q&A')
+    assert_equal 'The Trip to the Northern Lights', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_broadcast_suffix
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Book Club: Elif Shafak In Conversation-Broadcast')
+    assert_equal 'Book Club: Elif Shafak In Conversation', sanitizer.sanitized
+  end
+
+  def test_sanitized_removes_trailing_release_year
+    sanitizer = PicturehouseUk::Internal::TitleSanitizer.new('Raise The Red Lantern 1991')
+    assert_equal 'Raise The Red Lantern', sanitizer.sanitized
+  end
+
+  def test_sanitized_keeps_years_that_name_films
+    ['Blade Runner 2049', '1917', '2046'].each do |title|
+      assert_equal title, PicturehouseUk::Internal::TitleSanitizer.new(title).sanitized
+    end
+  end
+
+  def test_sanitized_keeps_events_with_their_films
+    [
+      'Elf + Mulled Wine and Carols',
+      'Hocus Pocus + Pumpkin Party',
+      'Rammstein - Live in Mexico City'
+    ].each do |title|
+      assert_equal title, PicturehouseUk::Internal::TitleSanitizer.new(title).sanitized
+    end
   end
 end

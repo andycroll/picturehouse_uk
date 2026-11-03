@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.2.0] - 2026-11-03
+
+### Changed
+- Uses cinebase 5.9: performances take the raw `title:`, so audience labels become variants, and series prefixes such as `Met Opera:` become the performance's `event`.
+- National Theatre Live and Bolshoi screenings are named `National Theatre Live: ` and `Bolshoi Ballet: `, the prefixes cinebase moves to `event`.
+
+### Fixed
+- `Harbour Highlights: Arrival 10th Anniversary` is now `Arrival`.
+- `Little Theatre's 90th - Mr. Deeds Goes to Town` and `Little Theatre's 90th Anniversary: The Third Man` lose the birthday prefix.
+- `The Devils + Live Q+A with Mark Kermode` and `A Long Winter Livestream Q+A` lose the Q&A.
+- `The Trip to the Northern Lights: Broadcast Q&A` and `…: Preview and Q&A` are now `The Trip to the Northern Lights`.
+- `Book Club: Elif Shafak In Conversation-Broadcast` loses `-Broadcast`.
+- `Raise The Red Lantern 1991` loses its trailing release year. Years before 2020, after a word other than "of", are removed, so `Blade Runner 2049`, `1917` and `2046` keep theirs.
+
 ## [6.1.0] - 2026-10-31
 
 ### Added
