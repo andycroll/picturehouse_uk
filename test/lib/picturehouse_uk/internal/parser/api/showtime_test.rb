@@ -39,7 +39,7 @@ class PicturehouseUk::Internal::Parser::Api::ShowtimeTest < Minitest::Test
   def test_festival
     showtime = parse(film_id: 'HO2')
 
-    assert_equal Cinebase::Festival.new(name: 'CFF', year: 2026), showtime[:festival]
+    assert_equal Cinebase::Festival.new(name: 'Cambridge Film Festival', year: 2026), showtime[:festival]
     assert_equal 'Rocket Girl', showtime[:film_name]
   end
 

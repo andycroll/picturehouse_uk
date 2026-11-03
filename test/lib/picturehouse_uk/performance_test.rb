@@ -76,7 +76,7 @@ class PicturehouseUk::PerformanceTest < Minitest::Test
     performance = performances_at(19)[4]
 
     assert_equal 'Made Up Matinee', performance.film_name
-    assert_equal Cinebase::Festival.new(name: 'CFF', year: 2026), performance.festival
+    assert_equal Cinebase::Festival.new(name: 'Cambridge Film Festival', year: 2026), performance.festival
     assert_equal %w(arts subtitled), performance.variant
   end
 
