@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.3.0] - 2026-11-03
+
+### Changed
+- Uses cinebase 5.10. `NFF` titles name the Norwich Film Festival, which Cinema City hosts.
+- `+ Mulled Wine and Carols` screenings are the plain film, with the `mulled_wine` variant.
+
 ## [6.2.0] - 2026-11-03
 
 ### Changed
