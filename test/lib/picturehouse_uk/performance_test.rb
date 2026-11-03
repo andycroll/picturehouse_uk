@@ -36,6 +36,19 @@ class PicturehouseUk::PerformanceTest < Minitest::Test
                  performance.booking_url
   end
 
+  def test_at_reads_audience_from_title
+    @api_response.define_singleton_method(:showtimes) do |cinema_id, date|
+      super(cinema_id, date).tap do |data|
+        data.dig('relatedData', 'films', 0, 'title')['text'] = 'Relaxed Screening: Wildwood'
+      end
+    end
+    performance = performances_at(19).first
+
+    assert_equal 'Relaxed Screening: Wildwood', performance.title
+    assert_equal 'Wildwood', performance.film_name
+    assert_equal %w(audio_described relaxed), performance.variant
+  end
+
   def test_at_parses_3d_silver_screen
     performance = performances_at(19)[1]
 

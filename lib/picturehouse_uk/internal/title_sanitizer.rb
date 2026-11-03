@@ -54,7 +54,14 @@ module PicturehouseUk
           /\ARelaxed-Screening: /,            # relaxed screening
           /\ALMF Presents: /,                 # LMF strand
           /\AGreen Screen: /,                 # Green Screen strand
-          /\AFFQ: /                           # FFQ strand
+          /\AFFQ: /,                          # FFQ strand
+          /\AHarbour Highlights: /,           # Harbour Highlights strand
+          /\ALittle Theatre['’]s \d+(?:st|nd|rd|th)(?: Anniversary)?\s*[-:]\s*/, # Little Theatre birthday
+          /\s*\+\s*(?:Live )?Q[&+]A with .+\z/i, # Q&A with a guest
+          /\s+Livestream Q[&+]A\z/i,          # livestream Q&A
+          /:\s*(?:Broadcast|Preview and) Q[&+]A\z/i, # broadcast Q&A
+          /\s*-\s*Broadcast\z/i,              # broadcast
+          /(?<=\p{L})(?<! of) (?:19\d{2}|20[01]\d)\z/ # release year, not "Blade Runner 2049"
         ] + COMMON_REMOVE
       end
 

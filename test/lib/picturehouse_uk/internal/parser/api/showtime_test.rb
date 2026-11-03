@@ -21,6 +21,7 @@ class PicturehouseUk::Internal::Parser::Api::ShowtimeTest < Minitest::Test
       film_name: 'Sense and Sensibility',
       film_year: 2026,
       starting_at: Time.utc(2026, 10, 24, 17, 30),
+      title: 'Sense and Sensibility (2026)',
       variant: []
     }
 
